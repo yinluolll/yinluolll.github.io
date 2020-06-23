@@ -20,12 +20,12 @@
     var CONFIG = {"hostname":"yinluolll.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="1、项目背景介绍在刚迈入大二的自己参加了省赛的分立元件电路板的焊接，发现自己的电气知识实在是太薄弱了，严重的打击自信心，原来理论成绩的优秀并不能代表你动手能力的优秀，因此，得到老师布置的这个项目的题目的时候，我就尽可能让作品尽善尽美。 电路框图2、电路的实现级模块的逻辑连接1）整流电路模块2）按键选择模块序号按键的按下对应器需要，也就是按键按下，会发出不一样的数字编码，然后输入4511芯片当中，还">
+  <meta name="description" content="1、项目背景介绍在刚迈入大二的自己参加了省赛的分立元件电路板的焊接，发现自己的电气知识实在是太薄弱了，严重的打击自信心，原来理论成绩的优秀并不能代表你动手能力的优秀，因此，得到老师布置的这个项目的题目的时候，我就尽可能让作品尽善尽美。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="八路抢答器的设计（无单片机）">
 <meta property="og:url" content="https://yinluolll.github.io/2020/06/23/%E5%85%AB%E8%B7%AF%E6%8A%A2%E7%AD%94%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%EF%BC%88%E6%97%A0%E5%8D%95%E7%89%87%E6%9C%BA%EF%BC%89/index.html">
 <meta property="og:site_name" content="个人博客">
-<meta property="og:description" content="1、项目背景介绍在刚迈入大二的自己参加了省赛的分立元件电路板的焊接，发现自己的电气知识实在是太薄弱了，严重的打击自信心，原来理论成绩的优秀并不能代表你动手能力的优秀，因此，得到老师布置的这个项目的题目的时候，我就尽可能让作品尽善尽美。 电路框图2、电路的实现级模块的逻辑连接1）整流电路模块2）按键选择模块序号按键的按下对应器需要，也就是按键按下，会发出不一样的数字编码，然后输入4511芯片当中，还">
+<meta property="og:description" content="1、项目背景介绍在刚迈入大二的自己参加了省赛的分立元件电路板的焊接，发现自己的电气知识实在是太薄弱了，严重的打击自信心，原来理论成绩的优秀并不能代表你动手能力的优秀，因此，得到老师布置的这个项目的题目的时候，我就尽可能让作品尽善尽美。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://yinluolll.github.io/images/%E6%8A%A2%E7%AD%94.jpg">
 <meta property="og:image" content="https://yinluolll.github.io/images/%E6%8A%A2%E7%AD%942.jpg">
@@ -35,7 +35,7 @@
 <meta property="og:image" content="https://yinluolll.github.io/images/%E6%8A%A2%E7%AD%946.jpg">
 <meta property="og:image" content="https://yinluolll.github.io/images/%E6%8A%A2%E7%AD%947.jpg">
 <meta property="article:published_time" content="2020-06-23T12:38:55.000Z">
-<meta property="article:modified_time" content="2020-06-23T12:39:17.055Z">
+<meta property="article:modified_time" content="2020-06-23T16:59:03.729Z">
 <meta property="article:author" content="罗乐乐">
 <meta property="article:tag" content="焊板">
 <meta property="article:tag" content="数电模电">
@@ -129,6 +129,11 @@
     <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
 
   </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
         <li class="menu-item menu-item-tags">
 
     <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
@@ -194,10 +199,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-06-23 20:38:55 / 修改时间：20:39:17" itemprop="dateCreated datePublished" datetime="2020-06-23T20:38:55+08:00">2020-06-23</time>
+              <time title="创建时间：2020-06-23 20:38:55" itemprop="dateCreated datePublished" datetime="2020-06-23T20:38:55+08:00">2020-06-23</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-06-24 00:59:03" itemprop="dateModified" datetime="2020-06-24T00:59:03+08:00">2020-06-24</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -220,6 +231,7 @@
 
       
         <h1 id="1、项目背景介绍"><a href="#1、项目背景介绍" class="headerlink" title="1、项目背景介绍"></a>1、项目背景介绍</h1><p>在刚迈入大二的自己参加了省赛的分立元件电路板的焊接，发现自己的电气知识实在是太薄弱了，严重的打击自信心，原来理论成绩的优秀并不能代表你动手能力的优秀，因此，得到老师布置的这个项目的题目的时候，我就尽可能让作品尽善尽美。</p>
+<a id="more"></a>
 <h1 id="电路框图"><a href="#电路框图" class="headerlink" title="电路框图"></a>电路框图</h1><h2 id=""><a href="#" class="headerlink" title=""></a><img src="/images/%E6%8A%A2%E7%AD%94.jpg" alt="image"></h2><h1 id="2、电路的实现级模块的逻辑连接"><a href="#2、电路的实现级模块的逻辑连接" class="headerlink" title="2、电路的实现级模块的逻辑连接"></a>2、电路的实现级模块的逻辑连接</h1><h2 id="1）整流电路模块"><a href="#1）整流电路模块" class="headerlink" title="1）整流电路模块"></a>1）整流电路模块</h2><h3 id="-1"><a href="#-1" class="headerlink" title=""></a><img src="/images/%E6%8A%A2%E7%AD%942.jpg" alt="image"></h3><h2 id="2）按键选择模块"><a href="#2）按键选择模块" class="headerlink" title="2）按键选择模块"></a>2）按键选择模块</h2><h3 id="序号按键的按下对应器需要，也就是按键按下，会发出不一样的数字编码，然后输入4511芯片当中，还有就是作为10秒倒计时的开启触发"><a href="#序号按键的按下对应器需要，也就是按键按下，会发出不一样的数字编码，然后输入4511芯片当中，还有就是作为10秒倒计时的开启触发" class="headerlink" title="序号按键的按下对应器需要，也就是按键按下，会发出不一样的数字编码，然后输入4511芯片当中，还有就是作为10秒倒计时的开启触发"></a>序号按键的按下对应器需要，也就是按键按下，会发出不一样的数字编码，然后输入4511芯片当中，还有就是作为10秒倒计时的开启触发</h3><h3 id="-2"><a href="#-2" class="headerlink" title=""></a><img src="/images/%E6%8A%A2%E7%AD%943.jpg" alt="image"></h3><h2 id="3）按键译码模块"><a href="#3）按键译码模块" class="headerlink" title="3）按键译码模块"></a>3）按键译码模块</h2><p>每个按键对应不同的数字量，因此需要用4511芯片价格这些数字量转化成数码管的LED显示量。并且通过输出量来判定这个是否会自锁，将输入的数字量进行存储。</p>
 <h3 id="-3"><a href="#-3" class="headerlink" title=""></a><img src="/images/%E6%8A%A2%E7%AD%945.jpg" alt="image"></h3><h2 id="4）10秒倒计时模块"><a href="#4）10秒倒计时模块" class="headerlink" title="4）10秒倒计时模块"></a>4）10秒倒计时模块</h2><p>由两个40110的数码管的驱动芯片和两个数码管构成，能够可以形成加减的运行，并且可调速变化的速度。对于矩形脉冲的输入，可以有NE555与外围器件构成一个矩性脉冲发生器，并且接上可调电阻即可，调制0.1s周期速度即可！</p>
 <h3 id="-4"><a href="#-4" class="headerlink" title=""></a><img src="/images/%E6%8A%A2%E7%AD%944.jpg" alt="image"></h3><h2 id="5）蜂鸣器按键提示模块和复位键模块"><a href="#5）蜂鸣器按键提示模块和复位键模块" class="headerlink" title="5）蜂鸣器按键提示模块和复位键模块"></a>5）蜂鸣器按键提示模块和复位键模块</h2><p>在ABCD这个四个管脚用二极管构成一个或门<br>在4511特定的管脚LT拉低即可</p>
