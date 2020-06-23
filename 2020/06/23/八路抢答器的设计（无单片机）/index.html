@@ -20,24 +20,30 @@
     var CONFIG = {"hostname":"yinluolll.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="罗乐乐第一篇文章哦！第三级标题哦！ 列表1 列表2  a 子列表哦！  b 子列表哦！ 列表3  hao123网页导航   虚线  字体倾斜字体加粗 &lt;!DOCTYPE html&gt; 12345&lt;html&gt;&#x2F;&#x2F;添加代码块&lt;head&gt;	&lt;title&gt;&lt;&#x2F;title&gt;&lt;body&gt;&lt;&#x2F;bo">
+  <meta name="description" content="1、项目背景介绍在刚迈入大二的自己参加了省赛的分立元件电路板的焊接，发现自己的电气知识实在是太薄弱了，严重的打击自信心，原来理论成绩的优秀并不能代表你动手能力的优秀，因此，得到老师布置的这个项目的题目的时候，我就尽可能让作品尽善尽美。 电路框图2、电路的实现级模块的逻辑连接1）整流电路模块2）按键选择模块序号按键的按下对应器需要，也就是按键按下，会发出不一样的数字编码，然后输入4511芯片当中，还">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Markdown使用草稿">
-<meta property="og:url" content="https://yinluolll.github.io/2020/06/23/Markdown%E4%BD%BF%E7%94%A8%E8%8D%89%E7%A8%BF/index.html">
+<meta property="og:title" content="八路抢答器的设计（无单片机）">
+<meta property="og:url" content="https://yinluolll.github.io/2020/06/23/%E5%85%AB%E8%B7%AF%E6%8A%A2%E7%AD%94%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%EF%BC%88%E6%97%A0%E5%8D%95%E7%89%87%E6%9C%BA%EF%BC%89/index.html">
 <meta property="og:site_name" content="个人博客">
-<meta property="og:description" content="罗乐乐第一篇文章哦！第三级标题哦！ 列表1 列表2  a 子列表哦！  b 子列表哦！ 列表3  hao123网页导航   虚线  字体倾斜字体加粗 &lt;!DOCTYPE html&gt; 12345&lt;html&gt;&#x2F;&#x2F;添加代码块&lt;head&gt;	&lt;title&gt;&lt;&#x2F;title&gt;&lt;body&gt;&lt;&#x2F;bo">
+<meta property="og:description" content="1、项目背景介绍在刚迈入大二的自己参加了省赛的分立元件电路板的焊接，发现自己的电气知识实在是太薄弱了，严重的打击自信心，原来理论成绩的优秀并不能代表你动手能力的优秀，因此，得到老师布置的这个项目的题目的时候，我就尽可能让作品尽善尽美。 电路框图2、电路的实现级模块的逻辑连接1）整流电路模块2）按键选择模块序号按键的按下对应器需要，也就是按键按下，会发出不一样的数字编码，然后输入4511芯片当中，还">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://www.quanjing.com/medicalcare.aspx?pic_id=qj6339407007">
-<meta property="article:published_time" content="2020-06-23T05:05:03.916Z">
-<meta property="article:modified_time" content="2020-06-22T22:55:33.314Z">
+<meta property="og:image" content="https://yinluolll.github.io/images/%E6%8A%A2%E7%AD%94.jpg">
+<meta property="og:image" content="https://yinluolll.github.io/images/%E6%8A%A2%E7%AD%942.jpg">
+<meta property="og:image" content="https://yinluolll.github.io/images/%E6%8A%A2%E7%AD%943.jpg">
+<meta property="og:image" content="https://yinluolll.github.io/images/%E6%8A%A2%E7%AD%945.jpg">
+<meta property="og:image" content="https://yinluolll.github.io/images/%E6%8A%A2%E7%AD%944.jpg">
+<meta property="og:image" content="https://yinluolll.github.io/images/%E6%8A%A2%E7%AD%946.jpg">
+<meta property="og:image" content="https://yinluolll.github.io/images/%E6%8A%A2%E7%AD%947.jpg">
+<meta property="article:published_time" content="2020-06-23T12:38:55.000Z">
+<meta property="article:modified_time" content="2020-06-23T12:39:17.055Z">
 <meta property="article:author" content="罗乐乐">
-<meta property="article:tag" content="计算机语言">
-<meta property="article:tag" content="分享">
-<meta property="article:tag" content="Markdown">
+<meta property="article:tag" content="焊板">
+<meta property="article:tag" content="数电模电">
+<meta property="article:tag" content="电子电路设计">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://www.quanjing.com/medicalcare.aspx?pic_id=qj6339407007">
+<meta name="twitter:image" content="https://yinluolll.github.io/images/%E6%8A%A2%E7%AD%94.jpg">
 
-<link rel="canonical" href="https://yinluolll.github.io/2020/06/23/Markdown%E4%BD%BF%E7%94%A8%E8%8D%89%E7%A8%BF/">
+<link rel="canonical" href="https://yinluolll.github.io/2020/06/23/%E5%85%AB%E8%B7%AF%E6%8A%A2%E7%AD%94%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%EF%BC%88%E6%97%A0%E5%8D%95%E7%89%87%E6%9C%BA%EF%BC%89/">
 
 
 <script id="page-configurations">
@@ -50,7 +56,7 @@
   };
 </script>
 
-  <title>Markdown使用草稿 | 个人博客</title>
+  <title>八路抢答器的设计（无单片机） | 个人博客</title>
   
 
 
@@ -166,7 +172,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://yinluolll.github.io/2020/06/23/Markdown%E4%BD%BF%E7%94%A8%E8%8D%89%E7%A8%BF/">
+    <link itemprop="mainEntityOfPage" href="https://yinluolll.github.io/2020/06/23/%E5%85%AB%E8%B7%AF%E6%8A%A2%E7%AD%94%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%EF%BC%88%E6%97%A0%E5%8D%95%E7%89%87%E6%9C%BA%EF%BC%89/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/xusong.jpeg">
@@ -179,7 +185,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Markdown使用草稿
+          八路抢答器的设计（无单片机）
         </h1>
 
         <div class="post-meta">
@@ -190,7 +196,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-06-23 13:05:03 / 修改时间：06:55:33" itemprop="dateCreated datePublished" datetime="2020-06-23T13:05:03+08:00">2020-06-23</time>
+              <time title="创建时间：2020-06-23 20:38:55 / 修改时间：20:39:17" itemprop="dateCreated datePublished" datetime="2020-06-23T20:38:55+08:00">2020-06-23</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -198,7 +204,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%89%8D%E7%AB%AF%E5%BA%94%E7%94%A8/" itemprop="url" rel="index"><span itemprop="name">前端应用</span></a>
+                  <a href="/categories/%E5%BA%95%E7%AB%AF%E8%AE%BE%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">底端设计</span></a>
                 </span>
             </span>
 
@@ -213,22 +219,11 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="罗乐乐"><a href="#罗乐乐" class="headerlink" title="罗乐乐"></a>罗乐乐</h1><h2 id="第一篇文章哦！"><a href="#第一篇文章哦！" class="headerlink" title="第一篇文章哦！"></a>第一篇文章哦！</h2><h3 id="第三级标题哦！"><a href="#第三级标题哦！" class="headerlink" title="第三级标题哦！"></a>第三级标题哦！</h3><ul>
-<li>列表1</li>
-<li>列表2<br>  a 子列表哦！<br>  b 子列表哦！</li>
-<li>列表3</li>
-</ul>
-<p><a href="https://www.hao123.com" target="_blank" rel="noopener">hao123网页导航</a></p>
-<p><img src="https://www.quanjing.com/medicalcare.aspx?pic_id=qj6339407007" alt="网站图片"></p>
-<hr>
-<p>虚线</p>
-<hr>
-<p><em>字体倾斜</em><br><strong>字体加粗</strong></p>
-<p><code>&lt;!DOCTYPE html&gt;</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;html&gt;&#x2F;&#x2F;添加代码块</span><br><span class="line">&lt;head&gt;</span><br><span class="line">	&lt;title&gt;&lt;&#x2F;title&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">&lt;&#x2F;body&gt;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>引用的内容</p>
-</blockquote>
+        <h1 id="1、项目背景介绍"><a href="#1、项目背景介绍" class="headerlink" title="1、项目背景介绍"></a>1、项目背景介绍</h1><p>在刚迈入大二的自己参加了省赛的分立元件电路板的焊接，发现自己的电气知识实在是太薄弱了，严重的打击自信心，原来理论成绩的优秀并不能代表你动手能力的优秀，因此，得到老师布置的这个项目的题目的时候，我就尽可能让作品尽善尽美。</p>
+<h1 id="电路框图"><a href="#电路框图" class="headerlink" title="电路框图"></a>电路框图</h1><h2 id=""><a href="#" class="headerlink" title=""></a><img src="/images/%E6%8A%A2%E7%AD%94.jpg" alt="image"></h2><h1 id="2、电路的实现级模块的逻辑连接"><a href="#2、电路的实现级模块的逻辑连接" class="headerlink" title="2、电路的实现级模块的逻辑连接"></a>2、电路的实现级模块的逻辑连接</h1><h2 id="1）整流电路模块"><a href="#1）整流电路模块" class="headerlink" title="1）整流电路模块"></a>1）整流电路模块</h2><h3 id="-1"><a href="#-1" class="headerlink" title=""></a><img src="/images/%E6%8A%A2%E7%AD%942.jpg" alt="image"></h3><h2 id="2）按键选择模块"><a href="#2）按键选择模块" class="headerlink" title="2）按键选择模块"></a>2）按键选择模块</h2><h3 id="序号按键的按下对应器需要，也就是按键按下，会发出不一样的数字编码，然后输入4511芯片当中，还有就是作为10秒倒计时的开启触发"><a href="#序号按键的按下对应器需要，也就是按键按下，会发出不一样的数字编码，然后输入4511芯片当中，还有就是作为10秒倒计时的开启触发" class="headerlink" title="序号按键的按下对应器需要，也就是按键按下，会发出不一样的数字编码，然后输入4511芯片当中，还有就是作为10秒倒计时的开启触发"></a>序号按键的按下对应器需要，也就是按键按下，会发出不一样的数字编码，然后输入4511芯片当中，还有就是作为10秒倒计时的开启触发</h3><h3 id="-2"><a href="#-2" class="headerlink" title=""></a><img src="/images/%E6%8A%A2%E7%AD%943.jpg" alt="image"></h3><h2 id="3）按键译码模块"><a href="#3）按键译码模块" class="headerlink" title="3）按键译码模块"></a>3）按键译码模块</h2><p>每个按键对应不同的数字量，因此需要用4511芯片价格这些数字量转化成数码管的LED显示量。并且通过输出量来判定这个是否会自锁，将输入的数字量进行存储。</p>
+<h3 id="-3"><a href="#-3" class="headerlink" title=""></a><img src="/images/%E6%8A%A2%E7%AD%945.jpg" alt="image"></h3><h2 id="4）10秒倒计时模块"><a href="#4）10秒倒计时模块" class="headerlink" title="4）10秒倒计时模块"></a>4）10秒倒计时模块</h2><p>由两个40110的数码管的驱动芯片和两个数码管构成，能够可以形成加减的运行，并且可调速变化的速度。对于矩形脉冲的输入，可以有NE555与外围器件构成一个矩性脉冲发生器，并且接上可调电阻即可，调制0.1s周期速度即可！</p>
+<h3 id="-4"><a href="#-4" class="headerlink" title=""></a><img src="/images/%E6%8A%A2%E7%AD%944.jpg" alt="image"></h3><h2 id="5）蜂鸣器按键提示模块和复位键模块"><a href="#5）蜂鸣器按键提示模块和复位键模块" class="headerlink" title="5）蜂鸣器按键提示模块和复位键模块"></a>5）蜂鸣器按键提示模块和复位键模块</h2><p>在ABCD这个四个管脚用二极管构成一个或门<br>在4511特定的管脚LT拉低即可</p>
+<h3 id="-5"><a href="#-5" class="headerlink" title=""></a><img src="/images/%E6%8A%A2%E7%AD%946.jpg" alt="image"></h3><h1 id="实验成品"><a href="#实验成品" class="headerlink" title="实验成品"></a>实验成品</h1><h2 id="-6"><a href="#-6" class="headerlink" title=""></a><img src="/images/%E6%8A%A2%E7%AD%947.jpg" alt="image"></h2><h1 id="3、实验总结："><a href="#3、实验总结：" class="headerlink" title="3、实验总结："></a>3、实验总结：</h1><p>1）在做这个实验之前，一定有用一个清晰的逻辑框架，而且一定要有模块化、分层化思想。<br>2）最好在这之前进行multisim软件仿真，这样不仅可以验证你的想法是否正确，而且也可以通过他们来进行布线焊接。<br>3）更为复杂的板子的焊接可以用PCB来做，这是一个成熟的产业链，因此必须掌握对于PCB画板的基础知识。</p>
 
     </div>
 
@@ -277,9 +272,9 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%AF%AD%E8%A8%80/" rel="tag"># 计算机语言</a>
-              <a href="/tags/%E5%88%86%E4%BA%AB/" rel="tag"># 分享</a>
-              <a href="/tags/Markdown/" rel="tag"># Markdown</a>
+              <a href="/tags/%E7%84%8A%E6%9D%BF/" rel="tag"># 焊板</a>
+              <a href="/tags/%E6%95%B0%E7%94%B5%E6%A8%A1%E7%94%B5/" rel="tag"># 数电模电</a>
+              <a href="/tags/%E7%94%B5%E5%AD%90%E7%94%B5%E8%B7%AF%E8%AE%BE%E8%AE%A1/" rel="tag"># 电子电路设计</a>
           </div>
 
         
@@ -288,13 +283,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/06/23/hello-world/" rel="prev" title="Hello World">
-      <i class="fa fa-chevron-left"></i> Hello World
+    <a href="/2020/06/23/Markdown%E4%BD%BF%E7%94%A8%E8%8D%89%E7%A8%BF/" rel="prev" title="Markdown使用草稿">
+      <i class="fa fa-chevron-left"></i> Markdown使用草稿
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2020/06/23/%E5%85%AB%E8%B7%AF%E6%8A%A2%E7%AD%94%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%EF%BC%88%E6%97%A0%E5%8D%95%E7%89%87%E6%9C%BA%EF%BC%89/" rel="next" title="八路抢答器的设计（无单片机）">
-      八路抢答器的设计（无单片机） <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -353,7 +345,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#罗乐乐"><span class="nav-number">1.</span> <span class="nav-text">罗乐乐</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#第一篇文章哦！"><span class="nav-number">1.1.</span> <span class="nav-text">第一篇文章哦！</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#第三级标题哦！"><span class="nav-number">1.1.1.</span> <span class="nav-text">第三级标题哦！</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1、项目背景介绍"><span class="nav-number">1.</span> <span class="nav-text">1、项目背景介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#电路框图"><span class="nav-number">2.</span> <span class="nav-text">电路框图</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">2.1.</span> <span class="nav-text"></span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2、电路的实现级模块的逻辑连接"><span class="nav-number">3.</span> <span class="nav-text">2、电路的实现级模块的逻辑连接</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1）整流电路模块"><span class="nav-number">3.1.</span> <span class="nav-text">1）整流电路模块</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#-1"><span class="nav-number">3.1.1.</span> <span class="nav-text"></span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2）按键选择模块"><span class="nav-number">3.2.</span> <span class="nav-text">2）按键选择模块</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#序号按键的按下对应器需要，也就是按键按下，会发出不一样的数字编码，然后输入4511芯片当中，还有就是作为10秒倒计时的开启触发"><span class="nav-number">3.2.1.</span> <span class="nav-text">序号按键的按下对应器需要，也就是按键按下，会发出不一样的数字编码，然后输入4511芯片当中，还有就是作为10秒倒计时的开启触发</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#-2"><span class="nav-number">3.2.2.</span> <span class="nav-text"></span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3）按键译码模块"><span class="nav-number">3.3.</span> <span class="nav-text">3）按键译码模块</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#-3"><span class="nav-number">3.3.1.</span> <span class="nav-text"></span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4）10秒倒计时模块"><span class="nav-number">3.4.</span> <span class="nav-text">4）10秒倒计时模块</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#-4"><span class="nav-number">3.4.1.</span> <span class="nav-text"></span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5）蜂鸣器按键提示模块和复位键模块"><span class="nav-number">3.5.</span> <span class="nav-text">5）蜂鸣器按键提示模块和复位键模块</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#-5"><span class="nav-number">3.5.1.</span> <span class="nav-text"></span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实验成品"><span class="nav-number">4.</span> <span class="nav-text">实验成品</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#-6"><span class="nav-number">4.1.</span> <span class="nav-text"></span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3、实验总结："><span class="nav-number">5.</span> <span class="nav-text">3、实验总结：</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
