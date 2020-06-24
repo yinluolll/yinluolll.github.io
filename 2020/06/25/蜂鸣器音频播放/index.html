@@ -20,30 +20,41 @@
     var CONFIG = {"hostname":"yinluolll.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="不念、不想、不枉、此生">
-<meta property="og:type" content="website">
-<meta property="og:title" content="个人博客">
-<meta property="og:url" content="https://yinluolll.github.io/index.html">
+  <meta name="description" content="项目背景介绍这个实验的起源还是源于有一个同学求我帮忙，本来我已经写好代码给了她的，并且也能够用蜂鸣器哼唱出它们的调调，只是我自做多情了，看来别人还是喜欢自己做的，这让我失望了很长时间。不过已经走出来了，反正自己学到了，就是赚到了，别人用一个礼拜做出来的实验任务，我即使通宵也要将它搞完，不是说自己有多勤奋，只是我觉得太无聊了，游戏不想打，视频不想看，动也不愿意动，那怎么让自己做一个不用太累又排泄无聊">
+<meta property="og:type" content="article">
+<meta property="og:title" content="蜂鸣器音频播放">
+<meta property="og:url" content="https://yinluolll.github.io/2020/06/25/%E8%9C%82%E9%B8%A3%E5%99%A8%E9%9F%B3%E9%A2%91%E6%92%AD%E6%94%BE/index.html">
 <meta property="og:site_name" content="个人博客">
-<meta property="og:description" content="不念、不想、不枉、此生">
+<meta property="og:description" content="项目背景介绍这个实验的起源还是源于有一个同学求我帮忙，本来我已经写好代码给了她的，并且也能够用蜂鸣器哼唱出它们的调调，只是我自做多情了，看来别人还是喜欢自己做的，这让我失望了很长时间。不过已经走出来了，反正自己学到了，就是赚到了，别人用一个礼拜做出来的实验任务，我即使通宵也要将它搞完，不是说自己有多勤奋，只是我觉得太无聊了，游戏不想打，视频不想看，动也不愿意动，那怎么让自己做一个不用太累又排泄无聊">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://yinluolll.github.io/images/%E8%9C%82%E9%B8%A3.jpg">
+<meta property="og:image" content="https://yinluolll.github.io/images/%E8%9C%82%E9%B8%A32.jpg">
+<meta property="og:image" content="https://yinluolll.github.io/images/%E8%9C%82%E9%B8%A33.jpg">
+<meta property="og:image" content="https://yinluolll.github.io/images/%E8%9C%82%E9%B8%A34.jpg">
+<meta property="article:published_time" content="2020-06-24T21:07:17.000Z">
+<meta property="article:modified_time" content="2020-06-24T21:14:39.865Z">
 <meta property="article:author" content="罗乐乐">
+<meta property="article:tag" content="FPGA单片机">
+<meta property="article:tag" content="模块化">
+<meta property="article:tag" content="原理图">
+<meta property="article:tag" content="ROM">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yinluolll.github.io/images/%E8%9C%82%E9%B8%A3.jpg">
 
-<link rel="canonical" href="https://yinluolll.github.io/">
+<link rel="canonical" href="https://yinluolll.github.io/2020/06/25/%E8%9C%82%E9%B8%A3%E5%99%A8%E9%9F%B3%E9%A2%91%E6%92%AD%E6%94%BE/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>个人博客</title>
+  <title>蜂鸣器音频播放 | 个人博客</title>
   
 
 
@@ -157,9 +168,10 @@
         <div class="content-wrap">
           
 
-          <div class="content index posts-expand">
+          <div class="content post posts-expand">
             
-      
+
+    
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
@@ -175,10 +187,9 @@
       <meta itemprop="name" content="个人博客">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/06/25/%E8%9C%82%E9%B8%A3%E5%99%A8%E9%9F%B3%E9%A2%91%E6%92%AD%E6%94%BE/" class="post-title-link" itemprop="url">蜂鸣器音频播放</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          蜂鸣器音频播放
+        </h1>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -211,7 +222,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="项目背景介绍"><a href="#项目背景介绍" class="headerlink" title="项目背景介绍"></a>项目背景介绍</h1><p>这个实验的起源还是源于有一个同学求我帮忙，本来我已经写好代码给了她的，并且也能够用蜂鸣器哼唱出它们的调调，只是我自做多情了，看来别人还是喜欢自己做的，这让我失望了很长时间。不过已经走出来了，反正自己学到了，就是赚到了，别人用一个礼拜做出来的实验任务，我即使通宵也要将它搞完，不是说自己有多勤奋，只是我觉得太无聊了，游戏不想打，视频不想看，动也不愿意动，那怎么让自己做一个不用太累又排泄无聊的烦躁感呢！嘿嘿，那就是别人的实验了，哈哈，没想到自己这么自虐，非要这样虐自己的脑细胞，不过也很好玩，总之，做出东西了，就有那么一丢丢的成就感，当然不能和那些多年工作了那些大牛相比的，只是在这里YY一下，哈哈！！！</p>
+        <h1 id="项目背景介绍"><a href="#项目背景介绍" class="headerlink" title="项目背景介绍"></a>项目背景介绍</h1><p>这个实验的起源还是源于有一个同学求我帮忙，本来我已经写好代码给了她的，并且也能够用蜂鸣器哼唱出它们的调调，只是我自做多情了，看来别人还是喜欢自己做的，这让我失望了很长时间。不过已经走出来了，反正自己学到了，就是赚到了，别人用一个礼拜做出来的实验任务，我即使通宵也要将它搞完，不是说自己有多勤奋，只是我觉得太无聊了，游戏不想打，视频不想看，动也不愿意动，那怎么让自己做一个不用太累又排泄无聊的烦躁感呢！嘿嘿，那就是别人的实验了，哈哈，没想到自己这么自虐，非要这样虐自己的脑细胞，不过也很好玩，总之，做出东西了，就有那么一丢丢的成就感，当然不能和那些多年工作了那些大牛相比的，只是在这里YY一下，哈哈！！！</p>
 <h1 id="1、代码思想框图"><a href="#1、代码思想框图" class="headerlink" title="1、代码思想框图"></a>1、代码思想框图</h1><p>因有些模块用代码写的连线，顶层文件并不能很好的体现代码的整体思想，只能自己再建立一个逻辑图了</p>
 <h2 id="大概思路：调用ROM储存器的数字音符，对应蜂鸣器的频率，进行播放"><a href="#大概思路：调用ROM储存器的数字音符，对应蜂鸣器的频率，进行播放" class="headerlink" title="大概思路：调用ROM储存器的数字音符，对应蜂鸣器的频率，进行播放"></a>大概思路：调用ROM储存器的数字音符，对应蜂鸣器的频率，进行播放</h2><h2 id=""><a href="#" class="headerlink" title=""></a><img src="/images/%E8%9C%82%E9%B8%A3.jpg" alt="image"></h2><h1 id="2、代码具体实现"><a href="#2、代码具体实现" class="headerlink" title="2、代码具体实现"></a>2、代码具体实现</h1><p>1）相关定义</p>
 <figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">module</span> music_top<span class="comment">//芯片外部变量</span></span><br><span class="line">(</span><br><span class="line"> <span class="keyword">input</span> clk,</span><br><span class="line"> <span class="keyword">input</span> rst_n,<span class="comment">//复位键</span></span><br><span class="line"> <span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">3</span>:<span class="number">0</span>] led,</span><br><span class="line"> <span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">4</span>:<span class="number">0</span>]code,</span><br><span class="line"> <span class="keyword">output</span> <span class="keyword">reg</span> buzzer<span class="comment">//蜂鸣器输出</span></span><br><span class="line">) ;</span><br><span class="line"></span><br><span class="line"><span class="keyword">parameter</span> music_len = <span class="number">32'd400</span> ;<span class="comment">//数字谱的长度，</span></span><br><span class="line">							<span class="comment">//会在顶层设计当中显示出来，并且可以在原理图当中修改此参数的名字、数值、数据类型</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">wire</span> [<span class="number">19</span>:<span class="number">0</span>] cycle ;<span class="comment">//音符的频率，50MHz/相应的频率</span></span><br><span class="line"><span class="keyword">wire</span> [<span class="number">3</span>:<span class="number">0</span>] led1;<span class="comment">//wire表示直通，即只要输入有变化，输出马上无条件地反映</span></span><br><span class="line"><span class="keyword">wire</span> [<span class="number">4</span>:<span class="number">0</span>] code1;<span class="comment">//wire不需对其进行任何的赋值操作，可以对其进行算术运算和逻辑运算</span></span><br><span class="line"><span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] play_cnt ;<span class="comment">//播放1/4节拍计时,reg表示一定要有触发，输出才会反映输入。</span></span><br><span class="line"><span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] music_cnt ;<span class="comment">//音符存取计数</span></span><br><span class="line"><span class="keyword">reg</span> [<span class="number">19</span>:<span class="number">0</span>] hz_cnt ;<span class="comment">//cycle计数</span></span><br><span class="line"><span class="keyword">wire</span> [<span class="number">4</span>:<span class="number">0</span>] hz_sel ;<span class="comment">//音符的值（数字谱）</span></span><br><span class="line"><span class="comment">//这样声明的变量可以在生成的器件上查看</span></span><br><span class="line"><span class="keyword">parameter</span> IDLE      = <span class="number">2'd0</span> ;<span class="comment">//初始模式（停止播放）</span></span><br><span class="line"><span class="keyword">parameter</span> PLAY      = <span class="number">2'd1</span> ;<span class="comment">//播放模式（打节奏）</span></span><br><span class="line"><span class="keyword">parameter</span> PLAY_WAIT = <span class="number">2'd2</span> ;<span class="comment">//判断是否读完数字谱</span></span><br><span class="line"><span class="keyword">parameter</span> PLAY_END  = <span class="number">2'd3</span> ;<span class="comment">//结束模式（困在这个状态之中）</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">reg</span> [<span class="number">1</span>:<span class="number">0</span>]  state ;</span><br><span class="line"><span class="keyword">reg</span> [<span class="number">1</span>:<span class="number">0</span>]  next_state ;<span class="comment">//建立一个状态机</span></span><br></pre></td></tr></table></figure>
@@ -225,729 +236,76 @@
 <h2 id="6）频率选择器（对应乐谱的频率除了看注释，我会贴出乐谱和-mif文件出来，你们自行对比思考）"><a href="#6）频率选择器（对应乐谱的频率除了看注释，我会贴出乐谱和-mif文件出来，你们自行对比思考）" class="headerlink" title="6）频率选择器（对应乐谱的频率除了看注释，我会贴出乐谱和.mif文件出来，你们自行对比思考）"></a>6）频率选择器（对应乐谱的频率除了看注释，我会贴出乐谱和.mif文件出来，你们自行对比思考）</h2><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">module</span> music_hz</span><br><span class="line">(</span><br><span class="line"> <span class="keyword">input</span>  [<span class="number">4</span>:<span class="number">0</span>]  hz_sel,<span class="comment">//频率的预置数</span></span><br><span class="line"> <span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">19</span>:<span class="number">0</span>] cycle,<span class="comment">//译码出来的频率</span></span><br><span class="line"> <span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">3</span>:<span class="number">0</span>] led,code</span><br><span class="line">) ;</span><br><span class="line"></span><br><span class="line"><span class="keyword">parameter</span> CLK_FRE = <span class="number">50</span> ;</span><br><span class="line"></span><br><span class="line"><span class="keyword">always</span> @(*) </span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">  code&lt;=hz_sel;<span class="comment">//_（底下一根线）:1/2拍；_ _（底下两根线）1/4拍；</span></span><br><span class="line">          <span class="comment">//  乐谱中1/4：4个数据为一拍，乐谱中2/4：4个数据为一拍，将两拍当做现实的一拍（1拍=1s）</span></span><br><span class="line">  <span class="keyword">case</span>(hz_sel)<span class="comment">//实际频率与人耳听到的频率有区别</span></span><br><span class="line">    <span class="number">5'd0</span>    : <span class="keyword">begin</span> cycle &lt;= CLK_FRE*<span class="number">1000000</span>/<span class="number">261</span>  ;  led&lt;=<span class="number">4'b1000</span>;<span class="keyword">end</span> <span class="comment">//low 1         261Hz </span></span><br><span class="line">    <span class="number">5'd1</span>    : <span class="keyword">begin</span> cycle &lt;= CLK_FRE*<span class="number">1000000</span>/<span class="number">293</span>  ;  led&lt;=<span class="number">4'b1000</span>;<span class="keyword">end</span> <span class="comment">//low 2         293Hz</span></span><br><span class="line">    <span class="number">5'd2</span>    : <span class="keyword">begin</span> cycle &lt;= CLK_FRE*<span class="number">1000000</span>/<span class="number">329</span>  ;  led&lt;=<span class="number">4'b1000</span>;<span class="keyword">end</span> <span class="comment">//low 3         329Hz</span></span><br><span class="line">    <span class="number">5'd3</span>    : <span class="keyword">begin</span> cycle &lt;= CLK_FRE*<span class="number">1000000</span>/<span class="number">349</span>  ;  led&lt;=<span class="number">4'b1000</span>;<span class="keyword">end</span> <span class="comment">//low 4         349Hz</span></span><br><span class="line">    <span class="number">5'd4</span>    : <span class="keyword">begin</span> cycle &lt;= CLK_FRE*<span class="number">1000000</span>/<span class="number">392</span>  ;  led&lt;=<span class="number">4'b1000</span>;<span class="keyword">end</span> <span class="comment">//low 5         392Hz</span></span><br><span class="line">    <span class="number">5'd5</span>    : <span class="keyword">begin</span> cycle &lt;= CLK_FRE*<span class="number">1000000</span>/<span class="number">440</span>  ;  led&lt;=<span class="number">4'b1000</span>;<span class="keyword">end</span> <span class="comment">//low 6         440Hz</span></span><br><span class="line">    <span class="number">5'd6</span>    : <span class="keyword">begin</span> cycle &lt;= CLK_FRE*<span class="number">1000000</span>/<span class="number">499</span>  ;  led&lt;=<span class="number">4'b1000</span>;<span class="keyword">end</span> <span class="comment">//low 7         499Hz</span></span><br><span class="line">    <span class="number">5'd7</span>    : <span class="keyword">begin</span> cycle &lt;= CLK_FRE*<span class="number">1000000</span>/<span class="number">523</span>  ;  led&lt;=<span class="number">4'b0100</span>;<span class="keyword">end</span> <span class="comment">//middle 1      523Hz 1.</span></span><br><span class="line">    <span class="number">5'd8</span>    : <span class="keyword">begin</span> cycle &lt;= CLK_FRE*<span class="number">1000000</span>/<span class="number">587</span>  ;  led&lt;=<span class="number">4'b0100</span>;<span class="keyword">end</span> <span class="comment">//middle 2      587Hz 2.</span></span><br><span class="line">    <span class="number">5'd9</span>    : <span class="keyword">begin</span> cycle &lt;= CLK_FRE*<span class="number">1000000</span>/<span class="number">659</span>  ;  led&lt;=<span class="number">4'b0100</span>;<span class="keyword">end</span> <span class="comment">//middle 3      659Hz 3.</span></span><br><span class="line">    <span class="number">5'd10</span>   : <span class="keyword">begin</span> cycle &lt;= CLK_FRE*<span class="number">1000000</span>/<span class="number">698</span>  ;  led&lt;=<span class="number">4'b0100</span>;<span class="keyword">end</span> <span class="comment">//middle 4      698Hz 4.</span></span><br><span class="line">    <span class="number">5'd11</span>   : <span class="keyword">begin</span> cycle &lt;= CLK_FRE*<span class="number">1000000</span>/<span class="number">784</span>  ;  led&lt;=<span class="number">4'b0100</span>;<span class="keyword">end</span> <span class="comment">//middle 5      784Hz 5.</span></span><br><span class="line">    <span class="number">5'd12</span>   : <span class="keyword">begin</span> cycle &lt;= CLK_FRE*<span class="number">1000000</span>/<span class="number">880</span>  ;  led&lt;=<span class="number">4'b0100</span>;<span class="keyword">end</span> <span class="comment">//middle 6      880Hz 6.</span></span><br><span class="line">    <span class="number">5'd13</span>   : <span class="keyword">begin</span> cycle &lt;= CLK_FRE*<span class="number">1000000</span>/<span class="number">998</span>  ;  led&lt;=<span class="number">4'b0100</span>;<span class="keyword">end</span> <span class="comment">//middle 7      998Hz 7.</span></span><br><span class="line">    <span class="number">5'd14</span>   : <span class="keyword">begin</span> cycle &lt;= CLK_FRE*<span class="number">1000000</span>/<span class="number">1046</span> ;  led&lt;=<span class="number">4'b0010</span>;<span class="keyword">end</span> <span class="comment">//high 1        1046Hz1</span></span><br><span class="line">    <span class="number">5'd15</span>   : <span class="keyword">begin</span> cycle &lt;= CLK_FRE*<span class="number">1000000</span>/<span class="number">1174</span> ;  led&lt;=<span class="number">4'b0010</span>;<span class="keyword">end</span> <span class="comment">//high 2        1174Hz2</span></span><br><span class="line">    <span class="number">5'd16</span>   : <span class="keyword">begin</span> cycle &lt;= CLK_FRE*<span class="number">1000000</span>/<span class="number">1318</span> ;  led&lt;=<span class="number">4'b0010</span>;<span class="keyword">end</span> <span class="comment">//high 3        1318Hz3</span></span><br><span class="line">    <span class="number">5'd17</span>   : <span class="keyword">begin</span> cycle &lt;= CLK_FRE*<span class="number">1000000</span>/<span class="number">1396</span> ;  led&lt;=<span class="number">4'b0010</span>;<span class="keyword">end</span> <span class="comment">//high 4        1396Hz4</span></span><br><span class="line">    <span class="number">5'd18</span>   : <span class="keyword">begin</span> cycle &lt;= CLK_FRE*<span class="number">1000000</span>/<span class="number">1568</span> ;  led&lt;=<span class="number">4'b0010</span>;<span class="keyword">end</span> <span class="comment">//high 5        1568Hz5</span></span><br><span class="line">    <span class="number">5'd19</span>   : <span class="keyword">begin</span> cycle &lt;= CLK_FRE*<span class="number">1000000</span>/<span class="number">1760</span> ;  led&lt;=<span class="number">4'b0010</span>;<span class="keyword">end</span> <span class="comment">//high 6        1760Hz6</span></span><br><span class="line">    <span class="number">5'd20</span>   : <span class="keyword">begin</span> cycle &lt;= CLK_FRE*<span class="number">1000000</span>/<span class="number">1976</span> ;  led&lt;=<span class="number">4'b0010</span>;<span class="keyword">end</span> <span class="comment">//high 7        1976Hz7</span></span><br><span class="line">    <span class="number">5'd21</span>   : <span class="keyword">begin</span> cycle &lt;= CLK_FRE*<span class="number">1000000</span>/<span class="number">2093</span> ;  led&lt;=<span class="number">4'b0001</span>;<span class="keyword">end</span> <span class="comment">//super high 1  2093Hz.1</span></span><br><span class="line">    <span class="number">5'd22</span>   : <span class="keyword">begin</span> cycle &lt;= CLK_FRE*<span class="number">1000000</span>/<span class="number">2349</span> ;  led&lt;=<span class="number">4'b0001</span>;<span class="keyword">end</span> <span class="comment">//super high 2  2349Hz.2</span></span><br><span class="line">    <span class="number">5'd23</span>   : <span class="keyword">begin</span> cycle &lt;= CLK_FRE*<span class="number">1000000</span>/<span class="number">2637</span> ;  led&lt;=<span class="number">4'b0001</span>;<span class="keyword">end</span> <span class="comment">//super high 3  2637Hz.3</span></span><br><span class="line">    <span class="number">5'd24</span>   : <span class="keyword">begin</span> cycle &lt;= CLK_FRE*<span class="number">1000000</span>/<span class="number">2794</span> ;  led&lt;=<span class="number">4'b0001</span>;<span class="keyword">end</span> <span class="comment">//super high 4  2794Hz.4</span></span><br><span class="line">    <span class="number">5'd25</span>   : <span class="keyword">begin</span> cycle &lt;= CLK_FRE*<span class="number">1000000</span>/<span class="number">3136</span> ;  led&lt;=<span class="number">4'b0001</span>;<span class="keyword">end</span> <span class="comment">//super high 5  3136Hz.5</span></span><br><span class="line">    <span class="number">5'd26</span>   : <span class="keyword">begin</span> cycle &lt;= CLK_FRE*<span class="number">1000000</span>/<span class="number">3520</span> ;  led&lt;=<span class="number">4'b0001</span>;<span class="keyword">end</span> <span class="comment">//super high 6  3520Hz.6</span></span><br><span class="line">    <span class="number">5'd27</span>   : <span class="keyword">begin</span> cycle &lt;= CLK_FRE*<span class="number">1000000</span>/<span class="number">3951</span> ;  led&lt;=<span class="number">4'b0001</span>;<span class="keyword">end</span> <span class="comment">//super high 7  3951Hz.7</span></span><br><span class="line">    <span class="keyword">default</span> : <span class="keyword">begin</span> cycle &lt;= <span class="number">20'd0</span> ;led&lt;=<span class="number">4'b0000</span>; <span class="keyword">end</span><span class="comment">//31就是中间暂停阶段</span></span><br><span class="line">  <span class="keyword">endcase</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="keyword">endmodule</span></span><br></pre></td></tr></table></figure>
 <h2 id="7）ROM宏模块"><a href="#7）ROM宏模块" class="headerlink" title="7）ROM宏模块"></a>7）ROM宏模块</h2><h2 id="-1"><a href="#-1" class="headerlink" title=""></a><img src="/images/%E8%9C%82%E9%B8%A32.jpg" alt="image"></h2><h2 id="没贴全，但是这么些存储信息也能总结出规律出啦！"><a href="#没贴全，但是这么些存储信息也能总结出规律出啦！" class="headerlink" title="没贴全，但是这么些存储信息也能总结出规律出啦！"></a>没贴全，但是这么些存储信息也能总结出规律出啦！</h2><h2 id="-2"><a href="#-2" class="headerlink" title=""></a><img src="/images/%E8%9C%82%E9%B8%A33.jpg" alt="image"></h2><h2 id="-3"><a href="#-3" class="headerlink" title=""></a><img src="/images/%E8%9C%82%E9%B8%A34.jpg" alt="image"></h2><h1 id="3、实验现象"><a href="#3、实验现象" class="headerlink" title="3、实验现象"></a>3、实验现象</h1><p>播放一首《小恋曲》音乐，没有人声，因为我存储的是乐谱，不是人音混合的波形谱，如果有兴趣的可以试一下，但是我是没有试过，最近用的MP3模块也是使用的芯片。</p>
 <h2 id="实验视频链接"><a href="#实验视频链接" class="headerlink" title="实验视频链接"></a><a href="https://note.youdao.com/" target="_blank" rel="noopener">实验视频链接</a></h2>
-      
     </div>
 
     
     
     
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
+        <div class="reward-container">
+  <div>感谢支持！！！</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
       
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://yinluolll.github.io/2020/06/25/%E6%B5%81%E6%B0%B4%E7%81%AF%E7%94%B5%E8%B7%AF%E5%9B%BE%E6%89%8B%E5%B7%A5%E5%88%B6%E7%89%88/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/xusong.jpeg">
-      <meta itemprop="name" content="罗乐乐">
-      <meta itemprop="description" content="不念、不想、不枉、此生">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="个人博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/06/25/%E6%B5%81%E6%B0%B4%E7%81%AF%E7%94%B5%E8%B7%AF%E5%9B%BE%E6%89%8B%E5%B7%A5%E5%88%B6%E7%89%88/" class="post-title-link" itemprop="url">流水灯电路图手工制版</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-06-25 03:07:00 / 修改时间：03:18:27" itemprop="dateCreated datePublished" datetime="2020-06-25T03:07:00+08:00">2020-06-25</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%BA%95%E7%AB%AF%E8%AE%BE%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">底端设计</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="罗乐乐 微信支付">
+        <p>微信支付</p>
+      </div>
       
-          <h1 id="AD画板"><a href="#AD画板" class="headerlink" title="AD画板"></a>AD画板</h1><h2 id="1、创建元件库（这个创建于封装库进行联动的）"><a href="#1、创建元件库（这个创建于封装库进行联动的）" class="headerlink" title="1、创建元件库（这个创建于封装库进行联动的）"></a>1、创建元件库（这个创建于封装库进行联动的）</h2><h3 id="新建"><a href="#新建" class="headerlink" title="新建"></a>新建</h3><p>design里面有一个新建一个原理图库的选项</p>
-<h4 id=""><a href="#" class="headerlink" title=""></a><img src="/images/AD.jpg" alt="image"></h4>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/06/25/%E6%B5%81%E6%B0%B4%E7%81%AF%E7%94%B5%E8%B7%AF%E5%9B%BE%E6%89%8B%E5%B7%A5%E5%88%B6%E7%89%88/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="罗乐乐 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
         
-      
-    </div>
 
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://yinluolll.github.io/2020/06/24/%E5%8A%A0%E5%87%8F%E8%AE%A1%E7%AE%97%E5%99%A8%EF%BC%88quartus%20ii%E7%9A%84%E4%BD%BF%E7%94%A8%EF%BC%89/">
+    <div class="social-list">
 
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/xusong.jpeg">
-      <meta itemprop="name" content="罗乐乐">
-      <meta itemprop="description" content="不念、不想、不枉、此生">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="个人博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/06/24/%E5%8A%A0%E5%87%8F%E8%AE%A1%E7%AE%97%E5%99%A8%EF%BC%88quartus%20ii%E7%9A%84%E4%BD%BF%E7%94%A8%EF%BC%89/" class="post-title-link" itemprop="url">加减计算器(quartus ii的使用)</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-06-24 19:05:01 / 修改时间：19:08:32" itemprop="dateCreated datePublished" datetime="2020-06-24T19:05:01+08:00">2020-06-24</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%BA%95%E7%AB%AF%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">底端开发</span></a>
-                </span>
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fa fa-wechat"></i>
             </span>
 
-          
-
+            <span class="label">WeChat</span>
+          </a>
         </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="1、背景介绍"><a href="#1、背景介绍" class="headerlink" title="1、背景介绍"></a>1、背景介绍</h1><p>在前面已经有很多的算法框图的介绍，这个加减作为非常简单的一类，我主要还是侧重点放在quartus ii工程的建立进行入手吧！也方便自己以后重做工程时的回忆。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/06/24/%E5%8A%A0%E5%87%8F%E8%AE%A1%E7%AE%97%E5%99%A8%EF%BC%88quartus%20ii%E7%9A%84%E4%BD%BF%E7%94%A8%EF%BC%89/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
     </div>
+  </div>
 
-    
-    
-    
+
       <footer class="post-footer">
-        <div class="post-eof"></div>
+          <div class="post-tags">
+              <a href="/tags/FPGA%E5%8D%95%E7%89%87%E6%9C%BA/" rel="tag"># FPGA单片机</a>
+              <a href="/tags/%E6%A8%A1%E5%9D%97%E5%8C%96/" rel="tag"># 模块化</a>
+              <a href="/tags/%E5%8E%9F%E7%90%86%E5%9B%BE/" rel="tag"># 原理图</a>
+              <a href="/tags/ROM/" rel="tag"># ROM</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/06/25/%E6%B5%81%E6%B0%B4%E7%81%AF%E7%94%B5%E8%B7%AF%E5%9B%BE%E6%89%8B%E5%B7%A5%E5%88%B6%E7%89%88/" rel="prev" title="流水灯电路图手工制版">
+      <i class="fa fa-chevron-left"></i> 流水灯电路图手工制版
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
       </footer>
+    
   </article>
   
   
   
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://yinluolll.github.io/2020/06/24/%E7%AE%97%E6%B3%95%E7%9A%84MATLAB%E8%BD%AF%E4%BB%B6%E4%BB%BF%E7%9C%9F%E5%92%8CDSP%E7%A7%BB%E6%A4%8D/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/xusong.jpeg">
-      <meta itemprop="name" content="罗乐乐">
-      <meta itemprop="description" content="不念、不想、不枉、此生">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="个人博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/06/24/%E7%AE%97%E6%B3%95%E7%9A%84MATLAB%E8%BD%AF%E4%BB%B6%E4%BB%BF%E7%9C%9F%E5%92%8CDSP%E7%A7%BB%E6%A4%8D/" class="post-title-link" itemprop="url">滤波器算法的MATLAB软件仿真和DSP移植</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-06-24 17:10:48 / 修改时间：17:18:45" itemprop="dateCreated datePublished" datetime="2020-06-24T17:10:48+08:00">2020-06-24</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%BA%95%E7%AB%AF%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">底端开发</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="1、项目背景介绍"><a href="#1、项目背景介绍" class="headerlink" title="1、项目背景介绍"></a>1、项目背景介绍</h1><p>由于TI公司未来简化CCS，在以后的版本当中不仅没有了软件仿真，而且连gel文件也取消了，那为了验证一个算法的正确性，不得不寻求其他的工具，因为本人属于电子信息工程专业，所以对于MATLAB有所涉猎，而且在写论文的时候这个软件工具也非常实用，因此我就产生了将DSP中的C语言编程移植到MATLAB当中的M语言编程，不仅对DSP的计算功能强大有更深的了解，而且也能掌握MATLAB编程的基本语法。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/06/24/%E7%AE%97%E6%B3%95%E7%9A%84MATLAB%E8%BD%AF%E4%BB%B6%E4%BB%BF%E7%9C%9F%E5%92%8CDSP%E7%A7%BB%E6%A4%8D/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://yinluolll.github.io/2020/06/23/%E4%BA%BA%E5%B7%A5%E5%8F%AF%E8%B0%83%E6%97%B6%E9%92%9F%E3%80%81%E9%97%B9%E9%92%9F%E3%80%81%E7%A7%92%E8%A1%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/xusong.jpeg">
-      <meta itemprop="name" content="罗乐乐">
-      <meta itemprop="description" content="不念、不想、不枉、此生">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="个人博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/06/23/%E4%BA%BA%E5%B7%A5%E5%8F%AF%E8%B0%83%E6%97%B6%E9%92%9F%E3%80%81%E9%97%B9%E9%92%9F%E3%80%81%E7%A7%92%E8%A1%A8/" class="post-title-link" itemprop="url">人工可调时钟、闹钟、秒表</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-06-23 23:35:33" itemprop="dateCreated datePublished" datetime="2020-06-23T23:35:33+08:00">2020-06-23</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-06-24 00:59:01" itemprop="dateModified" datetime="2020-06-24T00:59:01+08:00">2020-06-24</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%BA%95%E7%AB%AF%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">底端开发</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="1、项目背景介绍"><a href="#1、项目背景介绍" class="headerlink" title="1、项目背景介绍"></a>1、项目背景介绍</h1><p>这是我第一次用FPGA板子做的实验，那时候，自己为此通宵了两天，因为一直有些问题想不通，所以就睡不着。我在网上查找别人的相关资料，发现并不是我们老师教我的VHDL语言，所以我当时有一些蒙，因此我在尽力去找VHDL语言的资源，但是发现大部分的人都是用Verilog语言写的。被逼无奈之下，我只有自学这门语言，才能完成别人交给我完成的实验（这不是自己的实验，但是我觉得帮助别人做实验自己也能从中学到很多，所以我义务的帮助他们，也觉得哪个挺快乐的）。渐渐的，我发现Verilog语言并不是特别难学，只不过是C语言的内核加上MATLAB的M函数的外表，所以我将通过我最熟悉的语言一一摸索，一一去打备注，所以这个工程里面许多代码都被我打上了十分“幼稚”的注释，但是我认为最后的成功，一切的付出都是值得的，嘿嘿！！！</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/06/23/%E4%BA%BA%E5%B7%A5%E5%8F%AF%E8%B0%83%E6%97%B6%E9%92%9F%E3%80%81%E9%97%B9%E9%92%9F%E3%80%81%E7%A7%92%E8%A1%A8/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://yinluolll.github.io/2020/06/23/%E5%AD%A6%E6%A0%A1%E6%B4%BB%E5%8A%A8%E6%89%80%E8%8E%B7%E5%BE%97%E7%9A%84%E8%8D%A3%E8%AA%89/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/xusong.jpeg">
-      <meta itemprop="name" content="罗乐乐">
-      <meta itemprop="description" content="不念、不想、不枉、此生">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="个人博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/06/23/%E5%AD%A6%E6%A0%A1%E6%B4%BB%E5%8A%A8%E6%89%80%E8%8E%B7%E5%BE%97%E7%9A%84%E8%8D%A3%E8%AA%89/" class="post-title-link" itemprop="url">活动荣誉证书</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-06-23 21:07:32" itemprop="dateCreated datePublished" datetime="2020-06-23T21:07:32+08:00">2020-06-23</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-06-24 01:24:27" itemprop="dateModified" datetime="2020-06-24T01:24:27+08:00">2020-06-24</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%94%9F%E6%B4%BB/" itemprop="url" rel="index"><span itemprop="name">生活</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="1、荣获2017年-2018学年“一等”专业奖学金、“三好学生”荣誉称号；"><a href="#1、荣获2017年-2018学年“一等”专业奖学金、“三好学生”荣誉称号；" class="headerlink" title="1、荣获2017年-2018学年“一等”专业奖学金、“三好学生”荣誉称号；"></a>1、荣获2017年-2018学年“一等”专业奖学金、“三好学生”荣誉称号；</h1>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/06/23/%E5%AD%A6%E6%A0%A1%E6%B4%BB%E5%8A%A8%E6%89%80%E8%8E%B7%E5%BE%97%E7%9A%84%E8%8D%A3%E8%AA%89/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://yinluolll.github.io/2020/06/23/%E5%85%AB%E8%B7%AF%E6%8A%A2%E7%AD%94%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%EF%BC%88%E6%97%A0%E5%8D%95%E7%89%87%E6%9C%BA%EF%BC%89/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/xusong.jpeg">
-      <meta itemprop="name" content="罗乐乐">
-      <meta itemprop="description" content="不念、不想、不枉、此生">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="个人博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/06/23/%E5%85%AB%E8%B7%AF%E6%8A%A2%E7%AD%94%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%EF%BC%88%E6%97%A0%E5%8D%95%E7%89%87%E6%9C%BA%EF%BC%89/" class="post-title-link" itemprop="url">八路抢答器的设计（无单片机）</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-06-23 20:38:55" itemprop="dateCreated datePublished" datetime="2020-06-23T20:38:55+08:00">2020-06-23</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-06-24 00:59:03" itemprop="dateModified" datetime="2020-06-24T00:59:03+08:00">2020-06-24</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%BA%95%E7%AB%AF%E8%AE%BE%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">底端设计</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="1、项目背景介绍"><a href="#1、项目背景介绍" class="headerlink" title="1、项目背景介绍"></a>1、项目背景介绍</h1><p>在刚迈入大二的自己参加了省赛的分立元件电路板的焊接，发现自己的电气知识实在是太薄弱了，严重的打击自信心，原来理论成绩的优秀并不能代表你动手能力的优秀，因此，得到老师布置的这个项目的题目的时候，我就尽可能让作品尽善尽美。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/06/23/%E5%85%AB%E8%B7%AF%E6%8A%A2%E7%AD%94%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%EF%BC%88%E6%97%A0%E5%8D%95%E7%89%87%E6%9C%BA%EF%BC%89/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://yinluolll.github.io/2020/06/23/Markdown%E4%BD%BF%E7%94%A8%E8%8D%89%E7%A8%BF/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/xusong.jpeg">
-      <meta itemprop="name" content="罗乐乐">
-      <meta itemprop="description" content="不念、不想、不枉、此生">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="个人博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/06/23/Markdown%E4%BD%BF%E7%94%A8%E8%8D%89%E7%A8%BF/" class="post-title-link" itemprop="url">Markdown使用草稿</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-06-23 13:05:03" itemprop="dateCreated datePublished" datetime="2020-06-23T13:05:03+08:00">2020-06-23</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-06-24 01:51:21" itemprop="dateModified" datetime="2020-06-24T01:51:21+08:00">2020-06-24</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%89%8D%E7%AB%AF%E5%BA%94%E7%94%A8/" itemprop="url" rel="index"><span itemprop="name">前端应用</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="罗乐乐"><a href="#罗乐乐" class="headerlink" title="罗乐乐"></a>罗乐乐</h1><h2 id="第一篇文章哦！"><a href="#第一篇文章哦！" class="headerlink" title="第一篇文章哦！"></a>第一篇文章哦！</h2><h3 id="第三级标题哦！"><a href="#第三级标题哦！" class="headerlink" title="第三级标题哦！"></a>第三级标题哦！</h3>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/06/23/Markdown%E4%BD%BF%E7%94%A8%E8%8D%89%E7%A8%BF/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://yinluolll.github.io/2020/06/23/hello-world/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/xusong.jpeg">
-      <meta itemprop="name" content="罗乐乐">
-      <meta itemprop="description" content="不念、不想、不枉、此生">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="个人博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/06/23/hello-world/" class="post-title-link" itemprop="url">Hello World</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-06-23 12:35:46" itemprop="dateCreated datePublished" datetime="2020-06-23T12:35:46+08:00">2020-06-23</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-06-24 00:59:28" itemprop="dateModified" datetime="2020-06-24T00:59:28+08:00">2020-06-24</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/06/23/hello-world/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://yinluolll.github.io/2020/06/23/%E5%AF%BB%E8%BF%B9%E5%B0%8F%E8%BD%A6%E3%80%81%E9%81%A5%E6%8E%A7%E5%B0%8F%E8%BD%A6%E3%80%81%E8%87%AA%E5%8A%A8%E5%88%B9%E8%BD%A6%EF%BC%88PID%E7%AE%97%E6%B3%95%EF%BC%89/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/xusong.jpeg">
-      <meta itemprop="name" content="罗乐乐">
-      <meta itemprop="description" content="不念、不想、不枉、此生">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="个人博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/06/23/%E5%AF%BB%E8%BF%B9%E5%B0%8F%E8%BD%A6%E3%80%81%E9%81%A5%E6%8E%A7%E5%B0%8F%E8%BD%A6%E3%80%81%E8%87%AA%E5%8A%A8%E5%88%B9%E8%BD%A6%EF%BC%88PID%E7%AE%97%E6%B3%95%EF%BC%89/" class="post-title-link" itemprop="url">寻迹小车、遥控小车、自动刹车（PID算法）</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-06-23 06:47:05" itemprop="dateCreated datePublished" datetime="2020-06-23T06:47:05+08:00">2020-06-23</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-06-24 00:59:13" itemprop="dateModified" datetime="2020-06-24T00:59:13+08:00">2020-06-24</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%BA%95%E7%AB%AF%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">底端开发</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="1-项目背景介绍"><a href="#1-项目背景介绍" class="headerlink" title="1. 项目背景介绍"></a>1. 项目背景介绍</h1><p>只是我初出茅庐的作品，我刚开始什么都不知道，到现在已经知道了很多，也逐渐抛弃了AT89S51/51单片机，开始转入研究更加强大的高级单片机，但是毕竟是第一个使用的板子，写这个博客来表示怀念吧！</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/06/23/%E5%AF%BB%E8%BF%B9%E5%B0%8F%E8%BD%A6%E3%80%81%E9%81%A5%E6%8E%A7%E5%B0%8F%E8%BD%A6%E3%80%81%E8%87%AA%E5%8A%A8%E5%88%B9%E8%BD%A6%EF%BC%88PID%E7%AE%97%E6%B3%95%EF%BC%89/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-
-  
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
-  </nav>
 
 
 
@@ -999,6 +357,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#项目背景介绍"><span class="nav-number">1.</span> <span class="nav-text">项目背景介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1、代码思想框图"><span class="nav-number">2.</span> <span class="nav-text">1、代码思想框图</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#大概思路：调用ROM储存器的数字音符，对应蜂鸣器的频率，进行播放"><span class="nav-number">2.1.</span> <span class="nav-text">大概思路：调用ROM储存器的数字音符，对应蜂鸣器的频率，进行播放</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">2.2.</span> <span class="nav-text"></span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2、代码具体实现"><span class="nav-number">3.</span> <span class="nav-text">2、代码具体实现</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2）状态控制器"><span class="nav-number">3.1.</span> <span class="nav-text">2）状态控制器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2）音符频率计数器"><span class="nav-number">3.2.</span> <span class="nav-text">2）音符频率计数器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3）蜂鸣控制器"><span class="nav-number">3.3.</span> <span class="nav-text">3）蜂鸣控制器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4）节拍定时器"><span class="nav-number">3.4.</span> <span class="nav-text">4）节拍定时器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5）节拍ROM寻址器"><span class="nav-number">3.5.</span> <span class="nav-text">5）节拍ROM寻址器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6）频率选择器（对应乐谱的频率除了看注释，我会贴出乐谱和-mif文件出来，你们自行对比思考）"><span class="nav-number">3.6.</span> <span class="nav-text">6）频率选择器（对应乐谱的频率除了看注释，我会贴出乐谱和.mif文件出来，你们自行对比思考）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7）ROM宏模块"><span class="nav-number">3.7.</span> <span class="nav-text">7）ROM宏模块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#-1"><span class="nav-number">3.8.</span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#没贴全，但是这么些存储信息也能总结出规律出啦！"><span class="nav-number">3.9.</span> <span class="nav-text">没贴全，但是这么些存储信息也能总结出规律出啦！</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#-2"><span class="nav-number">3.10.</span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#-3"><span class="nav-number">3.11.</span> <span class="nav-text"></span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3、实验现象"><span class="nav-number">4.</span> <span class="nav-text">3、实验现象</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#实验视频链接"><span class="nav-number">4.1.</span> <span class="nav-text">实验视频链接</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
