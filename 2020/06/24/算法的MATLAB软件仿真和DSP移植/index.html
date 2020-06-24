@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.post_navigation">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yinluolll.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="1、项目背景介绍由于TI公司未来简化CCS，在以后的版本当中不仅没有了软件仿真，而且连gel文件也取消了，那为了验证一个算法的正确性，不得不寻求其他的工具，因为本人属于电子信息工程专业，所以对于MATLAB有所涉猎，而且在写论文的时候这个软件工具也非常实用，因此我就产生了将DSP中的C语言编程移植到MATLAB当中的M语言编程，不仅对DSP的计算功能强大有更深的了解，而且也能掌握MATLAB编程的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="滤波器算法的MATLAB软件仿真和DSP移植">
+<meta property="og:url" content="https://yinluolll.github.io/2020/06/24/%E7%AE%97%E6%B3%95%E7%9A%84MATLAB%E8%BD%AF%E4%BB%B6%E4%BB%BF%E7%9C%9F%E5%92%8CDSP%E7%A7%BB%E6%A4%8D/index.html">
+<meta property="og:site_name" content="个人博客">
+<meta property="og:description" content="1、项目背景介绍由于TI公司未来简化CCS，在以后的版本当中不仅没有了软件仿真，而且连gel文件也取消了，那为了验证一个算法的正确性，不得不寻求其他的工具，因为本人属于电子信息工程专业，所以对于MATLAB有所涉猎，而且在写论文的时候这个软件工具也非常实用，因此我就产生了将DSP中的C语言编程移植到MATLAB当中的M语言编程，不仅对DSP的计算功能强大有更深的了解，而且也能掌握MATLAB编程的">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://yinluolll.github.io/images/%E7%AE%97%E6%B3%95.jpg">
+<meta property="og:image" content="https://yinluolll.github.io/images/%E7%AE%97%E6%B3%952.jpg">
+<meta property="og:image" content="https://yinluolll.github.io/images/%E7%AE%97%E6%B3%953.jpg">
+<meta property="article:published_time" content="2020-06-24T09:10:48.000Z">
+<meta property="article:modified_time" content="2020-06-24T09:18:45.369Z">
+<meta property="article:author" content="罗乐乐">
+<meta property="article:tag" content="硬件开发">
+<meta property="article:tag" content="DSP单片机">
+<meta property="article:tag" content="软件算法的硬件驱动">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yinluolll.github.io/images/%E7%AE%97%E6%B3%95.jpg">
+
+<link rel="canonical" href="https://yinluolll.github.io/2020/06/24/%E7%AE%97%E6%B3%95%E7%9A%84MATLAB%E8%BD%AF%E4%BB%B6%E4%BB%BF%E7%9C%9F%E5%92%8CDSP%E7%A7%BB%E6%A4%8D/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>滤波器算法的MATLAB软件仿真和DSP移植 | 个人博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">个人博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">学习笔记</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://yinluolll.github.io/2020/06/24/%E7%AE%97%E6%B3%95%E7%9A%84MATLAB%E8%BD%AF%E4%BB%B6%E4%BB%BF%E7%9C%9F%E5%92%8CDSP%E7%A7%BB%E6%A4%8D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/xusong.jpeg">
+      <meta itemprop="name" content="罗乐乐">
+      <meta itemprop="description" content="不念、不想、不枉、此生">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          滤波器算法的MATLAB软件仿真和DSP移植
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-06-24 17:10:48 / 修改时间：17:18:45" itemprop="dateCreated datePublished" datetime="2020-06-24T17:10:48+08:00">2020-06-24</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%BA%95%E7%AB%AF%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">底端开发</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="1、项目背景介绍"><a href="#1、项目背景介绍" class="headerlink" title="1、项目背景介绍"></a>1、项目背景介绍</h1><p>由于TI公司未来简化CCS，在以后的版本当中不仅没有了软件仿真，而且连gel文件也取消了，那为了验证一个算法的正确性，不得不寻求其他的工具，因为本人属于电子信息工程专业，所以对于MATLAB有所涉猎，而且在写论文的时候这个软件工具也非常实用，因此我就产生了将DSP中的C语言编程移植到MATLAB当中的M语言编程，不仅对DSP的计算功能强大有更深的了解，而且也能掌握MATLAB编程的基本语法。</p>
+<a id="more"></a>
+<h1 id="2、项目算法框图的设计"><a href="#2、项目算法框图的设计" class="headerlink" title="2、项目算法框图的设计"></a>2、项目算法框图的设计</h1><p><img src="/images/%E7%AE%97%E6%B3%95.jpg" alt="image"></p>
+<h1 id="3、代码的实现（算法模块都会在CCS6和MATLAB当中进行不同风格的比较）"><a href="#3、代码的实现（算法模块都会在CCS6和MATLAB当中进行不同风格的比较）" class="headerlink" title="3、代码的实现（算法模块都会在CCS6和MATLAB当中进行不同风格的比较）"></a>3、代码的实现（算法模块都会在CCS6和MATLAB当中进行不同风格的比较）</h1><p>这也说明DSP信号处理器的强大之处，能够让一些软件算法可以在硬件上很好的兼容实现，不用想其他的板子一样，float的类型还要转换成int类型进行兼容，这也是DSP的强大之处。</p>
+<h2 id="1）有限冲击响应数字滤波器"><a href="#1）有限冲击响应数字滤波器" class="headerlink" title="1）有限冲击响应数字滤波器"></a>1）有限冲击响应数字滤波器</h2><h3 id="相关参数的声明"><a href="#相关参数的声明" class="headerlink" title="相关参数的声明"></a>相关参数的声明</h3><h4 id="DSP"><a href="#DSP" class="headerlink" title="DSP"></a>DSP</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#define FIRNUMBER 25&#x2F;&#x2F;通过N&#x3D;5.98fs&#x2F;过渡带宽度&#x3D;5.98*50&#x2F;12&#x3D;24.9取整可计算得出，差分计算的项数（可推断出这个是一个12阶滤波器） </span><br><span class="line">#define SIGNAL1F 1000</span><br><span class="line">#define SIGNAL2F 4500</span><br><span class="line">#define SAMPLEF  10000</span><br><span class="line">#define PI 3.1415926</span><br><span class="line">float fHn[FIRNUMBER]&#x3D;&#123; 0.0,0.0,-0.001,-0.002,-0.002,0.01,-0.009,</span><br><span class="line">                       -0.018,0.049,-0.02,0.11,0.28,0.64,0.28,</span><br><span class="line">                       -0.11,-0.02,0.049,-0.018,-0.009,0.01,</span><br><span class="line">                       -0.002,-0.002,0.001,0.0,0.0</span><br><span class="line">                     &#125;;&#x2F;&#x2F;w[n]&#x3D;0.42+0.5cos(2πn&#x2F;24)+0.8cos(4πn&#x2F;24);h[n]&#x3D;h1[n]w[n] abs(n)&lt;&#x3D;12;h[n]&#x3D;0</span><br><span class="line">float fXn[FIRNUMBER]&#x3D;&#123; 0.0 &#125;;</span><br><span class="line">float fInput,fOutput;</span><br><span class="line">float fSignal1,fSignal2;</span><br><span class="line">float fStepSignal1,fStepSignal2;</span><br><span class="line">float f2PI;</span><br><span class="line">int i;</span><br><span class="line">float fIn[256],fOut[256];</span><br><span class="line">int nIn,nOut;</span><br></pre></td></tr></table></figure>
+<h4 id="MATLAB"><a href="#MATLAB" class="headerlink" title="MATLAB"></a>MATLAB</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">global FIRNUMBER;FIRNUMBER&#x3D;25;</span><br><span class="line">global SIGNAL1F;SIGNAL1F&#x3D;1000;</span><br><span class="line">global SIGNAL2F;SIGNAL2F&#x3D;4500;</span><br><span class="line">global SAMPLEF;SAMPLEF&#x3D;10000;</span><br><span class="line"></span><br><span class="line">global fHn;</span><br><span class="line">fHn&#x3D;[0.0,0.0,-0.001,-0.002,-0.002,0.01,-0.009, ...</span><br><span class="line">    -0.018,0.049,-0.02,0.11,0.28,0.64,0.28, ...</span><br><span class="line">    -0.11,-0.02,0.049,-0.018,-0.009,0.01, ...</span><br><span class="line">    -0.002,-0.002,0.001,0.0,0.0];</span><br><span class="line">global fXn;fXn&#x3D;zeros(1,FIRNUMBER);</span><br><span class="line">global fInput;</span><br><span class="line">global fOutput;</span><br><span class="line">global fSignal1;fSignal1&#x3D;0;</span><br><span class="line">global fSignal2;fSignal2&#x3D;pi*0.1;</span><br><span class="line">global fStepSignal1;fStepSignal1&#x3D;2*pi&#x2F;30;</span><br><span class="line">global fStepSignal2;fStepSignal2&#x3D;2*pi*1.4;</span><br><span class="line">global f2PI;f2PI&#x3D;2*pi;</span><br><span class="line">global fIn2;fIn2&#x3D;zeros(1,256);</span><br><span class="line">global fOut2;fOut2&#x3D;zeros(1,256);</span><br><span class="line">global nIn;nIn&#x3D;0;</span><br><span class="line">global nOut;nOut&#x3D;0;</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="波形的模拟"><a href="#波形的模拟" class="headerlink" title="波形的模拟"></a>波形的模拟</h3><h4 id="DSP-1"><a href="#DSP-1" class="headerlink" title="DSP"></a>DSP</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">float InputWave()</span><br><span class="line">&#123;</span><br><span class="line">	for ( i&#x3D;FIRNUMBER-1;i&gt;0;i-- )</span><br><span class="line">		fXn[i]&#x3D;fXn[i-1];&#x2F;&#x2F;数据在数组中从小往大地址移动</span><br><span class="line">	fXn[0]&#x3D;sin(fSignal1)+cos(fSignal2)&#x2F;6.0;</span><br><span class="line">	fSignal1+&#x3D;fStepSignal1;&#x2F;&#x2F;0+(2π)&#x2F;30,(2π)&#x2F;30+(2π)&#x2F;30,(2π)&#x2F;30+(2π)&#x2F;30+(2π)&#x2F;30...</span><br><span class="line">	if ( fSignal1&gt;&#x3D;f2PI )	fSignal1-&#x3D;f2PI;&#x2F;&#x2F;每到2π就进行sin函数里的参数复位</span><br><span class="line">	fSignal2+&#x3D;fStepSignal2;&#x2F;&#x2F;0.1π+2.8π&#x3D;2.9π,0.9π+2.8π&#x3D;3.7π,1.7π+2.8π&#x3D;4.5π,0.5π+2.8π&#x3D;3.3π</span><br><span class="line">	if ( fSignal2&gt;&#x3D;f2PI )	fSignal2-&#x3D;f2PI;&#x2F;&#x2F;0.9π,1.7π,0.5π(相当值),1.3π,0.1π,...</span><br><span class="line">	return(fXn[0]);</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F;fXn[FIRNUMBER]&#x3D;&#123;sin(0)+cos(0.1π),sin(π&#x2F;15)+cos(0.9π),sin(2π&#x2F;15)+cos(1.7π),...&#125;</span><br><span class="line">&#x2F;&#x2F;周期为执行30次时间的正弦波+周期为执行5次时间的不同相位正弦波&#x3D;输入波形为一个低频率的正旋波与一个高频率的正旋波叠加而成的</span><br></pre></td></tr></table></figure>
+<h4 id="MATLAB-1"><a href="#MATLAB-1" class="headerlink" title="MATLAB"></a>MATLAB</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">function fXn2 &#x3D; InputWave()</span><br><span class="line">    </span><br><span class="line">for i&#x3D;FIRNUMBER:-1:2 </span><br><span class="line">    fXn(i)&#x3D;fXn(i-1); </span><br><span class="line">end;</span><br><span class="line"></span><br><span class="line">fXn(1)&#x3D;sin(fSignal1)+cos(fSignal2)&#x2F;6;</span><br><span class="line">fSignal1&#x3D;fSignal1+fStepSignal1;</span><br><span class="line"></span><br><span class="line">if ( fSignal1&gt;&#x3D;f2PI )	</span><br><span class="line">    fSignal1&#x3D;fSignal1-f2PI;</span><br><span class="line">end;</span><br><span class="line"></span><br><span class="line">fSignal2&#x3D;fSignal2+fStepSignal2;</span><br><span class="line"></span><br><span class="line">if ( fSignal2&gt;&#x3D;f2PI )	</span><br><span class="line">    fSignal2&#x3D;fSignal2-f2PI;</span><br><span class="line">end;</span><br><span class="line">fXn2&#x3D;fXn(1);</span><br><span class="line"></span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+<h3 id="有限冲击响应数字滤波器的算法设计"><a href="#有限冲击响应数字滤波器的算法设计" class="headerlink" title="有限冲击响应数字滤波器的算法设计"></a>有限冲击响应数字滤波器的算法设计</h3><h4 id="DSP-2"><a href="#DSP-2" class="headerlink" title="DSP"></a>DSP</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">float FIR()&#x2F;&#x2F;波形的采样值*相关的fir系数</span><br><span class="line">&#123;</span><br><span class="line">	float fSum;</span><br><span class="line">	fSum&#x3D;0;</span><br><span class="line">	for ( i&#x3D;0;i&lt;FIRNUMBER;i++ )</span><br><span class="line">	&#123;</span><br><span class="line">		fSum+&#x3D;(fXn[i]*fHn[i]);&#x2F;&#x2F;同样的计算方法，不一样的参数：24个旧数据和新数据计算</span><br><span class="line">							  &#x2F;&#x2F;这是数学算法，解释不清楚，只要理解经过这样计算达到低通滤波器的效果</span><br><span class="line">	&#125;</span><br><span class="line">	return(fSum);</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F;y[n]&#x3D;0.0*cos(0.1π)&#x2F;60+0.0*( sin(π&#x2F;15)+cos(0.9π)&#x2F;6.0 )+0.001*( sin(2π&#x2F;15)+cos(1.7π)&#x2F;6.0 )+...</span><br></pre></td></tr></table></figure>
+<h4 id="MATLAB-2"><a href="#MATLAB-2" class="headerlink" title="MATLAB"></a>MATLAB</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">function [ fSum ] &#x3D; fir3_1()</span><br><span class="line">fSum&#x3D;0;    </span><br><span class="line">for i&#x3D;1:1:FIRNUMBER </span><br><span class="line">	fSum&#x3D;fSum+( fXn(i)*fHn(i) );</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+<h3 id="波形的输出"><a href="#波形的输出" class="headerlink" title="波形的输出"></a>波形的输出</h3><h4 id="DSP-3"><a href="#DSP-3" class="headerlink" title="DSP"></a>DSP</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">main(void)</span><br><span class="line">&#123;</span><br><span class="line">   </span><br><span class="line">   nIn&#x3D;0; nOut&#x3D;0;</span><br><span class="line">	f2PI&#x3D;2*PI;&#x2F;&#x2F;2π</span><br><span class="line">	fSignal1&#x3D;0.0;&#x2F;&#x2F;0π</span><br><span class="line">	fSignal2&#x3D;PI*0.1;&#x2F;&#x2F;0.1π</span><br><span class="line">	fStepSignal1&#x3D;2*PI&#x2F;30;&#x2F;&#x2F;(2π)&#x2F;30</span><br><span class="line">	fStepSignal2&#x3D;2*PI*1.4;&#x2F;&#x2F;(2π)*1.4&#x3D;2.8π</span><br><span class="line">	while ( 1 )</span><br><span class="line">	&#123;</span><br><span class="line">		fInput&#x3D;InputWave();&#x2F;&#x2F;return(fXn[0]);</span><br><span class="line">		fIn[nIn]&#x3D;fInput;&#x2F;&#x2F;差分方程的每一项FIR系数的被乘数被记录</span><br><span class="line">		nIn++; nIn%&#x3D;256;&#x2F;&#x2F;与if ( nIn&gt;&#x3D;256 )nIn&#x3D;0;逻辑一样</span><br><span class="line">		fOutput&#x3D;FIR();&#x2F;&#x2F;进行差分方程的计算</span><br><span class="line">		fOut[nOut]&#x3D;fOutput;&#x2F;&#x2F;记录差分方程256次算出的结果，每次结果的被乘数都不一样</span><br><span class="line">		nOut++;</span><br><span class="line">		if ( nOut&gt;&#x3D;256 )&#x2F;&#x2F;数组每满一次重新依次刷新</span><br><span class="line">		&#123;</span><br><span class="line">			nOut&#x3D;0;		&#x2F;* 请在此句上设置软件断点 *&#x2F;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="MATLAB（主函数里面包含子函数）"><a href="#MATLAB（主函数里面包含子函数）" class="headerlink" title="MATLAB（主函数里面包含子函数）"></a>MATLAB（主函数里面包含子函数）</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">function [fIn,fOut] &#x3D; fir3()</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">while  (nIn&lt;256 &amp;&amp; nOut&lt;256)</span><br><span class="line">    </span><br><span class="line">	fInput&#x3D;InputWave();</span><br><span class="line">    nIn&#x3D;nIn+1;</span><br><span class="line">	fIn2(nIn)&#x3D;fInput; </span><br><span class="line">    fIn&#x3D;fIn2;</span><br><span class="line">   % nIn&#x3D;mod(nIn,256);</span><br><span class="line">        </span><br><span class="line">	fOutput&#x3D;fir3_1();</span><br><span class="line">    nOut&#x3D;nOut+1; </span><br><span class="line">	fOut2(nOut)&#x3D;fOutput;</span><br><span class="line">    fOut&#x3D;fOut2;  </span><br><span class="line">% if nOut&gt;&#x3D;256 </span><br><span class="line">%     nOut&#x3D;0;	</span><br><span class="line">% end</span><br><span class="line"></span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h3 id="实验结果"><a href="#实验结果" class="headerlink" title="实验结果"></a>实验结果</h3><p><img src="/images/%E7%AE%97%E6%B3%952.jpg" alt="image"></p>
+<h2 id="2）傅里叶变换"><a href="#2）傅里叶变换" class="headerlink" title="2）傅里叶变换"></a>2）傅里叶变换</h2><h3 id="相关参数的声明-1"><a href="#相关参数的声明-1" class="headerlink" title="相关参数的声明"></a>相关参数的声明</h3><h4 id="DSP-4"><a href="#DSP-4" class="headerlink" title="DSP"></a>DSP</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#define PI 3.1415926</span><br><span class="line">#define SAMPLENUMBER 128</span><br><span class="line">int INPUT[SAMPLENUMBER],DATA[SAMPLENUMBER];</span><br><span class="line">float fWaveR[SAMPLENUMBER],fWaveI[SAMPLENUMBER],w[SAMPLENUMBER];</span><br><span class="line">float sin_tab[SAMPLENUMBER],cos_tab[SAMPLENUMBER];</span><br></pre></td></tr></table></figure>
+<h4 id="MATLAB-3"><a href="#MATLAB-3" class="headerlink" title="MATLAB"></a>MATLAB</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">global SAMPLENUMBER;SAMPLENUMBER&#x3D;128;</span><br><span class="line"></span><br><span class="line">global INPUT2;INPUT2&#x3D;zeros(1,SAMPLENUMBER);</span><br><span class="line">global DATA2;DATA2&#x3D;zeros(1,SAMPLENUMBER);</span><br><span class="line">global fWaveR;fWaveR&#x3D;zeros(1,SAMPLENUMBER);</span><br><span class="line">global fWaveI;fWaveI&#x3D;zeros(1,SAMPLENUMBER);</span><br><span class="line">global w;w&#x3D;zeros(1,SAMPLENUMBER);</span><br><span class="line">global sin_tab;sin_tab&#x3D;zeros(1,SAMPLENUMBER);</span><br><span class="line">global cos_tab;cos_tab&#x3D;zeros(1,SAMPLENUMBER);</span><br><span class="line">global nIn;nIn&#x3D;0;</span><br><span class="line">global nOut;nOut&#x3D;0;</span><br></pre></td></tr></table></figure>
+<h3 id="波形的模拟-1"><a href="#波形的模拟-1" class="headerlink" title="波形的模拟"></a>波形的模拟</h3><h4 id="DSP-5"><a href="#DSP-5" class="headerlink" title="DSP"></a>DSP</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">void MakeWave()</span><br><span class="line">&#123;</span><br><span class="line">	int i;</span><br><span class="line">	</span><br><span class="line">	for ( i&#x3D;0;i&lt;SAMPLENUMBER;i++ )</span><br><span class="line">	&#123;</span><br><span class="line">		INPUT[i]&#x3D;sin(PI*2*i&#x2F;SAMPLENUMBER*3)*1024;&#x2F;&#x2F;6π&#x2F;128</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="MATLAB-4"><a href="#MATLAB-4" class="headerlink" title="MATLAB"></a>MATLAB</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">function  MakeWave</span><br><span class="line">for i&#x3D;1:1:SAMPLENUMBER</span><br><span class="line">    INPUT2(i)&#x3D;sin(pi*2*i&#x2F;SAMPLENUMBER*3)*1024;</span><br><span class="line">end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+<h3 id="傅里叶变换的算法设计"><a href="#傅里叶变换的算法设计" class="headerlink" title="傅里叶变换的算法设计"></a>傅里叶变换的算法设计</h3><h4 id="DSP-6"><a href="#DSP-6" class="headerlink" title="DSP"></a>DSP</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line">void InitForFFT()</span><br><span class="line">&#123;</span><br><span class="line">	int i;</span><br><span class="line">	</span><br><span class="line">	for ( i&#x3D;0;i&lt;SAMPLENUMBER;i++ )</span><br><span class="line">	&#123;</span><br><span class="line">		sin_tab[i]&#x3D;sin(PI*2*i&#x2F;SAMPLENUMBER);</span><br><span class="line">		cos_tab[i]&#x3D;cos(PI*2*i&#x2F;SAMPLENUMBER);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void FFT(float dataR[SAMPLENUMBER],float dataI[SAMPLENUMBER])</span><br><span class="line">&#123;</span><br><span class="line">	int x0,x1,x2,x3,x4,x5,x6,xx;</span><br><span class="line">	int i,j,k,b,p,L;</span><br><span class="line">	float TR,TI,temp;</span><br><span class="line">	</span><br><span class="line">	&#x2F;********** following code invert sequence ************&#x2F;</span><br><span class="line">	for ( i&#x3D;0;i&lt;SAMPLENUMBER;i++ )</span><br><span class="line">	&#123;</span><br><span class="line">		x0&#x3D;x1&#x3D;x2&#x3D;x3&#x3D;x4&#x3D;x5&#x3D;x6&#x3D;0;</span><br><span class="line">		x0&#x3D;i&amp;0x01; x1&#x3D;(i&#x2F;2)&amp;0x01; x2&#x3D;(i&#x2F;4)&amp;0x01; x3&#x3D;(i&#x2F;8)&amp;0x01;&#x2F;&#x2F;&amp;0x01：二进制数</span><br><span class="line">		x4&#x3D;(i&#x2F;16)&amp;0x01; x5&#x3D;(i&#x2F;32)&amp;0x01; x6&#x3D;(i&#x2F;64)&amp;0x01;&#x2F;&#x2F;除数越高，数位越低</span><br><span class="line">		xx&#x3D;x0*64+x1*32+x2*16+x3*8+x4*4+x5*2+x6;&#x2F;&#x2F;128个数：2^8-1&#x3D;1111111</span><br><span class="line">		dataI[xx]&#x3D;dataR[i];</span><br><span class="line">	&#125;</span><br><span class="line">	for ( i&#x3D;0;i&lt;SAMPLENUMBER;i++ )</span><br><span class="line">	&#123;</span><br><span class="line">		dataR[i]&#x3D;dataI[i]; dataI[i]&#x3D;0; </span><br><span class="line">	&#125;</span><br><span class="line">	&#x2F;&#x2F;模拟这种反序列的算法：左右翻转</span><br><span class="line">	&#x2F;*i&#x3D;0000000 0000001 0000010 0000011 0000100 ...;0 1 2 3 4</span><br><span class="line">	 xn&#x3D;0000000 1000000 0100000 1100000 0010000 ...;通过仿真发现这个序列已经面目全非</span><br><span class="line">	假如要得到127 126 125 123 121这样一组数据，还得将xn取反且最低位为最高位</span><br><span class="line">	*&#x2F;</span><br><span class="line"></span><br><span class="line">	&#x2F;************** following code FFT *******************&#x2F;</span><br><span class="line">	for ( L&#x3D;1;L&lt;&#x3D;7;L++ )&#x2F;&#x2F;这个循环：L--&gt;b,p&#x2F;j;</span><br><span class="line">	&#123; &#x2F;* for(1) *&#x2F;</span><br><span class="line">		b&#x3D;1; i&#x3D;L-1;</span><br><span class="line">		while ( i&gt;0 ) </span><br><span class="line">		&#123;</span><br><span class="line">			b&#x3D;b*2; i--;</span><br><span class="line">		&#125; &#x2F;* b&#x3D; 2^(L-1) b&#x3D;1 1*2 1*2*2*&#x2F;</span><br><span class="line"></span><br><span class="line">		for ( j&#x3D;0;j&lt;&#x3D;b-1;j++ ) &#x2F;* for (2) *&#x2F;</span><br><span class="line">		&#123;</span><br><span class="line">			p&#x3D;1; i&#x3D;7-L;</span><br><span class="line">			while ( i&gt;0 ) &#x2F;* p&#x3D;pow(2,7-L)*j;幂函数 *&#x2F;</span><br><span class="line">			&#123;</span><br><span class="line">				p&#x3D;p*2; i--;</span><br><span class="line">			&#125;</span><br><span class="line">			p&#x3D;p*j;</span><br><span class="line"></span><br><span class="line">			for ( k&#x3D;j;k&lt;128;k&#x3D;k+2*b ) &#x2F;* for (3) *&#x2F;</span><br><span class="line">			&#123;</span><br><span class="line">				TR&#x3D;dataR[k]; TI&#x3D;dataI[k]; temp&#x3D;dataR[k+b];</span><br><span class="line">				dataR[k]&#x3D;dataR[k]+dataR[k+b]*cos_tab[p]+dataI[k+b]*sin_tab[p];</span><br><span class="line">				dataI[k]&#x3D;dataI[k]-dataR[k+b]*sin_tab[p]+dataI[k+b]*cos_tab[p];</span><br><span class="line">				dataR[k+b]&#x3D;TR-dataR[k+b]*cos_tab[p]-dataI[k+b]*sin_tab[p];</span><br><span class="line">				dataI[k+b]&#x3D;TI+temp*sin_tab[p]-dataI[k+b]*cos_tab[p];</span><br><span class="line">			&#125; &#x2F;* END for (3) *&#x2F;</span><br><span class="line">		&#125; &#x2F;* END for (2) *&#x2F;</span><br><span class="line">	&#125; &#x2F;* END for (1) *&#x2F;</span><br><span class="line">	for ( i&#x3D;0;i&lt;SAMPLENUMBER&#x2F;2;i++ )</span><br><span class="line">	&#123; </span><br><span class="line">		w[i]&#x3D;sqrt(dataR[i]*dataR[i]+dataI[i]*dataI[i]);</span><br><span class="line">	&#125;</span><br><span class="line">&#125; &#x2F;* END FFT *&#x2F;</span><br></pre></td></tr></table></figure>
+<h4 id="MATLAB-5"><a href="#MATLAB-5" class="headerlink" title="MATLAB"></a>MATLAB</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">function  MakeWave</span><br><span class="line">for i&#x3D;1:1:SAMPLENUMBER</span><br><span class="line">    INPUT2(i)&#x3D;sin(pi*2*i&#x2F;SAMPLENUMBER*3)*1024;</span><br><span class="line">end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">function [dataR] &#x3D;FFT3_1(dataR,dataI)%输入形参可以作为局部变量定义</span><br><span class="line">for i&#x3D;1:1:SAMPLENUMBER</span><br><span class="line">	x0&#x3D;bitand(i,1); x1&#x3D;bitand( floor(i&#x2F;2),1 ); x2&#x3D;bitand( floor(i&#x2F;4),1 ); </span><br><span class="line">    x3&#x3D;bitand( floor(i&#x2F;8),1 );x4&#x3D;bitand( floor(i&#x2F;16),1 ); x5&#x3D;bitand( floor(i&#x2F;32),1 ); x6&#x3D;bitand( floor(i&#x2F;64),1 );</span><br><span class="line">	xx&#x3D;x0*64+x1*32+x2*16+x3*8+x4*4+x5*2+x6;</span><br><span class="line">	dataI(xx+1)&#x3D;dataR(i);</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">for i&#x3D;1:1:SAMPLENUMBER</span><br><span class="line">	dataR(i)&#x3D;dataI(i); dataI(i)&#x3D;0; </span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">% following code FFT </span><br><span class="line">for L&#x3D;1:1:7 </span><br><span class="line">	b&#x3D;1; i&#x3D;L-1;</span><br><span class="line">    while ( i&gt;0 ) </span><br><span class="line">        b&#x3D;b*2; i&#x3D;i-1;</span><br><span class="line">    end % b&#x3D; 2^(L-1)</span><br><span class="line"></span><br><span class="line">    for j&#x3D;1:1:b </span><br><span class="line">        p&#x3D;1; i&#x3D;7-L;</span><br><span class="line">        while ( i&gt;0 )</span><br><span class="line">            p&#x3D;p*2; i&#x3D;i-1;</span><br><span class="line">        end</span><br><span class="line">		p&#x3D;p*j;</span><br><span class="line">        for k&#x3D;j:2*b:128</span><br><span class="line">			TR&#x3D;dataR(k); TI&#x3D;dataI(k);</span><br><span class="line">            temp&#x3D;dataR(k+b);dataR(k)&#x3D;dataR(k)+dataR(k+b)*cos_tab(p)+dataI(k+b)*sin_tab(p);</span><br><span class="line">            dataI(k)&#x3D;dataI(k)-dataR(k+b)*sin_tab(p)+dataI(k+b)*cos_tab(p);</span><br><span class="line">            dataR(k+b)&#x3D;TR-dataR(k+b)*cos_tab(p)-dataI(k+b)*sin_tab(p);</span><br><span class="line">			dataI(k+b)&#x3D;TI+temp*sin_tab(p)-dataI(k+b)*cos_tab(p);</span><br><span class="line">        end</span><br><span class="line">    end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">for i&#x3D;1:1:SAMPLENUMBER&#x2F;2 %i只能给子函数用，如果主次函数公用i会造成死循环</span><br><span class="line">	w(i)&#x3D;sqrt( dataR(i)*dataR(i)+dataI(i)*dataI(i) );	</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+<h3 id="波形的输出-1"><a href="#波形的输出-1" class="headerlink" title="波形的输出"></a>波形的输出</h3><h4 id="DSP-7"><a href="#DSP-7" class="headerlink" title="DSP"></a>DSP</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">main()</span><br><span class="line">&#123;</span><br><span class="line">	int i;</span><br><span class="line">	</span><br><span class="line">	InitForFFT();&#x2F;&#x2F;采样正弦波和余弦波，生成128个采样点（每个采样周期内）</span><br><span class="line">	MakeWave();&#x2F;&#x2F;提高正弦波的一般频率（为了在一个采样周期内尽可能采集到更多周期的波形信号），生成128个采样点（每个采样周期内）</span><br><span class="line">	for ( i&#x3D;0;i&lt;SAMPLENUMBER;i++ )</span><br><span class="line">	&#123;</span><br><span class="line">		fWaveR[i]&#x3D;INPUT[i];</span><br><span class="line">		fWaveI[i]&#x3D;0.0f;</span><br><span class="line">		w[i]&#x3D;0.0f;</span><br><span class="line">	&#125;</span><br><span class="line">	FFT(fWaveR,fWaveI);</span><br><span class="line">	for ( i&#x3D;0;i&lt;SAMPLENUMBER;i++ )</span><br><span class="line">	&#123;</span><br><span class="line">		DATA[i]&#x3D;w[i];</span><br><span class="line">	&#125;</span><br><span class="line">	while ( 1 );	&#x2F;&#x2F; break point</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="MATLAB（主函数里面包含子函数）-1"><a href="#MATLAB（主函数里面包含子函数）-1" class="headerlink" title="MATLAB（主函数里面包含子函数）"></a>MATLAB（主函数里面包含子函数）</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">function [ INPUT,DATA,dataR2 ] &#x3D; fft3()%主函数的输出参数可以作为主函数的局部变量来使用</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">InitForFFT();</span><br><span class="line">MakeWave();</span><br><span class="line"></span><br><span class="line">for nIn&#x3D;1:1:SAMPLENUMBER </span><br><span class="line">	fWaveR(nIn)&#x3D;INPUT2(nIn);</span><br><span class="line">    fWaveI(nIn)&#x3D;0;</span><br><span class="line">	w(nIn)&#x3D;0;</span><br><span class="line">end</span><br><span class="line">INPUT&#x3D;INPUT2;</span><br><span class="line"></span><br><span class="line">[dataR2]&#x3D;FFT3_1(fWaveR,fWaveI);</span><br><span class="line">for nOut&#x3D;1:1:SAMPLENUMBER</span><br><span class="line">	DATA2(nOut)&#x3D;w(nOut);</span><br><span class="line">end</span><br><span class="line">DATA&#x3D;DATA2;</span><br><span class="line"></span><br><span class="line">figure(&#39;name&#39;,&#39;傅里叶变换&#39;);</span><br><span class="line">subplot(1,2,1);plot(INPUT);</span><br><span class="line">subplot(1,2,2);plot(DATA);</span><br><span class="line">% figure(&#39;name&#39;,&#39;反序&#39;);</span><br><span class="line">% plot(dataR2);</span><br></pre></td></tr></table></figure>
+<h3 id="实验结果-1"><a href="#实验结果-1" class="headerlink" title="实验结果"></a>实验结果</h3><p><img src="/images/%E7%AE%97%E6%B3%953.jpg" alt="image"></p>
+<h1 id="实验总结"><a href="#实验总结" class="headerlink" title="实验总结"></a>实验总结</h1><p>DSP，作为数字信号处理的“神兵利器”，在这里得到了很好的体现，无论从波形的模拟还是对波形的处理上，都支持与MATLAB编程后一样的效果。处理语法形式不一样外，其他内核都一样，所以DSP支持对数学公式的计算模拟。</p>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>感谢支持！！！</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="罗乐乐 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="罗乐乐 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fa fa-wechat"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%A1%AC%E4%BB%B6%E5%BC%80%E5%8F%91/" rel="tag"># 硬件开发</a>
+              <a href="/tags/DSP%E5%8D%95%E7%89%87%E6%9C%BA/" rel="tag"># DSP单片机</a>
+              <a href="/tags/%E8%BD%AF%E4%BB%B6%E7%AE%97%E6%B3%95%E7%9A%84%E7%A1%AC%E4%BB%B6%E9%A9%B1%E5%8A%A8/" rel="tag"># 软件算法的硬件驱动</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/06/23/%E4%BA%BA%E5%B7%A5%E5%8F%AF%E8%B0%83%E6%97%B6%E9%92%9F%E3%80%81%E9%97%B9%E9%92%9F%E3%80%81%E7%A7%92%E8%A1%A8/" rel="prev" title="人工可调时钟、闹钟、秒表">
+      <i class="fa fa-chevron-left"></i> 人工可调时钟、闹钟、秒表
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1、项目背景介绍"><span class="nav-number">1.</span> <span class="nav-text">1、项目背景介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2、项目算法框图的设计"><span class="nav-number">2.</span> <span class="nav-text">2、项目算法框图的设计</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3、代码的实现（算法模块都会在CCS6和MATLAB当中进行不同风格的比较）"><span class="nav-number">3.</span> <span class="nav-text">3、代码的实现（算法模块都会在CCS6和MATLAB当中进行不同风格的比较）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1）有限冲击响应数字滤波器"><span class="nav-number">3.1.</span> <span class="nav-text">1）有限冲击响应数字滤波器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#相关参数的声明"><span class="nav-number">3.1.1.</span> <span class="nav-text">相关参数的声明</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#DSP"><span class="nav-number">3.1.1.1.</span> <span class="nav-text">DSP</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MATLAB"><span class="nav-number">3.1.1.2.</span> <span class="nav-text">MATLAB</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#波形的模拟"><span class="nav-number">3.1.2.</span> <span class="nav-text">波形的模拟</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#DSP-1"><span class="nav-number">3.1.2.1.</span> <span class="nav-text">DSP</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MATLAB-1"><span class="nav-number">3.1.2.2.</span> <span class="nav-text">MATLAB</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#有限冲击响应数字滤波器的算法设计"><span class="nav-number">3.1.3.</span> <span class="nav-text">有限冲击响应数字滤波器的算法设计</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#DSP-2"><span class="nav-number">3.1.3.1.</span> <span class="nav-text">DSP</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MATLAB-2"><span class="nav-number">3.1.3.2.</span> <span class="nav-text">MATLAB</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#波形的输出"><span class="nav-number">3.1.4.</span> <span class="nav-text">波形的输出</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#DSP-3"><span class="nav-number">3.1.4.1.</span> <span class="nav-text">DSP</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MATLAB（主函数里面包含子函数）"><span class="nav-number">3.1.4.2.</span> <span class="nav-text">MATLAB（主函数里面包含子函数）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实验结果"><span class="nav-number">3.1.5.</span> <span class="nav-text">实验结果</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2）傅里叶变换"><span class="nav-number">3.2.</span> <span class="nav-text">2）傅里叶变换</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#相关参数的声明-1"><span class="nav-number">3.2.1.</span> <span class="nav-text">相关参数的声明</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#DSP-4"><span class="nav-number">3.2.1.1.</span> <span class="nav-text">DSP</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MATLAB-3"><span class="nav-number">3.2.1.2.</span> <span class="nav-text">MATLAB</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#波形的模拟-1"><span class="nav-number">3.2.2.</span> <span class="nav-text">波形的模拟</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#DSP-5"><span class="nav-number">3.2.2.1.</span> <span class="nav-text">DSP</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MATLAB-4"><span class="nav-number">3.2.2.2.</span> <span class="nav-text">MATLAB</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#傅里叶变换的算法设计"><span class="nav-number">3.2.3.</span> <span class="nav-text">傅里叶变换的算法设计</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#DSP-6"><span class="nav-number">3.2.3.1.</span> <span class="nav-text">DSP</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MATLAB-5"><span class="nav-number">3.2.3.2.</span> <span class="nav-text">MATLAB</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#波形的输出-1"><span class="nav-number">3.2.4.</span> <span class="nav-text">波形的输出</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#DSP-7"><span class="nav-number">3.2.4.1.</span> <span class="nav-text">DSP</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MATLAB（主函数里面包含子函数）-1"><span class="nav-number">3.2.4.2.</span> <span class="nav-text">MATLAB（主函数里面包含子函数）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实验结果-1"><span class="nav-number">3.2.5.</span> <span class="nav-text">实验结果</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实验总结"><span class="nav-number">4.</span> <span class="nav-text">实验总结</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="罗乐乐"
+      src="/images/xusong.jpeg">
+  <p class="site-author-name" itemprop="name">罗乐乐</p>
+  <div class="site-description" itemprop="description">不念、不想、不枉、此生</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yinluolll" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yinluolll" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/qq_45035280" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_45035280" rel="noopener" target="_blank"><i class="fa fa-fw fa-CSDN"></i>CSDN</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.cctry.com/" title="https:&#x2F;&#x2F;www.cctry.com" rel="noopener" target="_blank">VC驿站</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.bilibili.com/" title="https:&#x2F;&#x2F;www.bilibili.com" rel="noopener" target="_blank">B站</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.baidu.com/" title="http:&#x2F;&#x2F;www.baidu.com" rel="noopener" target="_blank">百度</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.csdn.net/" title="https:&#x2F;&#x2F;www.csdn.net" rel="noopener" target="_blank">CSDN博客</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">罗乐乐</span>
+</div>
+
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>-->
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/three-waves.min.js"></script>
+    <script defer src="/lib/three/canvas_lines.min.js"></script>
+    <script defer src="/lib/three/canvas_sphere.min.js"></script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
