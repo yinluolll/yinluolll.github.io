@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.post_navigation">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yinluolll.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="AD画板1、创建元件库（这个创建于封装库进行联动的）新建design里面有一个新建一个原理图库的选项">
+<meta property="og:type" content="article">
+<meta property="og:title" content="流水灯电路图手工制版">
+<meta property="og:url" content="https://yinluolll.github.io/2020/06/25/%E6%B5%81%E6%B0%B4%E7%81%AF%E7%94%B5%E8%B7%AF%E5%9B%BE%E6%89%8B%E5%B7%A5%E5%88%B6%E7%89%88/index.html">
+<meta property="og:site_name" content="个人博客">
+<meta property="og:description" content="AD画板1、创建元件库（这个创建于封装库进行联动的）新建design里面有一个新建一个原理图库的选项">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://yinluolll.github.io/images/AD.jpg">
+<meta property="og:image" content="https://yinluolll.github.io/images/AD2.jpg">
+<meta property="og:image" content="https://yinluolll.github.io/images/AD3.jpg">
+<meta property="og:image" content="https://yinluolll.github.io/images/AD4.jpg">
+<meta property="og:image" content="https://yinluolll.github.io/images/AD5.jpg">
+<meta property="og:image" content="https://yinluolll.github.io/images/AD6.jpg">
+<meta property="og:image" content="https://yinluolll.github.io/images/AD23.jpg">
+<meta property="og:image" content="https://yinluolll.github.io/images/AD7.jpg">
+<meta property="og:image" content="https://yinluolll.github.io/images/AD8.jpg">
+<meta property="og:image" content="https://yinluolll.github.io/images/AD9.jpg">
+<meta property="og:image" content="https://yinluolll.github.io/images/AD10.jpg">
+<meta property="og:image" content="https://yinluolll.github.io/images/AD11.jpg">
+<meta property="og:image" content="https://yinluolll.github.io/images/AD12.jpg">
+<meta property="og:image" content="https://yinluolll.github.io/images/AD13.jpg">
+<meta property="og:image" content="https://yinluolll.github.io/images/AD14.jpg">
+<meta property="og:image" content="https://yinluolll.github.io/images/AD15.jpg">
+<meta property="og:image" content="https://yinluolll.github.io/images/AD16.jpg">
+<meta property="og:image" content="https://yinluolll.github.io/images/AD20.jpg">
+<meta property="og:image" content="https://yinluolll.github.io/images/AD21.jpg">
+<meta property="og:image" content="https://yinluolll.github.io/images/AD17.jpg">
+<meta property="og:image" content="https://yinluolll.github.io/images/AD18.jpg">
+<meta property="og:image" content="https://yinluolll.github.io/images/AD19.jpg">
+<meta property="og:image" content="https://yinluolll.github.io/images/AD22.jpg">
+<meta property="article:published_time" content="2020-06-24T19:07:00.000Z">
+<meta property="article:modified_time" content="2020-06-24T19:18:27.879Z">
+<meta property="article:author" content="罗乐乐">
+<meta property="article:tag" content="PCB技术">
+<meta property="article:tag" content="AD软件">
+<meta property="article:tag" content="画板子">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yinluolll.github.io/images/AD.jpg">
+
+<link rel="canonical" href="https://yinluolll.github.io/2020/06/25/%E6%B5%81%E6%B0%B4%E7%81%AF%E7%94%B5%E8%B7%AF%E5%9B%BE%E6%89%8B%E5%B7%A5%E5%88%B6%E7%89%88/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>流水灯电路图手工制版 | 个人博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">个人博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">学习笔记</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://yinluolll.github.io/2020/06/25/%E6%B5%81%E6%B0%B4%E7%81%AF%E7%94%B5%E8%B7%AF%E5%9B%BE%E6%89%8B%E5%B7%A5%E5%88%B6%E7%89%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/xusong.jpeg">
+      <meta itemprop="name" content="罗乐乐">
+      <meta itemprop="description" content="不念、不想、不枉、此生">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          流水灯电路图手工制版
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-06-25 03:07:00 / 修改时间：03:18:27" itemprop="dateCreated datePublished" datetime="2020-06-25T03:07:00+08:00">2020-06-25</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%BA%95%E7%AB%AF%E8%AE%BE%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">底端设计</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="AD画板"><a href="#AD画板" class="headerlink" title="AD画板"></a>AD画板</h1><h2 id="1、创建元件库（这个创建于封装库进行联动的）"><a href="#1、创建元件库（这个创建于封装库进行联动的）" class="headerlink" title="1、创建元件库（这个创建于封装库进行联动的）"></a>1、创建元件库（这个创建于封装库进行联动的）</h2><h3 id="新建"><a href="#新建" class="headerlink" title="新建"></a>新建</h3><p>design里面有一个新建一个原理图库的选项</p>
+<h4 id=""><a href="#" class="headerlink" title=""></a><img src="/images/AD.jpg" alt="image"></h4><a id="more"></a>
+<h3 id="进入元件库中画元件"><a href="#进入元件库中画元件" class="headerlink" title="进入元件库中画元件"></a>进入元件库中画元件</h3><p><strong>1</strong> 右击的选项中有所有的画板用具，双击可以编辑这个画板工具的属性，至于方向只要空格就行             </p>
+<h4 id="-1"><a href="#-1" class="headerlink" title=""></a><img src="/images/AD2.jpg" alt="image"></h4><p><strong>2</strong> 库窗口只要在右下角的system元件当中</p>
+<h4 id="-2"><a href="#-2" class="headerlink" title=""></a><img src="/images/AD3.jpg" alt="image"></h4><p><strong>3</strong> 工具当中有元件属性（用来给对应的元件加封装）</p>
+<h4 id="-3"><a href="#-3" class="headerlink" title=""></a><img src="/images/AD4.jpg" alt="image"></h4><h4 id="-4"><a href="#-4" class="headerlink" title=""></a><img src="/images/AD5.jpg" alt="image"></h4><p><strong>4</strong> 引入别人的库时，要将自己的库和别人的库放在同一个工程文件夹下<br>原理图的元件不能作为封装库的元件</p>
+<h4 id="-5"><a href="#-5" class="headerlink" title=""></a><img src="/images/AD6.jpg" alt="image"></h4><p><strong>5</strong> 原理图器件（手工画和元件库中找）</p>
+<h4 id="-6"><a href="#-6" class="headerlink" title=""></a><img src="/images/AD23.jpg" alt="image"></h4><p><strong>6</strong> 可以在库当中添加封装库也可以在原理图添加封装库<br>这是在元件库点击的元件属性</p>
+<h4 id="-7"><a href="#-7" class="headerlink" title=""></a><img src="/images/AD7.jpg" alt="image"></h4><p>这是在原理图中点击的元件属性</p>
+<h4 id="-8"><a href="#-8" class="headerlink" title=""></a><img src="/images/AD8.jpg" alt="image"></h4><h2 id="2、创建封装库"><a href="#2、创建封装库" class="headerlink" title="2、创建封装库"></a>2、创建封装库</h2><h3 id="新建-1"><a href="#新建-1" class="headerlink" title="新建"></a>新建</h3><h4 id="-9"><a href="#-9" class="headerlink" title=""></a><img src="/images/AD9.jpg" alt="image"></h4><h3 id="进入封装库中画封装板"><a href="#进入封装库中画封装板" class="headerlink" title="进入封装库中画封装板"></a>进入封装库中画封装板</h3><p><strong>1</strong> 画封装库的时候要改变孔洞的大小需要先改变库的属性（右击就能找到库的属性）反过来就不行，可以直接测试一下</p>
+<h4 id="-10"><a href="#-10" class="headerlink" title=""></a><img src="/images/AD10.jpg" alt="image"></h4><h4 id="-11"><a href="#-11" class="headerlink" title=""></a><img src="/images/AD11.jpg" alt="image"></h4><p><strong>2</strong> 最好改成默认的视图，有些窗口你不知道到哪里找，如果嫌多，你可以不用固定，让它们都编程浮动窗口，最关键是如果你自定义的话，在你编辑封装库的时候，相应的侧选项栏并不会自动弹出来，这是最难受的。</p>
+<h4 id="-12"><a href="#-12" class="headerlink" title=""></a><img src="/images/AD12.jpg" alt="image"></h4><p><strong>3</strong> PCB文件：可以从原理图当中在design中的更新文件选项中选择</p>
+<h4 id="-13"><a href="#-13" class="headerlink" title=""></a><img src="/images/AD13.jpg" alt="image"></h4><p><strong>4</strong> 自动布线：最后是修改，这也是最关键的一步，自动布线虽然强大，但是很多线的粗细以及走向和一些工程师的经验还是更强的，那么我们需要进行手动修改。修改到成我们满意的PCB为止。<br>很多有经验的工程师都是借助自动布线以及手动布线结合的方式设计PCB</p>
+<h4 id="-14"><a href="#-14" class="headerlink" title=""></a><img src="/images/AD14.jpg" alt="image"></h4><p><strong>注：如果你点击自动布线会导致软件死机的话，建议重装软件，如果还不行，那就是电脑的问题，或者选择更高版本的软件试试</strong><br><strong>5</strong>如何在原理图中提取器件库和封装库，design选项当中有两个选项叫做make Schematic Library和make integrated Library（integrated Library是一个集合库，里面有封装库和器件库，只要你一按，这个文件就会自动给你创建一个库文件夹，里面就包含着这两个库）</p>
+<h4 id="-15"><a href="#-15" class="headerlink" title=""></a><img src="/images/AD15.jpg" alt="image"></h4><h4 id="-16"><a href="#-16" class="headerlink" title=""></a><img src="/images/AD16.jpg" alt="image"></h4><h1 id="手工制板"><a href="#手工制板" class="headerlink" title="手工制板"></a>手工制板</h1><h2 id="1、线性的查看"><a href="#1、线性的查看" class="headerlink" title="1、线性的查看"></a>1、线性的查看</h2><h4 id="-17"><a href="#-17" class="headerlink" title=""></a><img src="/images/AD20.jpg" alt="image"></h4><h4 id="-18"><a href="#-18" class="headerlink" title=""></a><img src="/images/AD21.jpg" alt="image"></h4><h2 id="2、生成打印预览并打印在油纸上，然后过塑到镀铜板上（用热转印机）"><a href="#2、生成打印预览并打印在油纸上，然后过塑到镀铜板上（用热转印机）" class="headerlink" title="2、生成打印预览并打印在油纸上，然后过塑到镀铜板上（用热转印机）"></a>2、生成打印预览并打印在油纸上，然后过塑到镀铜板上（用热转印机）</h2><h3 id="打印正面（在打印预览上是镜像打印）"><a href="#打印正面（在打印预览上是镜像打印）" class="headerlink" title="打印正面（在打印预览上是镜像打印）"></a>打印正面（在打印预览上是镜像打印）</h3><h4 id="打印的配置"><a href="#打印的配置" class="headerlink" title="打印的配置"></a>打印的配置</h4><p>根据你原理图的线的类型来添加</p>
+<h4 id="-19"><a href="#-19" class="headerlink" title=""></a><img src="/images/AD17.jpg" alt="image"></h4><h4 id="打印的预览"><a href="#打印的预览" class="headerlink" title="打印的预览"></a>打印的预览</h4><h4 id="-20"><a href="#-20" class="headerlink" title=""></a><img src="/images/AD18.jpg" alt="image"></h4><h4 id="打印的实物"><a href="#打印的实物" class="headerlink" title="打印的实物"></a>打印的实物</h4><h4 id="-21"><a href="#-21" class="headerlink" title=""></a><img src="/images/AD19.jpg" alt="image"></h4><h3 id="打印反面（在打印预览上是正像打印）"><a href="#打印反面（在打印预览上是正像打印）" class="headerlink" title="打印反面（在打印预览上是正像打印）"></a>打印反面（在打印预览上是正像打印）</h3><h4 id="打印的配置-1"><a href="#打印的配置-1" class="headerlink" title="打印的配置"></a>打印的配置</h4><p>根据你原理图的线的类型来添加</p>
+<h4 id="打印的预览-1"><a href="#打印的预览-1" class="headerlink" title="打印的预览"></a>打印的预览</h4><p>同理，打印反面也只不过是不打印顶层板不用的线性，而打印底层板所用的线性而已。</p>
+<h4 id="打印的实物-1"><a href="#打印的实物-1" class="headerlink" title="打印的实物"></a>打印的实物</h4><h4 id="-22"><a href="#-22" class="headerlink" title=""></a><img src="/images/AD22.jpg" alt="image"></h4><h1 id="实验总结："><a href="#实验总结：" class="headerlink" title="实验总结："></a>实验总结：</h1><p>现在很多已经工作的学长学姐们都叫我们学PADS这个软件，我最近也在看，发现确实好用多了，因为这个软件的兼容性很强，我在网上买了一个AD的工程文件，发现PADS也能够使用，并且还有很多我不清楚的功能等着我探索。但是初步看来，对于有AD基础的人学PADS也不是很难，就是前期要适应一下不同软件的风格，但是它们的基本逻辑都是大同小异的。</p>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>感谢支持！！！</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="罗乐乐 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="罗乐乐 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fa fa-wechat"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/PCB%E6%8A%80%E6%9C%AF/" rel="tag"># PCB技术</a>
+              <a href="/tags/AD%E8%BD%AF%E4%BB%B6/" rel="tag"># AD软件</a>
+              <a href="/tags/%E7%94%BB%E6%9D%BF%E5%AD%90/" rel="tag"># 画板子</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/06/24/%E5%8A%A0%E5%87%8F%E8%AE%A1%E7%AE%97%E5%99%A8%EF%BC%88quartus%20ii%E7%9A%84%E4%BD%BF%E7%94%A8%EF%BC%89/" rel="prev" title="加减计算器(quartus ii的使用)">
+      <i class="fa fa-chevron-left"></i> 加减计算器(quartus ii的使用)
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/06/25/%E8%9C%82%E9%B8%A3%E5%99%A8%E9%9F%B3%E9%A2%91%E6%92%AD%E6%94%BE/" rel="next" title="蜂鸣器音频播放">
+      蜂鸣器音频播放 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#AD画板"><span class="nav-number">1.</span> <span class="nav-text">AD画板</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1、创建元件库（这个创建于封装库进行联动的）"><span class="nav-number">1.1.</span> <span class="nav-text">1、创建元件库（这个创建于封装库进行联动的）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#新建"><span class="nav-number">1.1.1.</span> <span class="nav-text">新建</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">1.1.1.1.</span> <span class="nav-text"></span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进入元件库中画元件"><span class="nav-number">1.1.2.</span> <span class="nav-text">进入元件库中画元件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#-1"><span class="nav-number">1.1.2.1.</span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#-2"><span class="nav-number">1.1.2.2.</span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#-3"><span class="nav-number">1.1.2.3.</span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#-4"><span class="nav-number">1.1.2.4.</span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#-5"><span class="nav-number">1.1.2.5.</span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#-6"><span class="nav-number">1.1.2.6.</span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#-7"><span class="nav-number">1.1.2.7.</span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#-8"><span class="nav-number">1.1.2.8.</span> <span class="nav-text"></span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2、创建封装库"><span class="nav-number">1.2.</span> <span class="nav-text">2、创建封装库</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#新建-1"><span class="nav-number">1.2.1.</span> <span class="nav-text">新建</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#-9"><span class="nav-number">1.2.1.1.</span> <span class="nav-text"></span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进入封装库中画封装板"><span class="nav-number">1.2.2.</span> <span class="nav-text">进入封装库中画封装板</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#-10"><span class="nav-number">1.2.2.1.</span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#-11"><span class="nav-number">1.2.2.2.</span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#-12"><span class="nav-number">1.2.2.3.</span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#-13"><span class="nav-number">1.2.2.4.</span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#-14"><span class="nav-number">1.2.2.5.</span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#-15"><span class="nav-number">1.2.2.6.</span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#-16"><span class="nav-number">1.2.2.7.</span> <span class="nav-text"></span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#手工制板"><span class="nav-number">2.</span> <span class="nav-text">手工制板</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1、线性的查看"><span class="nav-number">2.1.</span> <span class="nav-text">1、线性的查看</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#-17"><span class="nav-number">2.1.0.1.</span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#-18"><span class="nav-number">2.1.0.2.</span> <span class="nav-text"></span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2、生成打印预览并打印在油纸上，然后过塑到镀铜板上（用热转印机）"><span class="nav-number">2.2.</span> <span class="nav-text">2、生成打印预览并打印在油纸上，然后过塑到镀铜板上（用热转印机）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#打印正面（在打印预览上是镜像打印）"><span class="nav-number">2.2.1.</span> <span class="nav-text">打印正面（在打印预览上是镜像打印）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#打印的配置"><span class="nav-number">2.2.1.1.</span> <span class="nav-text">打印的配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#-19"><span class="nav-number">2.2.1.2.</span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#打印的预览"><span class="nav-number">2.2.1.3.</span> <span class="nav-text">打印的预览</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#-20"><span class="nav-number">2.2.1.4.</span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#打印的实物"><span class="nav-number">2.2.1.5.</span> <span class="nav-text">打印的实物</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#-21"><span class="nav-number">2.2.1.6.</span> <span class="nav-text"></span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#打印反面（在打印预览上是正像打印）"><span class="nav-number">2.2.2.</span> <span class="nav-text">打印反面（在打印预览上是正像打印）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#打印的配置-1"><span class="nav-number">2.2.2.1.</span> <span class="nav-text">打印的配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#打印的预览-1"><span class="nav-number">2.2.2.2.</span> <span class="nav-text">打印的预览</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#打印的实物-1"><span class="nav-number">2.2.2.3.</span> <span class="nav-text">打印的实物</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#-22"><span class="nav-number">2.2.2.4.</span> <span class="nav-text"></span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实验总结："><span class="nav-number">3.</span> <span class="nav-text">实验总结：</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="罗乐乐"
+      src="/images/xusong.jpeg">
+  <p class="site-author-name" itemprop="name">罗乐乐</p>
+  <div class="site-description" itemprop="description">不念、不想、不枉、此生</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yinluolll" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yinluolll" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/qq_45035280" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_45035280" rel="noopener" target="_blank"><i class="fa fa-fw fa-CSDN"></i>CSDN</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.cctry.com/" title="https:&#x2F;&#x2F;www.cctry.com" rel="noopener" target="_blank">VC驿站</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.bilibili.com/" title="https:&#x2F;&#x2F;www.bilibili.com" rel="noopener" target="_blank">B站</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.baidu.com/" title="http:&#x2F;&#x2F;www.baidu.com" rel="noopener" target="_blank">百度</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.csdn.net/" title="https:&#x2F;&#x2F;www.csdn.net" rel="noopener" target="_blank">CSDN博客</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">罗乐乐</span>
+</div>
+
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>-->
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/three-waves.min.js"></script>
+    <script defer src="/lib/three/canvas_lines.min.js"></script>
+    <script defer src="/lib/three/canvas_sphere.min.js"></script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

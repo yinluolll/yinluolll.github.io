@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.post_navigation">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yinluolll.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="1、项目背景介绍在刚迈入大二的自己参加了省赛的分立元件电路板的焊接，发现自己的电气知识实在是太薄弱了，严重的打击自信心，原来理论成绩的优秀并不能代表你动手能力的优秀，因此，得到老师布置的这个项目的题目的时候，我就尽可能让作品尽善尽美。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="八路抢答器的设计（无单片机）">
+<meta property="og:url" content="https://yinluolll.github.io/2020/06/23/%E5%85%AB%E8%B7%AF%E6%8A%A2%E7%AD%94%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%EF%BC%88%E6%97%A0%E5%8D%95%E7%89%87%E6%9C%BA%EF%BC%89/index.html">
+<meta property="og:site_name" content="个人博客">
+<meta property="og:description" content="1、项目背景介绍在刚迈入大二的自己参加了省赛的分立元件电路板的焊接，发现自己的电气知识实在是太薄弱了，严重的打击自信心，原来理论成绩的优秀并不能代表你动手能力的优秀，因此，得到老师布置的这个项目的题目的时候，我就尽可能让作品尽善尽美。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://yinluolll.github.io/images/%E6%8A%A2%E7%AD%94.jpg">
+<meta property="og:image" content="https://yinluolll.github.io/images/%E6%8A%A2%E7%AD%942.jpg">
+<meta property="og:image" content="https://yinluolll.github.io/images/%E6%8A%A2%E7%AD%943.jpg">
+<meta property="og:image" content="https://yinluolll.github.io/images/%E6%8A%A2%E7%AD%945.jpg">
+<meta property="og:image" content="https://yinluolll.github.io/images/%E6%8A%A2%E7%AD%944.jpg">
+<meta property="og:image" content="https://yinluolll.github.io/images/%E6%8A%A2%E7%AD%946.jpg">
+<meta property="og:image" content="https://yinluolll.github.io/images/%E6%8A%A2%E7%AD%947.jpg">
+<meta property="article:published_time" content="2020-06-23T12:38:55.000Z">
+<meta property="article:modified_time" content="2020-06-23T16:59:03.729Z">
+<meta property="article:author" content="罗乐乐">
+<meta property="article:tag" content="焊板">
+<meta property="article:tag" content="数电模电">
+<meta property="article:tag" content="电子电路设计">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yinluolll.github.io/images/%E6%8A%A2%E7%AD%94.jpg">
+
+<link rel="canonical" href="https://yinluolll.github.io/2020/06/23/%E5%85%AB%E8%B7%AF%E6%8A%A2%E7%AD%94%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%EF%BC%88%E6%97%A0%E5%8D%95%E7%89%87%E6%9C%BA%EF%BC%89/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>八路抢答器的设计（无单片机） | 个人博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">个人博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">学习笔记</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://yinluolll.github.io/2020/06/23/%E5%85%AB%E8%B7%AF%E6%8A%A2%E7%AD%94%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%EF%BC%88%E6%97%A0%E5%8D%95%E7%89%87%E6%9C%BA%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/xusong.jpeg">
+      <meta itemprop="name" content="罗乐乐">
+      <meta itemprop="description" content="不念、不想、不枉、此生">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          八路抢答器的设计（无单片机）
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-06-23 20:38:55" itemprop="dateCreated datePublished" datetime="2020-06-23T20:38:55+08:00">2020-06-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-06-24 00:59:03" itemprop="dateModified" datetime="2020-06-24T00:59:03+08:00">2020-06-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%BA%95%E7%AB%AF%E8%AE%BE%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">底端设计</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="1、项目背景介绍"><a href="#1、项目背景介绍" class="headerlink" title="1、项目背景介绍"></a>1、项目背景介绍</h1><p>在刚迈入大二的自己参加了省赛的分立元件电路板的焊接，发现自己的电气知识实在是太薄弱了，严重的打击自信心，原来理论成绩的优秀并不能代表你动手能力的优秀，因此，得到老师布置的这个项目的题目的时候，我就尽可能让作品尽善尽美。</p>
+<a id="more"></a>
+<h1 id="电路框图"><a href="#电路框图" class="headerlink" title="电路框图"></a>电路框图</h1><h2 id=""><a href="#" class="headerlink" title=""></a><img src="/images/%E6%8A%A2%E7%AD%94.jpg" alt="image"></h2><h1 id="2、电路的实现级模块的逻辑连接"><a href="#2、电路的实现级模块的逻辑连接" class="headerlink" title="2、电路的实现级模块的逻辑连接"></a>2、电路的实现级模块的逻辑连接</h1><h2 id="1）整流电路模块"><a href="#1）整流电路模块" class="headerlink" title="1）整流电路模块"></a>1）整流电路模块</h2><h3 id="-1"><a href="#-1" class="headerlink" title=""></a><img src="/images/%E6%8A%A2%E7%AD%942.jpg" alt="image"></h3><h2 id="2）按键选择模块"><a href="#2）按键选择模块" class="headerlink" title="2）按键选择模块"></a>2）按键选择模块</h2><h3 id="序号按键的按下对应器需要，也就是按键按下，会发出不一样的数字编码，然后输入4511芯片当中，还有就是作为10秒倒计时的开启触发"><a href="#序号按键的按下对应器需要，也就是按键按下，会发出不一样的数字编码，然后输入4511芯片当中，还有就是作为10秒倒计时的开启触发" class="headerlink" title="序号按键的按下对应器需要，也就是按键按下，会发出不一样的数字编码，然后输入4511芯片当中，还有就是作为10秒倒计时的开启触发"></a>序号按键的按下对应器需要，也就是按键按下，会发出不一样的数字编码，然后输入4511芯片当中，还有就是作为10秒倒计时的开启触发</h3><h3 id="-2"><a href="#-2" class="headerlink" title=""></a><img src="/images/%E6%8A%A2%E7%AD%943.jpg" alt="image"></h3><h2 id="3）按键译码模块"><a href="#3）按键译码模块" class="headerlink" title="3）按键译码模块"></a>3）按键译码模块</h2><p>每个按键对应不同的数字量，因此需要用4511芯片价格这些数字量转化成数码管的LED显示量。并且通过输出量来判定这个是否会自锁，将输入的数字量进行存储。</p>
+<h3 id="-3"><a href="#-3" class="headerlink" title=""></a><img src="/images/%E6%8A%A2%E7%AD%945.jpg" alt="image"></h3><h2 id="4）10秒倒计时模块"><a href="#4）10秒倒计时模块" class="headerlink" title="4）10秒倒计时模块"></a>4）10秒倒计时模块</h2><p>由两个40110的数码管的驱动芯片和两个数码管构成，能够可以形成加减的运行，并且可调速变化的速度。对于矩形脉冲的输入，可以有NE555与外围器件构成一个矩性脉冲发生器，并且接上可调电阻即可，调制0.1s周期速度即可！</p>
+<h3 id="-4"><a href="#-4" class="headerlink" title=""></a><img src="/images/%E6%8A%A2%E7%AD%944.jpg" alt="image"></h3><h2 id="5）蜂鸣器按键提示模块和复位键模块"><a href="#5）蜂鸣器按键提示模块和复位键模块" class="headerlink" title="5）蜂鸣器按键提示模块和复位键模块"></a>5）蜂鸣器按键提示模块和复位键模块</h2><p>在ABCD这个四个管脚用二极管构成一个或门<br>在4511特定的管脚LT拉低即可</p>
+<h3 id="-5"><a href="#-5" class="headerlink" title=""></a><img src="/images/%E6%8A%A2%E7%AD%946.jpg" alt="image"></h3><h1 id="实验成品"><a href="#实验成品" class="headerlink" title="实验成品"></a>实验成品</h1><h2 id="-6"><a href="#-6" class="headerlink" title=""></a><img src="/images/%E6%8A%A2%E7%AD%947.jpg" alt="image"></h2><h1 id="3、实验总结："><a href="#3、实验总结：" class="headerlink" title="3、实验总结："></a>3、实验总结：</h1><p>1）在做这个实验之前，一定有用一个清晰的逻辑框架，而且一定要有模块化、分层化思想。<br>2）最好在这之前进行multisim软件仿真，这样不仅可以验证你的想法是否正确，而且也可以通过他们来进行布线焊接。<br>3）更为复杂的板子的焊接可以用PCB来做，这是一个成熟的产业链，因此必须掌握对于PCB画板的基础知识。</p>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>感谢支持！！！</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="罗乐乐 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="罗乐乐 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fa fa-wechat"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%84%8A%E6%9D%BF/" rel="tag"># 焊板</a>
+              <a href="/tags/%E6%95%B0%E7%94%B5%E6%A8%A1%E7%94%B5/" rel="tag"># 数电模电</a>
+              <a href="/tags/%E7%94%B5%E5%AD%90%E7%94%B5%E8%B7%AF%E8%AE%BE%E8%AE%A1/" rel="tag"># 电子电路设计</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/06/23/Markdown%E4%BD%BF%E7%94%A8%E8%8D%89%E7%A8%BF/" rel="prev" title="Markdown使用草稿">
+      <i class="fa fa-chevron-left"></i> Markdown使用草稿
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/06/23/%E5%AD%A6%E6%A0%A1%E6%B4%BB%E5%8A%A8%E6%89%80%E8%8E%B7%E5%BE%97%E7%9A%84%E8%8D%A3%E8%AA%89/" rel="next" title="活动荣誉证书">
+      活动荣誉证书 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1、项目背景介绍"><span class="nav-number">1.</span> <span class="nav-text">1、项目背景介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#电路框图"><span class="nav-number">2.</span> <span class="nav-text">电路框图</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">2.1.</span> <span class="nav-text"></span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2、电路的实现级模块的逻辑连接"><span class="nav-number">3.</span> <span class="nav-text">2、电路的实现级模块的逻辑连接</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1）整流电路模块"><span class="nav-number">3.1.</span> <span class="nav-text">1）整流电路模块</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#-1"><span class="nav-number">3.1.1.</span> <span class="nav-text"></span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2）按键选择模块"><span class="nav-number">3.2.</span> <span class="nav-text">2）按键选择模块</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#序号按键的按下对应器需要，也就是按键按下，会发出不一样的数字编码，然后输入4511芯片当中，还有就是作为10秒倒计时的开启触发"><span class="nav-number">3.2.1.</span> <span class="nav-text">序号按键的按下对应器需要，也就是按键按下，会发出不一样的数字编码，然后输入4511芯片当中，还有就是作为10秒倒计时的开启触发</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#-2"><span class="nav-number">3.2.2.</span> <span class="nav-text"></span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3）按键译码模块"><span class="nav-number">3.3.</span> <span class="nav-text">3）按键译码模块</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#-3"><span class="nav-number">3.3.1.</span> <span class="nav-text"></span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4）10秒倒计时模块"><span class="nav-number">3.4.</span> <span class="nav-text">4）10秒倒计时模块</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#-4"><span class="nav-number">3.4.1.</span> <span class="nav-text"></span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5）蜂鸣器按键提示模块和复位键模块"><span class="nav-number">3.5.</span> <span class="nav-text">5）蜂鸣器按键提示模块和复位键模块</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#-5"><span class="nav-number">3.5.1.</span> <span class="nav-text"></span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实验成品"><span class="nav-number">4.</span> <span class="nav-text">实验成品</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#-6"><span class="nav-number">4.1.</span> <span class="nav-text"></span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3、实验总结："><span class="nav-number">5.</span> <span class="nav-text">3、实验总结：</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="罗乐乐"
+      src="/images/xusong.jpeg">
+  <p class="site-author-name" itemprop="name">罗乐乐</p>
+  <div class="site-description" itemprop="description">不念、不想、不枉、此生</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yinluolll" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yinluolll" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/qq_45035280" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_45035280" rel="noopener" target="_blank"><i class="fa fa-fw fa-CSDN"></i>CSDN</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.cctry.com/" title="https:&#x2F;&#x2F;www.cctry.com" rel="noopener" target="_blank">VC驿站</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.bilibili.com/" title="https:&#x2F;&#x2F;www.bilibili.com" rel="noopener" target="_blank">B站</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.baidu.com/" title="http:&#x2F;&#x2F;www.baidu.com" rel="noopener" target="_blank">百度</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.csdn.net/" title="https:&#x2F;&#x2F;www.csdn.net" rel="noopener" target="_blank">CSDN博客</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">罗乐乐</span>
+</div>
+
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>-->
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/three-waves.min.js"></script>
+    <script defer src="/lib/three/canvas_lines.min.js"></script>
+    <script defer src="/lib/three/canvas_sphere.min.js"></script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

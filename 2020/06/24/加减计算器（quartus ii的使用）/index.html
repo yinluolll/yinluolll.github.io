@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.post_navigation">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yinluolll.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="1、背景介绍在前面已经有很多的算法框图的介绍，这个加减作为非常简单的一类，我主要还是侧重点放在quartus ii工程的建立进行入手吧！也方便自己以后重做工程时的回忆。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="加减计算器(quartus ii的使用)">
+<meta property="og:url" content="https://yinluolll.github.io/2020/06/24/%E5%8A%A0%E5%87%8F%E8%AE%A1%E7%AE%97%E5%99%A8%EF%BC%88quartus%20ii%E7%9A%84%E4%BD%BF%E7%94%A8%EF%BC%89/index.html">
+<meta property="og:site_name" content="个人博客">
+<meta property="og:description" content="1、背景介绍在前面已经有很多的算法框图的介绍，这个加减作为非常简单的一类，我主要还是侧重点放在quartus ii工程的建立进行入手吧！也方便自己以后重做工程时的回忆。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://yinluolll.github.io/images/%E5%8A%A02.jpg">
+<meta property="og:image" content="https://yinluolll.github.io/images/%E5%8A%A02.jpg">
+<meta property="og:image" content="https://yinluolll.github.io/images/%E5%8A%A03.jpg">
+<meta property="og:image" content="https://yinluolll.github.io/images/%E5%8A%A04.jpg">
+<meta property="og:image" content="https://yinluolll.github.io/images/%E5%8A%A05.jpg">
+<meta property="og:image" content="https://yinluolll.github.io/images/%E5%8A%A06.jpg">
+<meta property="og:image" content="https://yinluolll.github.io/images/%E5%8A%A07.jpg">
+<meta property="og:image" content="https://yinluolll.github.io/images/%E5%8A%A09.jpg">
+<meta property="og:image" content="https://yinluolll.github.io/images/%E5%8A%A08.jpg">
+<meta property="og:image" content="https://yinluolll.github.io/images/%E5%8A%A010.jpg">
+<meta property="og:image" content="https://yinluolll.github.io/images/%E5%8A%A011.jpg">
+<meta property="og:image" content="https://yinluolll.github.io/images/%E5%8A%A012.jpg">
+<meta property="article:published_time" content="2020-06-24T11:05:01.000Z">
+<meta property="article:modified_time" content="2020-06-24T11:08:32.215Z">
+<meta property="article:author" content="罗乐乐">
+<meta property="article:tag" content="FPGA单片机">
+<meta property="article:tag" content="模块化">
+<meta property="article:tag" content="原理图">
+<meta property="article:tag" content="工程建立">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yinluolll.github.io/images/%E5%8A%A02.jpg">
+
+<link rel="canonical" href="https://yinluolll.github.io/2020/06/24/%E5%8A%A0%E5%87%8F%E8%AE%A1%E7%AE%97%E5%99%A8%EF%BC%88quartus%20ii%E7%9A%84%E4%BD%BF%E7%94%A8%EF%BC%89/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>加减计算器(quartus ii的使用) | 个人博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">个人博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">学习笔记</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://yinluolll.github.io/2020/06/24/%E5%8A%A0%E5%87%8F%E8%AE%A1%E7%AE%97%E5%99%A8%EF%BC%88quartus%20ii%E7%9A%84%E4%BD%BF%E7%94%A8%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/xusong.jpeg">
+      <meta itemprop="name" content="罗乐乐">
+      <meta itemprop="description" content="不念、不想、不枉、此生">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          加减计算器(quartus ii的使用)
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-06-24 19:05:01 / 修改时间：19:08:32" itemprop="dateCreated datePublished" datetime="2020-06-24T19:05:01+08:00">2020-06-24</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%BA%95%E7%AB%AF%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">底端开发</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="1、背景介绍"><a href="#1、背景介绍" class="headerlink" title="1、背景介绍"></a>1、背景介绍</h1><p>在前面已经有很多的算法框图的介绍，这个加减作为非常简单的一类，我主要还是侧重点放在quartus ii工程的建立进行入手吧！也方便自己以后重做工程时的回忆。</p>
+<a id="more"></a>
+<h1 id="2、算法思想（附上主要代码，其他自己想）"><a href="#2、算法思想（附上主要代码，其他自己想）" class="headerlink" title="2、算法思想（附上主要代码，其他自己想）"></a>2、算法思想（附上主要代码，其他自己想）</h1><p>我们要明白，加法很简单，但是减法就不同，我们必须明白在计算机里面对于负数是如何存储的。这就需要有一个补码的概念了，接下来就会通过代码去讲解这一概念，其他的按键和显示可参照我的人工可调时钟、闹钟、秒表为标题的博客。</p>
+<h1 id=""><a href="#" class="headerlink" title=""></a><img src="/images/%E5%8A%A02.jpg" alt="image"></h1><h2 id="补码器"><a href="#补码器" class="headerlink" title="补码器"></a>补码器</h2><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//补码模块</span></span><br><span class="line"><span class="keyword">module</span> complement(a,b,coma,comb);</span><br><span class="line"></span><br><span class="line"><span class="keyword">input</span> [<span class="number">4</span>:<span class="number">0</span>] a,b;</span><br><span class="line"><span class="keyword">output</span> [<span class="number">4</span>:<span class="number">0</span>]coma,comb;</span><br><span class="line"></span><br><span class="line"><span class="keyword">reg</span> [<span class="number">4</span>:<span class="number">0</span>] a1=<span class="number">0</span>;</span><br><span class="line"><span class="keyword">reg</span> [<span class="number">4</span>:<span class="number">0</span>] b1=<span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">always</span> @(*) <span class="keyword">begin</span><span class="comment">//取a的补码，无条件触发这个模块</span></span><br><span class="line">	<span class="keyword">if</span>((a[<span class="number">4</span>]==<span class="number">1</span>)&amp;&amp;(a[<span class="number">3</span>:<span class="number">0</span>]!=<span class="number">0</span>)) <span class="keyword">begin</span></span><br><span class="line">	<span class="comment">//证明负数，我们规定最高位为符号位，如果符号位为0，位正数，符号位为1为负数</span></span><br><span class="line">		a1[<span class="number">3</span>:<span class="number">0</span>]&lt;=( ~(a[<span class="number">3</span>:<span class="number">0</span>]) )+<span class="number">1</span>;<span class="comment">//数值为取补码（反码+1）</span></span><br><span class="line">		a1[<span class="number">4</span>]&lt;=a[<span class="number">4</span>]; <span class="keyword">end</span><span class="comment">//符号位不变</span></span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">if</span>(a[<span class="number">4</span>]==<span class="number">0</span>)</span><br><span class="line">		a1[<span class="number">4</span>:<span class="number">0</span>]&lt;=a[<span class="number">4</span>:<span class="number">0</span>];</span><br><span class="line">			<span class="keyword">else</span> <span class="keyword">if</span>(a[<span class="number">4</span>:<span class="number">0</span>]==<span class="number">4'd10000</span>)</span><br><span class="line">			<span class="comment">//因为没有-0这样的说法，并且如果用-0进行加法计算，会造成计算错误，所以对于用户输入-0这个数字，必须加以判断与纠正 </span></span><br><span class="line">				a1[<span class="number">4</span>:<span class="number">0</span>]&lt;=<span class="number">4'd00000</span>; <span class="keyword">end</span></span><br><span class="line">		</span><br><span class="line"><span class="keyword">always</span> @(*) <span class="keyword">begin</span><span class="comment">//取b的补码</span></span><br><span class="line">	<span class="keyword">if</span>((b[<span class="number">4</span>]==<span class="number">1</span>)&amp;&amp;(b[<span class="number">3</span>:<span class="number">0</span>]!=<span class="number">0</span>)) <span class="keyword">begin</span><span class="comment">//证明负数</span></span><br><span class="line">		b1[<span class="number">3</span>:<span class="number">0</span>]&lt;=( ~(b[<span class="number">3</span>:<span class="number">0</span>]) )+<span class="number">1</span>;<span class="comment">//数值为取补码</span></span><br><span class="line">		b1[<span class="number">4</span>]&lt;=b[<span class="number">4</span>]; <span class="keyword">end</span><span class="comment">//符号位不变</span></span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">if</span>(b[<span class="number">4</span>]==<span class="number">0</span>)</span><br><span class="line">		b1[<span class="number">4</span>:<span class="number">0</span>]&lt;=b[<span class="number">4</span>:<span class="number">0</span>];</span><br><span class="line">			<span class="keyword">else</span> <span class="keyword">if</span>(b[<span class="number">4</span>:<span class="number">0</span>]==<span class="number">4'd10000</span>)</span><br><span class="line">				b1[<span class="number">4</span>:<span class="number">0</span>]&lt;=<span class="number">4'd00000</span>; <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">assign</span> coma=a1;</span><br><span class="line"><span class="keyword">assign</span> comb=b1;</span><br><span class="line"></span><br><span class="line"><span class="keyword">endmodule</span></span><br></pre></td></tr></table></figure>
+<h1 id="3、工程的建立流程"><a href="#3、工程的建立流程" class="headerlink" title="3、工程的建立流程"></a>3、工程的建立流程</h1><h2 id="1）打开Quartus-II软件"><a href="#1）打开Quartus-II软件" class="headerlink" title="1）打开Quartus II软件"></a>1）打开Quartus II软件</h2><h3 id="-1"><a href="#-1" class="headerlink" title=""></a><img src="/images/%E5%8A%A02.jpg" alt="image"></h3><h2 id="2）下一步，并填写保存工程路径、工程名字，确定后点击yes"><a href="#2）下一步，并填写保存工程路径、工程名字，确定后点击yes" class="headerlink" title="2）下一步，并填写保存工程路径、工程名字，确定后点击yes"></a>2）下一步，并填写保存工程路径、工程名字，确定后点击yes</h2><h3 id="-2"><a href="#-2" class="headerlink" title=""></a><img src="/images/%E5%8A%A03.jpg" alt="image"></h3><h3 id="-3"><a href="#-3" class="headerlink" title=""></a><img src="/images/%E5%8A%A04.jpg" alt="image"></h3><h2 id="3）下一步，选择板子的型号，点击finish"><a href="#3）下一步，选择板子的型号，点击finish" class="headerlink" title="3）下一步，选择板子的型号，点击finish"></a>3）下一步，选择板子的型号，点击finish</h2><h3 id="-4"><a href="#-4" class="headerlink" title=""></a><img src="/images/%E5%8A%A05.jpg" alt="image"></h3><h2 id="3）Ctrl-N，对应的选项意义见图"><a href="#3）Ctrl-N，对应的选项意义见图" class="headerlink" title="3）Ctrl+N，对应的选项意义见图"></a>3）Ctrl+N，对应的选项意义见图</h2><h3 id="-5"><a href="#-5" class="headerlink" title=""></a><img src="/images/%E5%8A%A06.jpg" alt="image"></h3><h2 id="4）代码生成器件"><a href="#4）代码生成器件" class="headerlink" title="4）代码生成器件"></a>4）代码生成器件</h2><p>在左侧栏右击对应的文件，点击create symbol选项</p>
+<h3 id="-6"><a href="#-6" class="headerlink" title=""></a><img src="/images/%E5%8A%A07.jpg" alt="image"></h3><h2 id="5）设置顶层文件并编译"><a href="#5）设置顶层文件并编译" class="headerlink" title="5）设置顶层文件并编译"></a>5）设置顶层文件并编译</h2><p>在左侧栏右击对应的文件，点击set as top选项<br>编译</p>
+<h3 id="-7"><a href="#-7" class="headerlink" title=""></a><img src="/images/%E5%8A%A09.jpg" alt="image"></h3><h2 id="6）给顶层文件配置管脚"><a href="#6）给顶层文件配置管脚" class="headerlink" title="6）给顶层文件配置管脚"></a>6）给顶层文件配置管脚</h2><h3 id="-8"><a href="#-8" class="headerlink" title=""></a><img src="/images/%E5%8A%A08.jpg" alt="image"></h3><h3 id="-9"><a href="#-9" class="headerlink" title=""></a><img src="/images/%E5%8A%A010.jpg" alt="image"></h3><h2 id="7）再次编译"><a href="#7）再次编译" class="headerlink" title="7）再次编译"></a>7）再次编译</h2><h3 id="-10"><a href="#-10" class="headerlink" title=""></a><img src="/images/%E5%8A%A011.jpg" alt="image"></h3><h2 id="8）程序的烧写（这是烧写sof文件，如果想要烧写jic文件可点击下方链接，这里不再赘述了）"><a href="#8）程序的烧写（这是烧写sof文件，如果想要烧写jic文件可点击下方链接，这里不再赘述了）" class="headerlink" title="8）程序的烧写（这是烧写sof文件，如果想要烧写jic文件可点击下方链接，这里不再赘述了）"></a>8）程序的烧写（这是烧写sof文件，如果想要烧写jic文件可点击下方链接，这里不再赘述了）</h2><h3 id="-11"><a href="#-11" class="headerlink" title=""></a><img src="/images/%E5%8A%A012.jpg" alt="image"></h3><h3 id="烧写jic文件的操作流程链接"><a href="#烧写jic文件的操作流程链接" class="headerlink" title="烧写jic文件的操作流程链接"></a>烧写jic文件的操作流程<a href="https://www.cnblogs.com/vonly/p/5592643.html" target="_blank" rel="noopener">链接</a></h3>
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>感谢支持！！！</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="罗乐乐 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="罗乐乐 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fa fa-wechat"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/FPGA%E5%8D%95%E7%89%87%E6%9C%BA/" rel="tag"># FPGA单片机</a>
+              <a href="/tags/%E6%A8%A1%E5%9D%97%E5%8C%96/" rel="tag"># 模块化</a>
+              <a href="/tags/%E5%8E%9F%E7%90%86%E5%9B%BE/" rel="tag"># 原理图</a>
+              <a href="/tags/%E5%B7%A5%E7%A8%8B%E5%BB%BA%E7%AB%8B/" rel="tag"># 工程建立</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/06/24/%E7%AE%97%E6%B3%95%E7%9A%84MATLAB%E8%BD%AF%E4%BB%B6%E4%BB%BF%E7%9C%9F%E5%92%8CDSP%E7%A7%BB%E6%A4%8D/" rel="prev" title="滤波器算法的MATLAB软件仿真和DSP移植">
+      <i class="fa fa-chevron-left"></i> 滤波器算法的MATLAB软件仿真和DSP移植
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/06/25/%E6%B5%81%E6%B0%B4%E7%81%AF%E7%94%B5%E8%B7%AF%E5%9B%BE%E6%89%8B%E5%B7%A5%E5%88%B6%E7%89%88/" rel="next" title="流水灯电路图手工制版">
+      流水灯电路图手工制版 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1、背景介绍"><span class="nav-number">1.</span> <span class="nav-text">1、背景介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2、算法思想（附上主要代码，其他自己想）"><span class="nav-number">2.</span> <span class="nav-text">2、算法思想（附上主要代码，其他自己想）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#"><span class="nav-number">3.</span> <span class="nav-text"></span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#补码器"><span class="nav-number">3.1.</span> <span class="nav-text">补码器</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3、工程的建立流程"><span class="nav-number">4.</span> <span class="nav-text">3、工程的建立流程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1）打开Quartus-II软件"><span class="nav-number">4.1.</span> <span class="nav-text">1）打开Quartus II软件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#-1"><span class="nav-number">4.1.1.</span> <span class="nav-text"></span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2）下一步，并填写保存工程路径、工程名字，确定后点击yes"><span class="nav-number">4.2.</span> <span class="nav-text">2）下一步，并填写保存工程路径、工程名字，确定后点击yes</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#-2"><span class="nav-number">4.2.1.</span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#-3"><span class="nav-number">4.2.2.</span> <span class="nav-text"></span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3）下一步，选择板子的型号，点击finish"><span class="nav-number">4.3.</span> <span class="nav-text">3）下一步，选择板子的型号，点击finish</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#-4"><span class="nav-number">4.3.1.</span> <span class="nav-text"></span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3）Ctrl-N，对应的选项意义见图"><span class="nav-number">4.4.</span> <span class="nav-text">3）Ctrl+N，对应的选项意义见图</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#-5"><span class="nav-number">4.4.1.</span> <span class="nav-text"></span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4）代码生成器件"><span class="nav-number">4.5.</span> <span class="nav-text">4）代码生成器件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#-6"><span class="nav-number">4.5.1.</span> <span class="nav-text"></span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5）设置顶层文件并编译"><span class="nav-number">4.6.</span> <span class="nav-text">5）设置顶层文件并编译</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#-7"><span class="nav-number">4.6.1.</span> <span class="nav-text"></span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6）给顶层文件配置管脚"><span class="nav-number">4.7.</span> <span class="nav-text">6）给顶层文件配置管脚</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#-8"><span class="nav-number">4.7.1.</span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#-9"><span class="nav-number">4.7.2.</span> <span class="nav-text"></span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7）再次编译"><span class="nav-number">4.8.</span> <span class="nav-text">7）再次编译</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#-10"><span class="nav-number">4.8.1.</span> <span class="nav-text"></span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8）程序的烧写（这是烧写sof文件，如果想要烧写jic文件可点击下方链接，这里不再赘述了）"><span class="nav-number">4.9.</span> <span class="nav-text">8）程序的烧写（这是烧写sof文件，如果想要烧写jic文件可点击下方链接，这里不再赘述了）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#-11"><span class="nav-number">4.9.1.</span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#烧写jic文件的操作流程链接"><span class="nav-number">4.9.2.</span> <span class="nav-text">烧写jic文件的操作流程链接</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="罗乐乐"
+      src="/images/xusong.jpeg">
+  <p class="site-author-name" itemprop="name">罗乐乐</p>
+  <div class="site-description" itemprop="description">不念、不想、不枉、此生</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yinluolll" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yinluolll" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/qq_45035280" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_45035280" rel="noopener" target="_blank"><i class="fa fa-fw fa-CSDN"></i>CSDN</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.cctry.com/" title="https:&#x2F;&#x2F;www.cctry.com" rel="noopener" target="_blank">VC驿站</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.bilibili.com/" title="https:&#x2F;&#x2F;www.bilibili.com" rel="noopener" target="_blank">B站</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.baidu.com/" title="http:&#x2F;&#x2F;www.baidu.com" rel="noopener" target="_blank">百度</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.csdn.net/" title="https:&#x2F;&#x2F;www.csdn.net" rel="noopener" target="_blank">CSDN博客</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">罗乐乐</span>
+</div>
+
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>-->
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/three-waves.min.js"></script>
+    <script defer src="/lib/three/canvas_lines.min.js"></script>
+    <script defer src="/lib/three/canvas_sphere.min.js"></script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

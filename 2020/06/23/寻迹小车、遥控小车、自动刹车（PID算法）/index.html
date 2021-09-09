@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.post_navigation">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yinluolll.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="1. 项目背景介绍只是我初出茅庐的作品，我刚开始什么都不知道，到现在已经知道了很多，也逐渐抛弃了AT89S51&#x2F;51单片机，开始转入研究更加强大的高级单片机，但是毕竟是第一个使用的板子，写这个博客来表示怀念吧！">
+<meta property="og:type" content="article">
+<meta property="og:title" content="寻迹小车、遥控小车、自动刹车（PID算法）">
+<meta property="og:url" content="https://yinluolll.github.io/2020/06/23/%E5%AF%BB%E8%BF%B9%E5%B0%8F%E8%BD%A6%E3%80%81%E9%81%A5%E6%8E%A7%E5%B0%8F%E8%BD%A6%E3%80%81%E8%87%AA%E5%8A%A8%E5%88%B9%E8%BD%A6%EF%BC%88PID%E7%AE%97%E6%B3%95%EF%BC%89/index.html">
+<meta property="og:site_name" content="个人博客">
+<meta property="og:description" content="1. 项目背景介绍只是我初出茅庐的作品，我刚开始什么都不知道，到现在已经知道了很多，也逐渐抛弃了AT89S51&#x2F;51单片机，开始转入研究更加强大的高级单片机，但是毕竟是第一个使用的板子，写这个博客来表示怀念吧！">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://yinluolll.github.io/images/%E5%B0%8F%E8%BD%A6.jpg">
+<meta property="og:image" content="https://yinluolll.github.io/images/%E5%B0%8F%E8%BD%A62.jpg">
+<meta property="og:image" content="https://yinluolll.github.io/images/%E5%B0%8F%E8%BD%A63.jpg">
+<meta property="og:image" content="https://yinluolll.github.io/images/%E5%B0%8F%E8%BD%A64.jpg">
+<meta property="og:image" content="https://yinluolll.github.io/images/%E5%B0%8F%E8%BD%A65.jpg">
+<meta property="og:image" content="https://yinluolll.github.io/images/%E5%B0%8F%E8%BD%A67.jpg">
+<meta property="og:image" content="https://yinluolll.github.io/images/%E5%B0%8F%E8%BD%A66.jpg">
+<meta property="og:image" content="https://yinluolll.github.io/images/%E9%81%A5%E6%8E%A7.jpg">
+<meta property="og:image" content="https://yinluolll.github.io/images/%E9%81%A5%E6%8E%A72.jpg">
+<meta property="og:image" content="https://yinluolll.github.io/images/%E9%81%A5%E6%8E%A73.jpg">
+<meta property="og:image" content="https://yinluolll.github.io/images/%E9%81%A5%E6%8E%A74.jpg">
+<meta property="article:published_time" content="2020-06-22T22:47:05.000Z">
+<meta property="article:modified_time" content="2020-06-23T16:59:13.715Z">
+<meta property="article:author" content="罗乐乐">
+<meta property="article:tag" content="51&#x2F;52单片机">
+<meta property="article:tag" content="软件算法">
+<meta property="article:tag" content="焊板">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yinluolll.github.io/images/%E5%B0%8F%E8%BD%A6.jpg">
+
+<link rel="canonical" href="https://yinluolll.github.io/2020/06/23/%E5%AF%BB%E8%BF%B9%E5%B0%8F%E8%BD%A6%E3%80%81%E9%81%A5%E6%8E%A7%E5%B0%8F%E8%BD%A6%E3%80%81%E8%87%AA%E5%8A%A8%E5%88%B9%E8%BD%A6%EF%BC%88PID%E7%AE%97%E6%B3%95%EF%BC%89/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>寻迹小车、遥控小车、自动刹车（PID算法） | 个人博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">个人博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">学习笔记</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://yinluolll.github.io/2020/06/23/%E5%AF%BB%E8%BF%B9%E5%B0%8F%E8%BD%A6%E3%80%81%E9%81%A5%E6%8E%A7%E5%B0%8F%E8%BD%A6%E3%80%81%E8%87%AA%E5%8A%A8%E5%88%B9%E8%BD%A6%EF%BC%88PID%E7%AE%97%E6%B3%95%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/xusong.jpeg">
+      <meta itemprop="name" content="罗乐乐">
+      <meta itemprop="description" content="不念、不想、不枉、此生">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          寻迹小车、遥控小车、自动刹车（PID算法）
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-06-23 06:47:05" itemprop="dateCreated datePublished" datetime="2020-06-23T06:47:05+08:00">2020-06-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-06-24 00:59:13" itemprop="dateModified" datetime="2020-06-24T00:59:13+08:00">2020-06-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%BA%95%E7%AB%AF%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">底端开发</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="1-项目背景介绍"><a href="#1-项目背景介绍" class="headerlink" title="1. 项目背景介绍"></a>1. 项目背景介绍</h1><p>只是我初出茅庐的作品，我刚开始什么都不知道，到现在已经知道了很多，也逐渐抛弃了AT89S51/51单片机，开始转入研究更加强大的高级单片机，但是毕竟是第一个使用的板子，写这个博客来表示怀念吧！</p>
+<a id="more"></a>
+<h1 id="项目算法框图设计"><a href="#项目算法框图设计" class="headerlink" title="项目算法框图设计"></a>项目算法框图设计</h1><h2 id=""><a href="#" class="headerlink" title=""></a><img src="/images/%E5%B0%8F%E8%BD%A6.jpg" alt="image"></h2><h1 id="2-代码实现及现象描述"><a href="#2-代码实现及现象描述" class="headerlink" title="2. 代码实现及现象描述"></a>2. 代码实现及现象描述</h1><h2 id="1）红外感应模块"><a href="#1）红外感应模块" class="headerlink" title="1）红外感应模块"></a>1）红外感应模块</h2><h3 id="基本代码思想"><a href="#基本代码思想" class="headerlink" title="基本代码思想"></a>基本代码思想</h3><p>红外感应模块有四个，两两对应两个轮子，至于为什么一个轮子用两个红外感应模块去控制，是为了更加准确的判断出黑线的边缘与黑线之间，防止因为干扰而造成的小车乱走。黑线输出为0，其余输出为1。<br>当红外感应到小车出了黑线的时候，就会进行纠正：左边的红外感应器出去了，就让小车左转，右边的红外感应器出去了，就让小车右转。这样就能使小车一直在黑线当中运行。</p>
+<h3 id="代码讲解"><a href="#代码讲解" class="headerlink" title="代码讲解"></a>代码讲解</h3><h4 id="IO口的初始化"><a href="#IO口的初始化" class="headerlink" title="IO口的初始化"></a>IO口的初始化</h4><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sbit youhongwai1=P1^<span class="number">1</span>;<span class="comment">//右红外1</span></span><br><span class="line">sbit youhongwai2=P1^<span class="number">2</span>;<span class="comment">//右红外2</span></span><br><span class="line">sbit zuohongwai1=P1^<span class="number">4</span>;<span class="comment">//左红外1</span></span><br><span class="line">sbit zuohongwai2=P1^<span class="number">3</span>;<span class="comment">//左红外2</span></span><br></pre></td></tr></table></figure>
+<h4 id="寻迹函数"><a href="#寻迹函数" class="headerlink" title="寻迹函数"></a>寻迹函数</h4><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">void</span> xunji()</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span>((zuohongwai1==<span class="number">1</span>)||(zuohongwai2==<span class="number">1</span>))</span><br><span class="line">	&#123;</span><br><span class="line">		turn_left();<span class="comment">//左转，右转，具体代码看电机驱动模块</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span>((youhongwai1==<span class="number">1</span>)||(youhongwai2==<span class="number">1</span>))</span><br><span class="line">	&#123;</span><br><span class="line">		turn_right();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="2）LCD1602显示模块"><a href="#2）LCD1602显示模块" class="headerlink" title="2）LCD1602显示模块"></a>2）LCD1602显示模块</h2><h3 id="基本代码思想-1"><a href="#基本代码思想-1" class="headerlink" title="基本代码思想"></a>基本代码思想</h3><p>利用8个管脚的并行通信，使用控制信号高低电平的时序来判断是写入数据还是命令</p>
+<h3 id="代码讲解-1"><a href="#代码讲解-1" class="headerlink" title="代码讲解"></a>代码讲解</h3><h4 id="IO口的初始化-1"><a href="#IO口的初始化-1" class="headerlink" title="IO口的初始化"></a>IO口的初始化</h4><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sbit RS=P2^<span class="number">0</span>;<span class="comment">//数据:1,命令:0</span></span><br><span class="line">sbit EN=P2^<span class="number">1</span>;<span class="comment">//H </span></span><br><span class="line"><span class="comment">//并行通信的8个管脚不用初始化，默认为输出</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="LCD1602的初始化"><a href="#LCD1602的初始化" class="headerlink" title="LCD1602的初始化"></a>LCD1602的初始化</h4><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//并行通信</span></span><br><span class="line"><span class="built_in">void</span> init()</span><br><span class="line">&#123;</span><br><span class="line">	write_com(<span class="number">0x38</span>);<span class="comment">//开启显示</span></span><br><span class="line">	write_com(<span class="number">0x0c</span>);<span class="comment">//0000 1111</span></span><br><span class="line">	write_com(<span class="number">0x06</span>);<span class="comment">//0000 0110</span></span><br><span class="line">	write_com(<span class="number">0x01</span>);<span class="comment">//0000 0001</span></span><br><span class="line">	write_com(<span class="number">0x80</span>);</span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;<span class="number">16</span>;i++)</span><br><span class="line">	&#123;</span><br><span class="line">		write_dat(table1[i]);</span><br><span class="line">		delay(<span class="number">1</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	write_com(<span class="number">0x80</span>+<span class="number">0X40</span>);</span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;<span class="number">16</span>;i++)</span><br><span class="line">	&#123;</span><br><span class="line">		write_dat(table2[i]);</span><br><span class="line">		delay(<span class="number">1</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="LCD1602的写入命令函数"><a href="#LCD1602的写入命令函数" class="headerlink" title="LCD1602的写入命令函数"></a>LCD1602的写入命令函数</h4><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">void</span> write_com(uchar com)<span class="comment">//写液晶命令字</span></span><br><span class="line">&#123;</span><br><span class="line">	RS=<span class="number">0</span>;</span><br><span class="line">	P0=com;</span><br><span class="line">	</span><br><span class="line">	EN=<span class="number">1</span>;</span><br><span class="line">	delay(<span class="number">1</span>);</span><br><span class="line">	EN=<span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="LCD1602的读出数据函数"><a href="#LCD1602的读出数据函数" class="headerlink" title="LCD1602的读出数据函数"></a>LCD1602的读出数据函数</h4><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">void</span> write_dat(uchar dat)<span class="comment">//写液晶数据</span></span><br><span class="line">&#123;</span><br><span class="line">	RS=<span class="number">1</span>;</span><br><span class="line">	P0=dat;</span><br><span class="line">	delay(<span class="number">1</span>);</span><br><span class="line">	EN=<span class="number">1</span>;</span><br><span class="line">	delay(<span class="number">1</span>);</span><br><span class="line">	EN=<span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="LCD1602的显示函数"><a href="#LCD1602的显示函数" class="headerlink" title="LCD1602的显示函数"></a>LCD1602的显示函数</h4><figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">uchar code table1[]=<span class="string">"zkb1:           "</span>;</span><br><span class="line">uchar code table2[]=<span class="string">" motor k1num:   "</span><span class="comment">;//注意每一行能够显示多少英文字符，中文字符所占的位置是英文字符的一倍，如果不计算好位置，会出现乱码的情况</span></span><br><span class="line"></span><br><span class="line">void <span class="keyword">disp(uchar </span><span class="keyword">dizhi,uchar </span><span class="keyword">shuju)</span></span><br><span class="line"><span class="keyword">&#123;</span></span><br><span class="line"><span class="keyword">	</span>uchar <span class="keyword">shiwei,gewei;</span></span><br><span class="line"><span class="keyword">	</span><span class="keyword">shiwei=shuju/10;</span></span><br><span class="line"><span class="keyword">	</span>gewei=<span class="keyword">shuju%10;	</span></span><br><span class="line">	write_com(<span class="number">0x80</span>+<span class="keyword">dizhi);</span></span><br><span class="line"><span class="keyword">	</span>write_dat(<span class="number">0x30</span>+<span class="keyword">shiwei);</span></span><br><span class="line"><span class="keyword">	</span>write_dat(<span class="number">0x30</span>+gewei);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="3）电机驱动模块"><a href="#3）电机驱动模块" class="headerlink" title="3）电机驱动模块"></a>3）电机驱动模块</h2><h3 id="基本代码思想-2"><a href="#基本代码思想-2" class="headerlink" title="基本代码思想"></a>基本代码思想</h3><p>电机驱动模块的IN1~IN4分别可以控制两个电机的四个端口，输出不同极性的电压，可以控制电机的是否前进和后退，IN1、IN2与IN3、IN4控制右轮和左轮，左轮停止右轮运行是小车左转，左轮运行右轮停止时左转，通过这样可以控制小车前后左右的方向</p>
+<h3 id="代码讲解-2"><a href="#代码讲解-2" class="headerlink" title="代码讲解"></a>代码讲解</h3><h4 id="IO口的初始化-2"><a href="#IO口的初始化-2" class="headerlink" title="IO口的初始化"></a>IO口的初始化</h4><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sbit <span class="attribute">IN1</span>=P3^1;//右轮子</span><br><span class="line">sbit <span class="attribute">IN2</span>=P3^2;</span><br><span class="line">sbit <span class="attribute">IN3</span>=P3^3;//左轮子</span><br><span class="line">sbit <span class="attribute">IN4</span>=P3^4;</span><br></pre></td></tr></table></figure>
+
+<h4 id="小车的直走、停止、右转、-左转，具体参考L298N的用户手册"><a href="#小车的直走、停止、右转、-左转，具体参考L298N的用户手册" class="headerlink" title="小车的直走、停止、右转、 左转，具体参考L298N的用户手册"></a>小车的直走、停止、右转、 左转，具体参考L298N的用户手册</h4><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">void</span> go()<span class="comment">//直走</span></span><br><span class="line">&#123;</span><br><span class="line">	IN1=<span class="number">0</span>;</span><br><span class="line">	IN2=<span class="number">1</span>;</span><br><span class="line">	IN3=<span class="number">0</span>;</span><br><span class="line">	IN4=<span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">void</span> stop()</span><br><span class="line">&#123;</span><br><span class="line">	IN1=<span class="number">0</span>;</span><br><span class="line">	IN2=<span class="number">0</span>;</span><br><span class="line">	IN3=<span class="number">0</span>;</span><br><span class="line">	IN4=<span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">void</span> turn_right()</span><br><span class="line">&#123;</span><br><span class="line">	IN1=<span class="number">0</span>;<span class="comment">//右轮停止</span></span><br><span class="line">	IN2=<span class="number">0</span>;</span><br><span class="line">	IN3=<span class="number">0</span>;<span class="comment">//左轮正转</span></span><br><span class="line">	IN4=<span class="number">1</span>;		</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">void</span> turn_left()</span><br><span class="line">&#123;</span><br><span class="line">	IN1=<span class="number">0</span>;<span class="comment">//右轮正转</span></span><br><span class="line">	IN2=<span class="number">1</span>;</span><br><span class="line">	IN3=<span class="number">0</span>;<span class="comment">//左轮停止</span></span><br><span class="line">	IN4=<span class="number">0</span>;		</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="4）按键扫描模块"><a href="#4）按键扫描模块" class="headerlink" title="4）按键扫描模块"></a>4）按键扫描模块</h2><h3 id="基本代码思想-3"><a href="#基本代码思想-3" class="headerlink" title="基本代码思想"></a>基本代码思想</h3><p>电机驱动模块的IN1~IN4分别可以控制两个电机的四个端口，输出不同极性的电压，可以控制电机的是否前进和后退，IN1、IN2与IN3、IN4控制右轮和左轮，左轮停止右轮运行是小车左转，左轮运行右轮停止时左转，通过这样可以控制小车前后左右的方向</p>
+<h3 id="代码讲解-3"><a href="#代码讲解-3" class="headerlink" title="代码讲解"></a>代码讲解</h3><h4 id="IO口的初始化-3"><a href="#IO口的初始化-3" class="headerlink" title="IO口的初始化"></a>IO口的初始化</h4><figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">sbit </span><span class="built_in">k1</span>=P2^<span class="number">3</span><span class="comment">;//启动/停止键</span></span><br><span class="line"><span class="keyword">sbit </span>k2=P2^<span class="number">4</span><span class="comment">;//加速键</span></span><br><span class="line"><span class="keyword">sbit </span>k3=P2^<span class="number">5</span><span class="comment">;//减速键</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="按键扫描模块"><a href="#按键扫描模块" class="headerlink" title="按键扫描模块"></a>按键扫描模块</h4><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">void</span> delay(<span class="built_in">uint</span> m)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">uint</span> i,j;</span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;=<span class="number">110</span>;i++)</span><br><span class="line">		<span class="keyword">for</span>(j=<span class="number">0</span>;j&lt;=m;j++);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">void</span> start_stop()</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">if</span>(k1==<span class="number">0</span>)<span class="comment">//加速</span></span><br><span class="line">	&#123;</span><br><span class="line">		delay(<span class="number">1</span>);<span class="comment">//延时消抖</span></span><br><span class="line">		<span class="keyword">if</span>(k1==<span class="number">0</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">while</span>(!k1);<span class="comment">//等待按键释放，松手</span></span><br><span class="line">				k1num++;<span class="comment">//计算按键的次数</span></span><br><span class="line">			<span class="keyword">if</span>(k1num%<span class="number">2</span>==<span class="number">1</span>)<span class="comment">//根据按键次数的奇偶性判断两次按键内的不同性</span></span><br><span class="line">			&#123;</span><br><span class="line">				go();</span><br><span class="line">				flag=<span class="number">1</span>;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">else</span></span><br><span class="line">			&#123;</span><br><span class="line">				stop();</span><br><span class="line">				flag=<span class="number">0</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;	</span><br><span class="line">	&#125;				</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">void</span> keyscan()</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">if</span>(k2==<span class="number">0</span>)<span class="comment">//加速</span></span><br><span class="line">	&#123;</span><br><span class="line">		delay(<span class="number">1</span>);</span><br><span class="line">		<span class="keyword">if</span>(k2==<span class="number">0</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">while</span>(!k2);<span class="comment">//等待按键释放，松手</span></span><br><span class="line">				didi();</span><br><span class="line">				zkb++;</span><br><span class="line">			<span class="keyword">if</span>(zkb&gt;=<span class="number">99</span>)</span><br><span class="line">				zkb=<span class="number">0</span>;</span><br><span class="line">		    disp(<span class="number">5</span>,zkb);</span><br><span class="line">		&#125;			</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span>(k3==<span class="number">0</span>)<span class="comment">//减速</span></span><br><span class="line">	&#123;</span><br><span class="line">		delay(<span class="number">1</span>);</span><br><span class="line">		<span class="keyword">if</span>(k3==<span class="number">0</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">while</span>(!k3);<span class="comment">//等待按键释放，松手</span></span><br><span class="line">				didi();</span><br><span class="line">				zkb--;</span><br><span class="line">			<span class="keyword">if</span>(zkb==<span class="number">-1</span>)</span><br><span class="line">				zkb=<span class="number">99</span>;</span><br><span class="line">			disp(<span class="number">5</span>,zkb);</span><br><span class="line">		&#125;			</span><br><span class="line">	&#125;		</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="5）PWM波的定时器模拟模块（软件编程进行模拟）"><a href="#5）PWM波的定时器模拟模块（软件编程进行模拟）" class="headerlink" title="5）PWM波的定时器模拟模块（软件编程进行模拟）"></a>5）PWM波的定时器模拟模块（软件编程进行模拟）</h2><h3 id="代码讲解-4"><a href="#代码讲解-4" class="headerlink" title="代码讲解"></a>代码讲解</h3><h4 id="IO口的初始化-4"><a href="#IO口的初始化-4" class="headerlink" title="IO口的初始化"></a>IO口的初始化</h4><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//控制IN1~IN4输出的功率（听过对占空比的调节）</span></span><br><span class="line">sbit ENA=P3^<span class="number">5</span>;<span class="comment">//右轮子</span></span><br><span class="line">sbit ENB=P3^<span class="number">6</span>;<span class="comment">//左轮子</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="定时器0的初始化函数，一般在main函数当中"><a href="#定时器0的初始化函数，一般在main函数当中" class="headerlink" title="定时器0的初始化函数，一般在main函数当中"></a>定时器0的初始化函数，一般在main函数当中</h4><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">   init();</span><br><span class="line">zkb=<span class="number">20</span>;</span><br><span class="line">TMOD=<span class="number">0x11</span>;<span class="comment">//设置定时器0/1工作在方式一，16位</span></span><br><span class="line">TH0=(<span class="number">65536</span><span class="number">-300</span>)/<span class="number">256</span>;<span class="comment">//装初值256，定时256us</span></span><br><span class="line">TL0=(<span class="number">65536</span><span class="number">-300</span>)%<span class="number">256</span>;</span><br></pre></td></tr></table></figure>
+
+<h4 id="定时器0的中断服务函数"><a href="#定时器0的中断服务函数" class="headerlink" title="定时器0的中断服务函数"></a>定时器0的中断服务函数</h4><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">    <span class="built_in">void</span> T0_time() <span class="built_in">int</span>errupt <span class="number">1</span></span><br><span class="line">&#123;</span><br><span class="line">	TH0=(<span class="number">65536</span><span class="number">-300</span>)/<span class="number">256</span>;<span class="comment">//重新装初值</span></span><br><span class="line">	TL0=(<span class="number">65536</span><span class="number">-300</span>)%<span class="number">256</span>;</span><br><span class="line">	num1++;<span class="comment">//n记录发生了多少次定时中断</span></span><br><span class="line">	<span class="keyword">if</span>(num1&gt;=<span class="number">100</span>)</span><br><span class="line">		num1=<span class="number">0</span>;</span><br><span class="line"><span class="comment">//	if(flag==1)</span></span><br><span class="line"><span class="comment">//	&#123;</span></span><br><span class="line">		<span class="keyword">if</span>(num1&lt;zkb)</span><br><span class="line">		&#123;</span><br><span class="line">			ENA=<span class="number">1</span>;</span><br><span class="line">			ENB=<span class="number">1</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">		&#123;		  </span><br><span class="line">			ENA=<span class="number">0</span>;</span><br><span class="line">			ENB=<span class="number">0</span>;</span><br><span class="line">		&#125;</span><br><span class="line"><span class="comment">//	&#125;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="2-实验现象"><a href="#2-实验现象" class="headerlink" title="2. 实验现象"></a>2. 实验现象</h1><h2 id="1）视频链接"><a href="#1）视频链接" class="headerlink" title="1）视频链接"></a>1）<a href="https://www.bilibili.com/video/BV1Ut4y1X7yn" target="_blank" rel="noopener">视频链接</a></h2><h2 id="2）实验图片"><a href="#2）实验图片" class="headerlink" title="2）实验图片"></a>2）实验图片</h2><h3 id="小车的手工焊板（单片机的最小系统和外设）"><a href="#小车的手工焊板（单片机的最小系统和外设）" class="headerlink" title="小车的手工焊板（单片机的最小系统和外设）"></a>小车的手工焊板（单片机的最小系统和外设）</h3><h4 id="-1"><a href="#-1" class="headerlink" title=""></a><img src="/images/%E5%B0%8F%E8%BD%A62.jpg" alt="image"></h4><h3 id="LCD1602液晶显示模块"><a href="#LCD1602液晶显示模块" class="headerlink" title="LCD1602液晶显示模块"></a>LCD1602液晶显示模块</h3><h4 id="-2"><a href="#-2" class="headerlink" title=""></a><img src="/images/%E5%B0%8F%E8%BD%A63.jpg" alt="image"></h4><h3 id="电机驱动模块"><a href="#电机驱动模块" class="headerlink" title="电机驱动模块"></a>电机驱动模块</h3><h4 id="-3"><a href="#-3" class="headerlink" title=""></a><img src="/images/%E5%B0%8F%E8%BD%A64.jpg" alt="image"></h4><h3 id="两个电机和两个轮子"><a href="#两个电机和两个轮子" class="headerlink" title="两个电机和两个轮子"></a>两个电机和两个轮子</h3><h4 id="-4"><a href="#-4" class="headerlink" title=""></a><img src="/images/%E5%B0%8F%E8%BD%A65.jpg" alt="image"></h4><h3 id="红外感应器（4个）和集成板（一个）"><a href="#红外感应器（4个）和集成板（一个）" class="headerlink" title="红外感应器（4个）和集成板（一个）"></a>红外感应器（4个）和集成板（一个）</h3><h4 id="-5"><a href="#-5" class="headerlink" title=""></a><img src="/images/%E5%B0%8F%E8%BD%A67.jpg" alt="image"></h4><h4 id="-6"><a href="#-6" class="headerlink" title=""></a><img src="/images/%E5%B0%8F%E8%BD%A66.jpg" alt="image"></h4><h1 id="3-实验改进"><a href="#3-实验改进" class="headerlink" title="3. 实验改进"></a>3. 实验改进</h1><h2 id="1）原因："><a href="#1）原因：" class="headerlink" title="1）原因："></a>1）原因：</h2><p>1）在小车寻迹的过程中假如有外界的干扰，很容易会导致寻迹的不准确，一是传感器灵敏性的原因，而是因为单片机的计算速度跟不上，这些我们都不能改变，但是假如因为外界的干扰导致轮子的控制失调，这个我们可以通过PID算法进行改进！<br>2）在人机交互层面上并没有什么互动，因此需要通过红外通信来进行人机交互的处理，不但增加趣味性，而且也能够更好的提升对于通信的理解。</p>
+<h2 id="2）知识背景"><a href="#2）知识背景" class="headerlink" title="2）知识背景"></a>2）知识背景</h2><h3 id="红外遥控通信"><a href="#红外遥控通信" class="headerlink" title="红外遥控通信"></a><a href="http://www.elecfans.com/tongxin/tongxinmokuai/2018/0518/679151.html" target="_blank" rel="noopener">红外遥控通信</a></h3><p>简单来说，就是遥控器的每个按键有不同的数字脉冲，而数字脉冲的功率太小，并不能实现对外通信，因此需要通过调制，将这段脉冲放在一个高频载波上进行无线传输，然后通过红外接头进行解调还原出原本的数字脉冲，最后让单片机对不同的数字脉冲编码进行判断，对其赋予模块控制的意义。</p>
+<h4 id="-7"><a href="#-7" class="headerlink" title=""></a><img src="/images/%E9%81%A5%E6%8E%A7.jpg" alt="image"></h4><h3 id="PID算法"><a href="#PID算法" class="headerlink" title="PID算法"></a><a href="https://blog.csdn.net/tingfenghanlei/article/details/85028677" target="_blank" rel="noopener">PID算法</a></h3><p>简单来说，这个算法能够在被控对象干扰的情况表迅速让其平稳到原定的值，至于原理大概知道就行，至于PID的三个参数设定，需要根据实际情况进行设定，有智能算法进行比例、积分、微分参数的设定，也可以通过人为的经验进行设定，这次实验我们选择后者为例。<br><strong>为何在自动刹车的过程中要用到PID算法，而不用小于一定的距离就后退，大于就前进，是因为这样的算法没有一个误差区域（死区），这样因为小车的惯性会让单片机控制一直找不到准确的距离，从而造成小车一直在动，没有停止的时候；而加入说我给一个误差的范围，在这个范围内就停车的话，用if else算法也不行，因为在这个范围内到底是停在那个距离，我们无从得知，达不到精准控制的目的，所以我们在自动刹车实验的过程中，必须用到PID算法，才能够有效解决这样的问题</strong></p>
+<h4 id="控制框图"><a href="#控制框图" class="headerlink" title="控制框图"></a>控制框图</h4><h4 id="-8"><a href="#-8" class="headerlink" title=""></a><img src="/images/%E9%81%A5%E6%8E%A72.jpg" alt="image"></h4><h4 id="调节波形（不同的参数波形的现象也不一样）"><a href="#调节波形（不同的参数波形的现象也不一样）" class="headerlink" title="调节波形（不同的参数波形的现象也不一样）"></a>调节波形（不同的参数波形的现象也不一样）</h4><h4 id="-9"><a href="#-9" class="headerlink" title=""></a><img src="/images/%E9%81%A5%E6%8E%A73.jpg" alt="image"></h4><h2 id="3）具体代码的实现"><a href="#3）具体代码的实现" class="headerlink" title="3）具体代码的实现"></a>3）具体代码的实现</h2><h3 id="红外遥控模块"><a href="#红外遥控模块" class="headerlink" title="红外遥控模块"></a>红外遥控模块</h3><h4 id="代码基本思想"><a href="#代码基本思想" class="headerlink" title="代码基本思想"></a>代码基本思想</h4><p>单片机的作用就是对传过来的数字脉冲信息进行判断，因此可以用作解码器</p>
+<h4 id="相关参数的定义"><a href="#相关参数的定义" class="headerlink" title="相关参数的定义"></a>相关参数的定义</h4><p>P3.2 ——— RXD,外部中断触发管脚，这个不需要在代码中定义，只要直接连接即可</p>
+<h4 id="解码器（在外部触发中断服务函数当中处理，这样就会知晓接受端的变化的数字脉冲了）"><a href="#解码器（在外部触发中断服务函数当中处理，这样就会知晓接受端的变化的数字脉冲了）" class="headerlink" title="解码器（在外部触发中断服务函数当中处理，这样就会知晓接受端的变化的数字脉冲了）"></a>解码器（在外部触发中断服务函数当中处理，这样就会知晓接受端的变化的数字脉冲了）</h4><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">void</span> IR_IN() <span class="built_in">int</span>errupt <span class="number">0</span> using <span class="number">0</span><span class="comment">//using_0表示使用工作寄存器组0,简单的说是用来存放数据的bai</span></span><br><span class="line">&#123;</span><br><span class="line">    unsigned char j, k, N = <span class="number">0</span>;</span><br><span class="line">    EX0 = <span class="number">0</span>;<span class="comment">//信号没来就不允许外部中断0的中断申请</span></span><br><span class="line">    delay(<span class="number">15</span>);<span class="comment">//延时消抖</span></span><br><span class="line">    <span class="keyword">if</span> (IRIN == <span class="number">1</span>)         <span class="comment">//确认IR信号出现</span></span><br><span class="line">    &#123;</span><br><span class="line">        EX0 = <span class="number">1</span>;<span class="comment">//信号来l就允许外部中断0的中断申请，以此来接受新的中断，进行重置</span></span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (!IRIN)         <span class="comment">//等IR变为高电平，跳过9ms的前导低电平信号。</span></span><br><span class="line">    &#123;</span><br><span class="line">        delay(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (j = <span class="number">0</span>; j &lt; <span class="number">4</span>; j++) <span class="comment">//收集四组数据，四个字节</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">for</span> (k = <span class="number">0</span>; k &lt; <span class="number">8</span>; k++)		<span class="comment">//每组数据有8位</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">while</span> (IRIN)		<span class="comment">//等 IR 变为低电平，跳过4.5ms的前导高电平信号。</span></span><br><span class="line">            &#123;</span><br><span class="line">                delay(<span class="number">1</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">while</span> (!IRIN)	<span class="comment">//等 IR 变为高电平</span></span><br><span class="line">            &#123;</span><br><span class="line">                delay(<span class="number">1</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">while</span> (IRIN) 	<span class="comment">//计算IR高电平时长</span></span><br><span class="line">            &#123;</span><br><span class="line">                delay(<span class="number">1</span>);</span><br><span class="line">                N++;</span><br><span class="line">                <span class="keyword">if</span> (N &gt;= <span class="number">30</span>)</span><br><span class="line">                &#123;</span><br><span class="line">                    EX0 = <span class="number">1</span>;<span class="comment">//通过允许新的中断进行重置</span></span><br><span class="line">                    <span class="keyword">return</span>; <span class="comment">//0.14ms计数过长自动离开。</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;                  <span class="comment">//高电平计数完毕</span></span><br><span class="line">            IRCOM[j] = IRCOM[j] &gt;&gt; <span class="number">1</span>; <span class="comment">//将高位的数据放到次一级的高位上</span></span><br><span class="line">            <span class="keyword">if</span> (N &gt;= <span class="number">8</span>)<span class="comment">//有效数据值 红外数字脉冲 1100-----&gt;低于8个N的高电平就认为是0，高于就认为是1-----&gt;对应每个数组的最高位</span></span><br><span class="line">            &#123;</span><br><span class="line">                IRCOM[j] = IRCOM[j] | <span class="number">0x80</span>;<span class="comment">//数据最高位补“1”</span></span><br><span class="line">            &#125;</span><br><span class="line">            N = <span class="number">0</span>;</span><br><span class="line">        &#125;<span class="comment">//end for k</span></span><br><span class="line">    &#125;<span class="comment">//end for j</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (IRCOM[<span class="number">2</span>] != ~IRCOM[<span class="number">3</span>])<span class="comment">//如果第三组数据和第四组数据的反码不同，就重置</span></span><br><span class="line">    &#123;</span><br><span class="line">        EX0 = <span class="number">1</span>;<span class="comment">//丢弃数据</span></span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment">//IRCOM[2]本身就包含设键码内容，只不过为了显示而拆分</span></span><br><span class="line">    IRCOM[<span class="number">5</span>] = IRCOM[<span class="number">2</span>] &amp; <span class="number">0x0F</span>; <span class="comment">//取键码的低四位</span></span><br><span class="line">    IRCOM[<span class="number">6</span>] = IRCOM[<span class="number">2</span>] &gt;&gt; <span class="number">4</span>;   <span class="comment">//右移4次，高四位变为低四位</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(IRCOM[<span class="number">5</span>] &gt; <span class="number">9</span>)<span class="comment">//就是要显示字母起始地址</span></span><br><span class="line">    &#123;</span><br><span class="line">        IRCOM[<span class="number">5</span>] = IRCOM[<span class="number">5</span>] + <span class="number">0x37</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span><span class="comment">//就是显示数字的起始地址：字符的偏移量就是间隔量，你开始加一个正数的时候就已经跳跃了起始地址的值</span></span><br><span class="line">        IRCOM[<span class="number">5</span>] = IRCOM[<span class="number">5</span>] + <span class="number">0x30</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(IRCOM[<span class="number">6</span>] &gt; <span class="number">9</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        IRCOM[<span class="number">6</span>] = IRCOM[<span class="number">6</span>] + <span class="number">0x37</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        IRCOM[<span class="number">6</span>] = IRCOM[<span class="number">6</span>] + <span class="number">0x30</span>;</span><br><span class="line"></span><br><span class="line">    DisplayOneChar(<span class="number">0x0b</span>, <span class="number">1</span>, IRCOM[<span class="number">6</span>]); <span class="comment">//LCD1602本身带有字库，详细请参见帮助文档</span></span><br><span class="line">    DisplayOneChar(<span class="number">0x0c</span>, <span class="number">1</span>, IRCOM[<span class="number">5</span>]);      <span class="comment">//第二位数显示，这是显示键码的实验</span></span><br><span class="line">    EX0 = <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="PID算法模块（软件算法）"><a href="#PID算法模块（软件算法）" class="headerlink" title="PID算法模块（软件算法）"></a>PID算法模块（<a href="https://blog.csdn.net/guanjianhe/article/details/76438219" target="_blank" rel="noopener">软件算法</a>）</h3><h4 id="代码基本思想（以小车的超声波传感器的距离参数为例）"><a href="#代码基本思想（以小车的超声波传感器的距离参数为例）" class="headerlink" title="代码基本思想（以小车的超声波传感器的距离参数为例）"></a>代码基本思想（以小车的超声波传感器的距离参数为例）</h4><h4 id="-10"><a href="#-10" class="headerlink" title=""></a><img src="/images/%E9%81%A5%E6%8E%A74.jpg" alt="image"></h4><h4 id="相关参数的定义-1"><a href="#相关参数的定义-1" class="headerlink" title="相关参数的定义"></a>相关参数的定义</h4><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//PID计算需要的参数，类似于C++的类，PID控制器的定义</span></span><br><span class="line"><span class="keyword">typedef</span> struct pid</span><br><span class="line">&#123;</span><br><span class="line">	 <span class="built_in">float</span> <span class="built_in">ref</span>;	 <span class="comment">//系统待调节量的设定值 </span></span><br><span class="line">	 <span class="built_in">float</span> fdb;  <span class="comment">//系统待调节量的反馈值，就是传感器实际测量的值</span></span><br><span class="line">	 </span><br><span class="line">	  </span><br><span class="line">	 <span class="built_in">float</span> KP;				 <span class="comment">//比例系数</span></span><br><span class="line">	 <span class="built_in">float</span> KI;				 <span class="comment">//积分系数</span></span><br><span class="line">	 <span class="built_in">float</span> KD;				 <span class="comment">//微分系数</span></span><br><span class="line">	 </span><br><span class="line">	 <span class="built_in">float</span> T;		<span class="comment">//离散化系统的采样周期 </span></span><br><span class="line">	 </span><br><span class="line">	 <span class="built_in">float</span> a0; 		<span class="comment">//变量代替三项的运算结果</span></span><br><span class="line">	 <span class="built_in">float</span> a1;</span><br><span class="line">	 <span class="built_in">float</span> a2;</span><br><span class="line">	 </span><br><span class="line">	 <span class="built_in">float</span> error;	<span class="comment">//当前偏差e（k）</span></span><br><span class="line">	 <span class="built_in">float</span> error_1; <span class="comment">//前一步的偏差</span></span><br><span class="line">	 <span class="built_in">float</span> error_2; <span class="comment">//前前一步的偏差</span></span><br><span class="line">	 </span><br><span class="line">	 <span class="built_in">float</span> output;  	<span class="comment">//pid控制器的输出</span></span><br><span class="line">	 <span class="built_in">float</span> output_1;  	<span class="comment">//pid的前一步输出</span></span><br><span class="line">	 <span class="built_in">float</span> out_max;  	<span class="comment">//输出上限</span></span><br><span class="line">	 <span class="built_in">float</span> out_min;  	<span class="comment">//输出下限</span></span><br><span class="line">	 </span><br><span class="line">	 </span><br><span class="line">&#125;PID_value;					 <span class="comment">//定义一个PID_value类型，	此时PID_value为一个数据类型标识符，数据类型为结构体</span></span><br><span class="line"></span><br><span class="line">#define T0   <span class="number">0.01</span>				<span class="comment">//离散化采样周期，单位：s</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//定义一个PI调节器ASR</span></span><br><span class="line"><span class="comment">//PID_value  ASR  =  PID_DEFAULTS;</span></span><br><span class="line"><span class="comment">//data区已经满了，所以把结构体参数放在xdata区，但是如果在其他文件需要extern这个结构体的话，也要加上xdata</span></span><br><span class="line">PID_value xdata ASR ;<span class="comment">//类似于C++的对象，定义了一个PI调节器ASR	定义PID有效参数为一个数据类型，将ASR结构体定义的对象存在片内FLASH当中	</span></span><br><span class="line">	</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">** 定义控制器的参数以及输出限幅，在这里进行KP/KI的调参。</span></span><br><span class="line"><span class="comment">** 2018.3.16  调节T0 = 0.01，KP = 0.6，KI = 30，KD = 0.0045效果比较理想，能很快稳定，过冲不至于太大。</span></span><br><span class="line"><span class="comment">** PID的输出限幅在（-3，7）之间即可。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="comment">//认为实验出来的PID算法参数（经验告诉我们的）</span></span><br><span class="line"><span class="built_in">float</span> distance_kp = <span class="number">0.6</span>,</span><br><span class="line">	  distance_ki = <span class="number">35</span>,</span><br><span class="line">	  distance_kd = <span class="number">0.0045</span>,</span><br><span class="line">	  limit_max = <span class="number">7</span>,		<span class="comment">//0.002s周期下，这个范围不要变了</span></span><br><span class="line">	  limit_min = <span class="number">-3</span>;</span><br><span class="line">	  </span><br><span class="line"><span class="built_in">float</span> real_distance = <span class="number">0</span>;		<span class="comment">//实际距离</span></span><br><span class="line">uchar distance[<span class="number">6</span>] = &#123;<span class="number">0</span>&#125;;		<span class="comment">//测量距离最大为400cm，保留一位小数，如380.7cm </span></span><br><span class="line">uchar time1_flag = <span class="number">0</span>;  			<span class="comment">//利用pwm的定时器，中断两次就是200us，进行一次pid运算。</span></span><br></pre></td></tr></table></figure>
+<h4 id="SR04超声波传感器（使用定时器0来测量声音来回的时间，从而计算出距离，使用IIC通信进行时序通信）"><a href="#SR04超声波传感器（使用定时器0来测量声音来回的时间，从而计算出距离，使用IIC通信进行时序通信）" class="headerlink" title="SR04超声波传感器（使用定时器0来测量声音来回的时间，从而计算出距离，使用IIC通信进行时序通信）"></a>SR04超声波传感器（使用定时器0来测量声音来回的时间，从而计算出距离，使用IIC通信进行时序通信）</h4><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line">#define NUM <span class="number">3</span>			<span class="comment">//滤波次数</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">void</span> sr04_init()</span><br><span class="line">&#123;	</span><br><span class="line">	TRIG = <span class="number">0</span>;</span><br><span class="line">	ECHO = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">	TMOD |= <span class="number">0X01</span>;	<span class="comment">//定时器0模式设置1</span></span><br><span class="line">	TH0 = <span class="number">0</span>;		<span class="comment">//从0开始计数</span></span><br><span class="line">	TL0 = <span class="number">0</span>;</span><br><span class="line">	TR0 = <span class="number">0</span>;		<span class="comment">//关闭定时器</span></span><br><span class="line">	EA = <span class="number">1</span>;			<span class="comment">//开总中断</span></span><br><span class="line">	ET0 = <span class="number">1</span>;		<span class="comment">//允许定时器0中断</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*start*/</span></span><br><span class="line"><span class="built_in">void</span>  sr04_start()</span><br><span class="line">&#123;</span><br><span class="line">	 TRIG = <span class="number">1</span>;	</span><br><span class="line">	 delay_10us(<span class="number">5</span>); <span class="comment">//拉高50us</span></span><br><span class="line">	 TRIG = <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*开启定时器0，打开之前先清除之前的计数,不然会累计计数*/</span></span><br><span class="line"><span class="built_in">void</span> time_0_start()<span class="comment">//属于I2C通信</span></span><br><span class="line">&#123;	</span><br><span class="line">	TH0 = <span class="number">0</span>;	   <span class="comment">//打开前计数清零</span></span><br><span class="line">	TL0 = <span class="number">0</span>;</span><br><span class="line">	TR0 = <span class="number">1</span>;	   <span class="comment">//打开定时器</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">获取当前距离</span></span><br><span class="line"><span class="comment">2018.3.5  测试发现总是比实际距离小1-2cm</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="built_in">float</span> get_distence()</span><br><span class="line">&#123;</span><br><span class="line">	unsigned long <span class="built_in">int</span> time_buf = <span class="number">0</span>;		<span class="comment">//总耗时</span></span><br><span class="line">	<span class="built_in">float</span> distence = <span class="number">0</span>;		<span class="comment">//计算一次距离</span></span><br><span class="line">	<span class="built_in">float</span> sum = <span class="number">0</span>;		    <span class="comment">//多次计算的总距离</span></span><br><span class="line">	uchar i = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">while</span>(i &lt; NUM)</span><br><span class="line">	&#123;</span><br><span class="line">		time0_flag = <span class="number">0</span>;	<span class="comment">//先清除定时器溢出标志</span></span><br><span class="line">		sr04_start();	<span class="comment">//开始测距，产生一个50us的矩形脉冲</span></span><br><span class="line">		<span class="keyword">while</span>(!ECHO); <span class="comment">//等待发出40khz脉冲，触发信号成功之后，echo会变成高电平</span></span><br><span class="line">		time_0_start();<span class="comment">//当把trig拉高10us之后，模块即开始发出8个40khz的脉冲，与此同时，echo变为高电平时，打开定时器。</span></span><br><span class="line">									<span class="comment">//等待回响过程中做的事情是清零并打开定时器，计算回响所耗的时间</span></span><br><span class="line">		<span class="keyword">while</span>(ECHO); 	<span class="comment">//等待回响信号，收到回响信号，echo会变低电平</span></span><br><span class="line">		TR0 = <span class="number">0</span>;	  	<span class="comment">//关闭定时器</span></span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span>(time0_flag != <span class="number">0</span>)  <span class="comment">//定时器溢出而超出测量范围</span></span><br><span class="line">			<span class="keyword">continue</span>;		<span class="comment">//不进行计算，放弃这次测量，从新测量</span></span><br><span class="line"></span><br><span class="line">		<span class="keyword">else</span>				<span class="comment">//time_flag = 0,没有超出测量范围</span></span><br><span class="line">		&#123;</span><br><span class="line">			time_buf = (TH0 * <span class="number">256</span>) + TL0;<span class="comment">//二进制的时间转换成十进制的时间，( 71.1ms/65535(ms/次)*time_buf )(ms)</span></span><br><span class="line">			distence = time_buf * <span class="number">0.0168</span>;<span class="comment">//（单位:cm）虽然声速340m/s，发现使用0.0168更精确，可能和温度有关</span></span><br><span class="line">			<span class="comment">//距离计算公式：340m/s=34cm/ms,而距离的来回，所以( ( 71.1ms/65535(ms/次)*time_buf(ms) )/2*34(cm/ms) )(cm)，所以实际计算值为0.0184*time_buf</span></span><br><span class="line">			sum+= distence;</span><br><span class="line">			i++;</span><br><span class="line">		&#125;	  </span><br><span class="line">	&#125;	</span><br><span class="line">	<span class="keyword">return</span> (sum/NUM) ;	<span class="comment">//取NUM次平均值，计算三次，取平均值</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="核心算法PID公式的代码实现（使用定时器1来进行控制周期的设定和模拟PWM波占空比的调整）"><a href="#核心算法PID公式的代码实现（使用定时器1来进行控制周期的设定和模拟PWM波占空比的调整）" class="headerlink" title="核心算法PID公式的代码实现（使用定时器1来进行控制周期的设定和模拟PWM波占空比的调整）"></a>核心算法PID公式的代码实现（使用定时器1来进行控制周期的设定和模拟PWM波占空比的调整）</h4><figure class="highlight xl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//定时器1中断入口</span></span><br><span class="line">void time_1() interrupt <span class="number">3</span></span><br><span class="line">&#123;</span><br><span class="line">  	<span class="comment">/*左轮前进PWM输出*/</span>	</span><br><span class="line">	Left_Forward_Cnt++;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span>(Left_Forward_Cnt &lt;= Left_Forward_Duty)  <span class="comment">//这里控制占空比</span></span><br><span class="line">		left_en = <span class="number">1</span>;<span class="comment">//高电平，使能电机</span></span><br><span class="line">	<span class="keyword">else</span> </span><br><span class="line">		left_en = <span class="number">0</span>;	</span><br><span class="line">	<span class="keyword">if</span>(Left_Forward_Cnt == H)<span class="comment">//占空比：50%</span></span><br><span class="line">     	Left_Forward_Cnt = <span class="number">0</span>;	</span><br><span class="line">	</span><br><span class="line"></span><br><span class="line">  <span class="comment">/*右轮前进PWM输出*/</span></span><br><span class="line">	Right_Forward_Cnt++;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span>(Right_Forward_Cnt &lt;= Right_Forward_Duty)</span><br><span class="line">		right_en = <span class="number">1</span>; </span><br><span class="line">	<span class="keyword">else</span> </span><br><span class="line">		right_en = <span class="number">0</span>;	</span><br><span class="line">	<span class="keyword">if</span>(Right_Forward_Cnt == H)</span><br><span class="line">     	Right_Forward_Cnt = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="comment">/*中断两次进行一次pid运算*/</span></span><br><span class="line">	time1_flag++;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">float constrain_float(float amt, float low, float high) </span><br><span class="line">&#123;</span><br><span class="line"><span class="comment">//	if (isnan(amt))				  //51里面没有这个库函数，需要自己实现</span></span><br><span class="line"><span class="comment">//	&#123;</span></span><br><span class="line"><span class="comment">//		return (low+high)*0.5f;</span></span><br><span class="line"><span class="comment">//	&#125;</span></span><br><span class="line">	return ( (amt)&lt;(low)?(low):( (amt)&gt;(high)?(high):(amt) ) );<span class="comment">//能够让PID更为迅速的达到平稳值（过幅度调整）</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void PID_operation(PID_value *p)<span class="comment">//PID算法的本体，进行迭代相加</span></span><br><span class="line">&#123;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//使用条件编译进行功能切换</span></span><br><span class="line">	#<span class="keyword">if</span> (PID_DEBUG)<span class="comment">//自动</span></span><br><span class="line">		</span><br><span class="line">	float a0,a1,a2;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//计算中间变量a0,a1,a2;</span></span><br><span class="line">	<span class="function"><span class="title">a0</span> = p-&gt;</span>KP + <span class="function"><span class="title">p</span>-&gt;</span>KI*<span class="function"><span class="title">p</span>-&gt;</span>T + <span class="function"><span class="title">p</span>-&gt;</span>KD/<span class="function"><span class="title">p</span>-&gt;</span>T ;</span><br><span class="line">	<span class="function"><span class="title">a1</span> = p-&gt;</span>KP + <span class="number">2</span>*<span class="function"><span class="title">p</span>-&gt;</span>KD/<span class="function"><span class="title">p</span>-&gt;</span>T ;</span><br><span class="line">	<span class="function"><span class="title">a2</span> = p-&gt;</span>KD/<span class="function"><span class="title">p</span>-&gt;</span>T ;</span><br><span class="line">	<span class="comment">//计算输出，前一个输出值给作为当前的计算参数，也就构成了反馈调节的条件，属于回环算法</span></span><br><span class="line">	<span class="function"><span class="title">p</span>-&gt;</span><span class="function"><span class="title">output</span> = p-&gt;</span><span class="function"><span class="title">output_1</span> + a0*p-&gt;</span><span class="function"><span class="title">error</span> - a1*p-&gt;</span><span class="function"><span class="title">error_1</span> + a2*p-&gt;</span>error_2 ;</span><br><span class="line">	</span><br><span class="line">	#<span class="keyword">else</span>	<span class="comment">//手动</span></span><br><span class="line">	<span class="comment">//非调试状态下，直接给a赋值计算输出，减小计算量,因为一旦三个系数确定，T已知，即可自己计算出对应的a</span></span><br><span class="line">	<span class="function"><span class="title">p</span>-&gt;</span><span class="function"><span class="title">output</span> = p-&gt;</span><span class="function"><span class="title">output_1</span> + p-&gt;</span><span class="function"><span class="title">a0</span>*p-&gt;</span><span class="function"><span class="title">error</span> - p-&gt;</span><span class="function"><span class="title">a1</span>*p-&gt;</span><span class="function"><span class="title">error_1</span> + p-&gt;</span><span class="function"><span class="title">a2</span>*p-&gt;</span>error_2 ;</span><br><span class="line">	</span><br><span class="line">	#endif</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//输出限幅</span></span><br><span class="line">	<span class="function"><span class="title">p</span>-&gt;</span><span class="function"><span class="title">output</span> = constrain_float(p-&gt;</span><span class="function"><span class="title">output</span>,p-&gt;</span><span class="function"><span class="title">out_min</span>,p-&gt;</span>out_max);</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//为下次计算迭代</span></span><br><span class="line">	<span class="comment">//这里顺序千万不要搞错，不然输出占空比是错误的。</span></span><br><span class="line">	<span class="function"><span class="title">p</span>-&gt;</span><span class="function"><span class="title">output_1</span> = p-&gt;</span>output;<span class="comment">//将当前的输出值给前一步的输出值来保存</span></span><br><span class="line">	<span class="function"><span class="title">p</span>-&gt;</span><span class="function"><span class="title">error_2</span> = p-&gt;</span>error_1;<span class="comment">//将前一步的误差值给前前一步的误差值来保存</span></span><br><span class="line">	<span class="function"><span class="title">p</span>-&gt;</span><span class="function"><span class="title">error_1</span> = p-&gt;</span>error;<span class="comment">//将当前的误差值给前一步的误差值来保存</span></span><br><span class="line">	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="PID输出值反馈到电机的转速上（PWM波占空比的调整，使用定时器0来进行PWM的模拟）"><a href="#PID输出值反馈到电机的转速上（PWM波占空比的调整，使用定时器0来进行PWM的模拟）" class="headerlink" title="PID输出值反馈到电机的转速上（PWM波占空比的调整，使用定时器0来进行PWM的模拟）"></a>PID输出值反馈到电机的转速上（PWM波占空比的调整，使用定时器0来进行PWM的模拟）</h4><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">void <span class="constructor">PID_out(<span class="params">void</span>)</span><span class="comment">//小车像是会思考一样，能够与障碍物保持一定的距离再停止，模拟无人车的停车</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">float</span> xdata duty;</span><br><span class="line">	</span><br><span class="line">	<span class="module-access"><span class="module"><span class="identifier">ASR</span>.</span></span><span class="built_in">ref</span> = set_distance;		<span class="comment">//距离给定，10.00，小车与障碍物必须保持10cm的距离</span></span><br><span class="line">	<span class="module-access"><span class="module"><span class="identifier">ASR</span>.</span></span>fdb = real_distance;	<span class="comment">//获取实际距离反馈，这个是超声波传感器测量出来的</span></span><br><span class="line">	</span><br><span class="line">	<span class="module-access"><span class="module"><span class="identifier">ASR</span>.</span></span>error = <span class="module-access"><span class="module"><span class="identifier">ASR</span>.</span></span><span class="built_in">ref</span> - <span class="module-access"><span class="module"><span class="identifier">ASR</span>.</span></span>fdb;	<span class="comment">//偏差</span></span><br><span class="line">	</span><br><span class="line">	<span class="constructor">PID_operation(&amp;ASR)</span>;<span class="comment">//PID是对距离的偏差量进行调节</span></span><br><span class="line">	</span><br><span class="line">	duty = <span class="module-access"><span class="module"><span class="identifier">ASR</span>.</span></span>output;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">if</span>(<span class="module-access"><span class="module"><span class="identifier">ASR</span>.</span></span>error &gt; allow_error)		<span class="comment">//设定值大于实际值，小车需要后退</span></span><br><span class="line">	&#123;</span><br><span class="line">		left_go_back;<span class="comment">//左轮后退</span></span><br><span class="line">		right_go_back;<span class="comment">//右轮后退</span></span><br><span class="line">		</span><br><span class="line">		<span class="comment">//控制PWM波的输出的占空比</span></span><br><span class="line">		Left_Forward_Duty = (<span class="built_in">int</span>)Low_Speed + (<span class="built_in">int</span>)duty;		<span class="comment">//带符号数和无符号数运算会转换为无符号数</span></span><br><span class="line">		Right_Forward_Duty = Left_Forward_Duty;		<span class="comment">//速度一样</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">if</span>((-<span class="module-access"><span class="module"><span class="identifier">ASR</span>.</span></span>error) &gt; allow_error)	<span class="comment">//设定值小于实际值，小车前进</span></span><br><span class="line">	&#123;</span><br><span class="line">		left_go_ahead;</span><br><span class="line">		right_go_ahead;</span><br><span class="line">		Left_Forward_Duty = (<span class="built_in">int</span>)Low_Speed + (<span class="built_in">int</span>)duty;<span class="comment">//将距离的误差反应到对速度的调节</span></span><br><span class="line">		Right_Forward_Duty = Left_Forward_Duty ;		<span class="comment">//速度一样</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span>			<span class="comment">//在死区误差范围内，停车</span></span><br><span class="line">		car<span class="constructor">_stop()</span>;<span class="comment">//占空比为0，就会让小车停止</span></span><br><span class="line">	<span class="comment">//如果要让小车跟着避开障碍物走，需要将停止改成左转或右转</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>感谢支持！！！</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="罗乐乐 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="罗乐乐 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fa fa-wechat"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/51-52%E5%8D%95%E7%89%87%E6%9C%BA/" rel="tag"># 51/52单片机</a>
+              <a href="/tags/%E8%BD%AF%E4%BB%B6%E7%AE%97%E6%B3%95/" rel="tag"># 软件算法</a>
+              <a href="/tags/%E7%84%8A%E6%9D%BF/" rel="tag"># 焊板</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/06/22/%E4%BE%BF%E6%90%BA%E5%BC%8F%E4%BA%BA%E4%BD%93%E7%94%9F%E5%91%BD%E7%89%B9%E5%BE%81%E6%B5%8B%E8%AF%95%E4%BB%AA%E6%AF%95%E4%B8%9A%E8%AE%BE%E8%AE%A1%E4%BD%9C%E5%93%81/" rel="prev" title="便携式人体生命特征测试仪">
+      <i class="fa fa-chevron-left"></i> 便携式人体生命特征测试仪
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/06/23/hello-world/" rel="next" title="Hello World">
+      Hello World <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-项目背景介绍"><span class="nav-number">1.</span> <span class="nav-text">1. 项目背景介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#项目算法框图设计"><span class="nav-number">2.</span> <span class="nav-text">项目算法框图设计</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">2.1.</span> <span class="nav-text"></span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-代码实现及现象描述"><span class="nav-number">3.</span> <span class="nav-text">2. 代码实现及现象描述</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1）红外感应模块"><span class="nav-number">3.1.</span> <span class="nav-text">1）红外感应模块</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本代码思想"><span class="nav-number">3.1.1.</span> <span class="nav-text">基本代码思想</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码讲解"><span class="nav-number">3.1.2.</span> <span class="nav-text">代码讲解</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#IO口的初始化"><span class="nav-number">3.1.2.1.</span> <span class="nav-text">IO口的初始化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#寻迹函数"><span class="nav-number">3.1.2.2.</span> <span class="nav-text">寻迹函数</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2）LCD1602显示模块"><span class="nav-number">3.2.</span> <span class="nav-text">2）LCD1602显示模块</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本代码思想-1"><span class="nav-number">3.2.1.</span> <span class="nav-text">基本代码思想</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码讲解-1"><span class="nav-number">3.2.2.</span> <span class="nav-text">代码讲解</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#IO口的初始化-1"><span class="nav-number">3.2.2.1.</span> <span class="nav-text">IO口的初始化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#LCD1602的初始化"><span class="nav-number">3.2.2.2.</span> <span class="nav-text">LCD1602的初始化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#LCD1602的写入命令函数"><span class="nav-number">3.2.2.3.</span> <span class="nav-text">LCD1602的写入命令函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#LCD1602的读出数据函数"><span class="nav-number">3.2.2.4.</span> <span class="nav-text">LCD1602的读出数据函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#LCD1602的显示函数"><span class="nav-number">3.2.2.5.</span> <span class="nav-text">LCD1602的显示函数</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3）电机驱动模块"><span class="nav-number">3.3.</span> <span class="nav-text">3）电机驱动模块</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本代码思想-2"><span class="nav-number">3.3.1.</span> <span class="nav-text">基本代码思想</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码讲解-2"><span class="nav-number">3.3.2.</span> <span class="nav-text">代码讲解</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#IO口的初始化-2"><span class="nav-number">3.3.2.1.</span> <span class="nav-text">IO口的初始化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#小车的直走、停止、右转、-左转，具体参考L298N的用户手册"><span class="nav-number">3.3.2.2.</span> <span class="nav-text">小车的直走、停止、右转、 左转，具体参考L298N的用户手册</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4）按键扫描模块"><span class="nav-number">3.4.</span> <span class="nav-text">4）按键扫描模块</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本代码思想-3"><span class="nav-number">3.4.1.</span> <span class="nav-text">基本代码思想</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码讲解-3"><span class="nav-number">3.4.2.</span> <span class="nav-text">代码讲解</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#IO口的初始化-3"><span class="nav-number">3.4.2.1.</span> <span class="nav-text">IO口的初始化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#按键扫描模块"><span class="nav-number">3.4.2.2.</span> <span class="nav-text">按键扫描模块</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5）PWM波的定时器模拟模块（软件编程进行模拟）"><span class="nav-number">3.5.</span> <span class="nav-text">5）PWM波的定时器模拟模块（软件编程进行模拟）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#代码讲解-4"><span class="nav-number">3.5.1.</span> <span class="nav-text">代码讲解</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#IO口的初始化-4"><span class="nav-number">3.5.1.1.</span> <span class="nav-text">IO口的初始化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#定时器0的初始化函数，一般在main函数当中"><span class="nav-number">3.5.1.2.</span> <span class="nav-text">定时器0的初始化函数，一般在main函数当中</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#定时器0的中断服务函数"><span class="nav-number">3.5.1.3.</span> <span class="nav-text">定时器0的中断服务函数</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-实验现象"><span class="nav-number">4.</span> <span class="nav-text">2. 实验现象</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1）视频链接"><span class="nav-number">4.1.</span> <span class="nav-text">1）视频链接</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2）实验图片"><span class="nav-number">4.2.</span> <span class="nav-text">2）实验图片</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#小车的手工焊板（单片机的最小系统和外设）"><span class="nav-number">4.2.1.</span> <span class="nav-text">小车的手工焊板（单片机的最小系统和外设）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#-1"><span class="nav-number">4.2.1.1.</span> <span class="nav-text"></span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LCD1602液晶显示模块"><span class="nav-number">4.2.2.</span> <span class="nav-text">LCD1602液晶显示模块</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#-2"><span class="nav-number">4.2.2.1.</span> <span class="nav-text"></span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#电机驱动模块"><span class="nav-number">4.2.3.</span> <span class="nav-text">电机驱动模块</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#-3"><span class="nav-number">4.2.3.1.</span> <span class="nav-text"></span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#两个电机和两个轮子"><span class="nav-number">4.2.4.</span> <span class="nav-text">两个电机和两个轮子</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#-4"><span class="nav-number">4.2.4.1.</span> <span class="nav-text"></span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#红外感应器（4个）和集成板（一个）"><span class="nav-number">4.2.5.</span> <span class="nav-text">红外感应器（4个）和集成板（一个）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#-5"><span class="nav-number">4.2.5.1.</span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#-6"><span class="nav-number">4.2.5.2.</span> <span class="nav-text"></span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-实验改进"><span class="nav-number">5.</span> <span class="nav-text">3. 实验改进</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1）原因："><span class="nav-number">5.1.</span> <span class="nav-text">1）原因：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2）知识背景"><span class="nav-number">5.2.</span> <span class="nav-text">2）知识背景</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#红外遥控通信"><span class="nav-number">5.2.1.</span> <span class="nav-text">红外遥控通信</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#-7"><span class="nav-number">5.2.1.1.</span> <span class="nav-text"></span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PID算法"><span class="nav-number">5.2.2.</span> <span class="nav-text">PID算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#控制框图"><span class="nav-number">5.2.2.1.</span> <span class="nav-text">控制框图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#-8"><span class="nav-number">5.2.2.2.</span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#调节波形（不同的参数波形的现象也不一样）"><span class="nav-number">5.2.2.3.</span> <span class="nav-text">调节波形（不同的参数波形的现象也不一样）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#-9"><span class="nav-number">5.2.2.4.</span> <span class="nav-text"></span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3）具体代码的实现"><span class="nav-number">5.3.</span> <span class="nav-text">3）具体代码的实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#红外遥控模块"><span class="nav-number">5.3.1.</span> <span class="nav-text">红外遥控模块</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#代码基本思想"><span class="nav-number">5.3.1.1.</span> <span class="nav-text">代码基本思想</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#相关参数的定义"><span class="nav-number">5.3.1.2.</span> <span class="nav-text">相关参数的定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#解码器（在外部触发中断服务函数当中处理，这样就会知晓接受端的变化的数字脉冲了）"><span class="nav-number">5.3.1.3.</span> <span class="nav-text">解码器（在外部触发中断服务函数当中处理，这样就会知晓接受端的变化的数字脉冲了）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PID算法模块（软件算法）"><span class="nav-number">5.3.2.</span> <span class="nav-text">PID算法模块（软件算法）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#代码基本思想（以小车的超声波传感器的距离参数为例）"><span class="nav-number">5.3.2.1.</span> <span class="nav-text">代码基本思想（以小车的超声波传感器的距离参数为例）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#-10"><span class="nav-number">5.3.2.2.</span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#相关参数的定义-1"><span class="nav-number">5.3.2.3.</span> <span class="nav-text">相关参数的定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SR04超声波传感器（使用定时器0来测量声音来回的时间，从而计算出距离，使用IIC通信进行时序通信）"><span class="nav-number">5.3.2.4.</span> <span class="nav-text">SR04超声波传感器（使用定时器0来测量声音来回的时间，从而计算出距离，使用IIC通信进行时序通信）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#核心算法PID公式的代码实现（使用定时器1来进行控制周期的设定和模拟PWM波占空比的调整）"><span class="nav-number">5.3.2.5.</span> <span class="nav-text">核心算法PID公式的代码实现（使用定时器1来进行控制周期的设定和模拟PWM波占空比的调整）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#PID输出值反馈到电机的转速上（PWM波占空比的调整，使用定时器0来进行PWM的模拟）"><span class="nav-number">5.3.2.6.</span> <span class="nav-text">PID输出值反馈到电机的转速上（PWM波占空比的调整，使用定时器0来进行PWM的模拟）</span></a></li></ol></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="罗乐乐"
+      src="/images/xusong.jpeg">
+  <p class="site-author-name" itemprop="name">罗乐乐</p>
+  <div class="site-description" itemprop="description">不念、不想、不枉、此生</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yinluolll" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yinluolll" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/qq_45035280" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_45035280" rel="noopener" target="_blank"><i class="fa fa-fw fa-CSDN"></i>CSDN</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.cctry.com/" title="https:&#x2F;&#x2F;www.cctry.com" rel="noopener" target="_blank">VC驿站</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.bilibili.com/" title="https:&#x2F;&#x2F;www.bilibili.com" rel="noopener" target="_blank">B站</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.baidu.com/" title="http:&#x2F;&#x2F;www.baidu.com" rel="noopener" target="_blank">百度</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.csdn.net/" title="https:&#x2F;&#x2F;www.csdn.net" rel="noopener" target="_blank">CSDN博客</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">罗乐乐</span>
+</div>
+
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>-->
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/three-waves.min.js"></script>
+    <script defer src="/lib/three/canvas_lines.min.js"></script>
+    <script defer src="/lib/three/canvas_sphere.min.js"></script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

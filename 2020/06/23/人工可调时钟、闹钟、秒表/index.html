@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.post_navigation">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yinluolll.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="1、项目背景介绍这是我第一次用FPGA板子做的实验，那时候，自己为此通宵了两天，因为一直有些问题想不通，所以就睡不着。我在网上查找别人的相关资料，发现并不是我们老师教我的VHDL语言，所以我当时有一些蒙，因此我在尽力去找VHDL语言的资源，但是发现大部分的人都是用Verilog语言写的。被逼无奈之下，我只有自学这门语言，才能完成别人交给我完成的实验（这不是自己的实验，但是我觉得帮助别人做实验自己也">
+<meta property="og:type" content="article">
+<meta property="og:title" content="人工可调时钟、闹钟、秒表">
+<meta property="og:url" content="https://yinluolll.github.io/2020/06/23/%E4%BA%BA%E5%B7%A5%E5%8F%AF%E8%B0%83%E6%97%B6%E9%92%9F%E3%80%81%E9%97%B9%E9%92%9F%E3%80%81%E7%A7%92%E8%A1%A8/index.html">
+<meta property="og:site_name" content="个人博客">
+<meta property="og:description" content="1、项目背景介绍这是我第一次用FPGA板子做的实验，那时候，自己为此通宵了两天，因为一直有些问题想不通，所以就睡不着。我在网上查找别人的相关资料，发现并不是我们老师教我的VHDL语言，所以我当时有一些蒙，因此我在尽力去找VHDL语言的资源，但是发现大部分的人都是用Verilog语言写的。被逼无奈之下，我只有自学这门语言，才能完成别人交给我完成的实验（这不是自己的实验，但是我觉得帮助别人做实验自己也">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://yinluolll.github.io/images/%E8%A1%A8.jpg">
+<meta property="og:image" content="https://yinluolll.github.io/images/%E8%A1%A82.jpg">
+<meta property="og:image" content="https://yinluolll.github.io/images/%E8%A1%A83.jpg">
+<meta property="og:image" content="https://yinluolll.github.io/images/%E8%A1%A84.jpg">
+<meta property="og:image" content="https://yinluolll.github.io/images/%E8%A1%A85.jpg">
+<meta property="og:image" content="https://yinluolll.github.io/images/%E8%A1%A86.jpg">
+<meta property="og:image" content="https://yinluolll.github.io/images/%E8%A1%A87.jpg">
+<meta property="article:published_time" content="2020-06-23T15:35:33.000Z">
+<meta property="article:modified_time" content="2020-06-23T16:59:01.918Z">
+<meta property="article:author" content="罗乐乐">
+<meta property="article:tag" content="FPGA单片机">
+<meta property="article:tag" content="模块化">
+<meta property="article:tag" content="原理图">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yinluolll.github.io/images/%E8%A1%A8.jpg">
+
+<link rel="canonical" href="https://yinluolll.github.io/2020/06/23/%E4%BA%BA%E5%B7%A5%E5%8F%AF%E8%B0%83%E6%97%B6%E9%92%9F%E3%80%81%E9%97%B9%E9%92%9F%E3%80%81%E7%A7%92%E8%A1%A8/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>人工可调时钟、闹钟、秒表 | 个人博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">个人博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">学习笔记</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://yinluolll.github.io/2020/06/23/%E4%BA%BA%E5%B7%A5%E5%8F%AF%E8%B0%83%E6%97%B6%E9%92%9F%E3%80%81%E9%97%B9%E9%92%9F%E3%80%81%E7%A7%92%E8%A1%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/xusong.jpeg">
+      <meta itemprop="name" content="罗乐乐">
+      <meta itemprop="description" content="不念、不想、不枉、此生">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          人工可调时钟、闹钟、秒表
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-06-23 23:35:33" itemprop="dateCreated datePublished" datetime="2020-06-23T23:35:33+08:00">2020-06-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-06-24 00:59:01" itemprop="dateModified" datetime="2020-06-24T00:59:01+08:00">2020-06-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%BA%95%E7%AB%AF%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">底端开发</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="1、项目背景介绍"><a href="#1、项目背景介绍" class="headerlink" title="1、项目背景介绍"></a>1、项目背景介绍</h1><p>这是我第一次用FPGA板子做的实验，那时候，自己为此通宵了两天，因为一直有些问题想不通，所以就睡不着。我在网上查找别人的相关资料，发现并不是我们老师教我的VHDL语言，所以我当时有一些蒙，因此我在尽力去找VHDL语言的资源，但是发现大部分的人都是用Verilog语言写的。被逼无奈之下，我只有自学这门语言，才能完成别人交给我完成的实验（这不是自己的实验，但是我觉得帮助别人做实验自己也能从中学到很多，所以我义务的帮助他们，也觉得哪个挺快乐的）。渐渐的，我发现Verilog语言并不是特别难学，只不过是C语言的内核加上MATLAB的M函数的外表，所以我将通过我最熟悉的语言一一摸索，一一去打备注，所以这个工程里面许多代码都被我打上了十分“幼稚”的注释，但是我认为最后的成功，一切的付出都是值得的，嘿嘿！！！</p>
+<a id="more"></a>
+<h1 id="原理图（顶层文件，相当于main函数，将所有资源整合）"><a href="#原理图（顶层文件，相当于main函数，将所有资源整合）" class="headerlink" title="原理图（顶层文件，相当于main函数，将所有资源整合）"></a>原理图（顶层文件，相当于main函数，将所有资源整合）</h1><p>因本人当时刚刚初入FPGA的大门，并不知道原理图的连线也可以用代码来写，不过这样自己也方便做代码移植</p>
+<h2 id=""><a href="#" class="headerlink" title=""></a><img src="/images/%E8%A1%A8.jpg" alt="image"></h2><h1 id="2、代码的基本思路图"><a href="#2、代码的基本思路图" class="headerlink" title="2、代码的基本思路图"></a>2、代码的基本思路图</h1><p>与画焊板的原理图multisim仿真一样，只不过就是将那些逻辑元器件用代码写出来而已，所以很方便入门。</p>
+<h2 id="-1"><a href="#-1" class="headerlink" title=""></a><img src="/images/%E8%A1%A82.jpg" alt="image"></h2><h1 id="具体器件代码的实现"><a href="#具体器件代码的实现" class="headerlink" title="具体器件代码的实现"></a>具体器件代码的实现</h1><h2 id="1）消抖器（用Quartus-II自带的元器件构造）"><a href="#1）消抖器（用Quartus-II自带的元器件构造）" class="headerlink" title="1）消抖器（用Quartus II自带的元器件构造）"></a>1）消抖器（用Quartus II自带的元器件构造）</h2><h3 id="-2"><a href="#-2" class="headerlink" title=""></a><img src="/images/%E8%A1%A83.jpg" alt="image"></h3><h2 id="2）分频器（使用级别分级法）"><a href="#2）分频器（使用级别分级法）" class="headerlink" title="2）分频器（使用级别分级法）"></a>2）分频器（使用级别分级法）</h2><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//fenpin</span></span><br><span class="line">module fenpin(clk,clk_1Hz,clk_100Hz,clk_1k); </span><br><span class="line"></span><br><span class="line">input clk;</span><br><span class="line">output clk_1Hz,clk_100Hz,clk_1k;</span><br><span class="line"></span><br><span class="line">reg clk_1Hz=<span class="number">0</span>,clk_3=<span class="number">0</span>,clk_1=<span class="number">0</span>,clk_2=<span class="number">0</span>,clk_1k=<span class="number">0</span>;</span><br><span class="line">reg [<span class="number">6</span>:<span class="number">0</span>] cnt1=<span class="number">0</span>,cnt2=<span class="number">0</span>,cnt3=<span class="number">0</span>,cnt4=<span class="number">0</span>,cnt5=<span class="number">0</span>; </span><br><span class="line">wire clk_100Hz;</span><br><span class="line"></span><br><span class="line">always @(posedge clk)begin</span><br><span class="line"><span class="keyword">if</span> ( cnt1 &lt; <span class="number">50</span>/<span class="number">2</span><span class="number">-1</span>)	<span class="comment">//50 分频,生成 1MHz 信号</span></span><br><span class="line">cnt1 &lt;= cnt1 + <span class="number">1</span>; </span><br><span class="line"><span class="keyword">else</span> begin</span><br><span class="line">cnt1 &lt;= <span class="number">0</span>;</span><br><span class="line">clk_1 &lt;= ~clk_1; end end</span><br><span class="line"></span><br><span class="line">always @(posedge clk_1)</span><br><span class="line"><span class="keyword">if</span> ( cnt2 &lt; <span class="number">100</span>/<span class="number">2</span><span class="number">-1</span>)	<span class="comment">//100 分频，生成 10000Hz 信号</span></span><br><span class="line">cnt2 &lt;= cnt2 + <span class="number">1</span>; </span><br><span class="line"><span class="keyword">else</span> begin</span><br><span class="line">cnt2 &lt;= <span class="number">0</span>;</span><br><span class="line">clk_2 &lt;= ~clk_2; end</span><br><span class="line"></span><br><span class="line">always @(posedge clk_2)</span><br><span class="line"><span class="keyword">if</span> ( cnt5 &lt; <span class="number">10</span>/<span class="number">2</span><span class="number">-1</span>)	<span class="comment">//10 分频，生成 1kHz 标准信号</span></span><br><span class="line">cnt5&lt;= cnt5 + <span class="number">1</span>;</span><br><span class="line"><span class="keyword">else</span> begin </span><br><span class="line">cnt5&lt;= <span class="number">0</span>;</span><br><span class="line">clk_1k&lt;= ~clk_1k; end</span><br><span class="line"></span><br><span class="line">always @(posedge clk_2)</span><br><span class="line"><span class="keyword">if</span> ( cnt3 &lt; <span class="number">100</span>/<span class="number">2</span><span class="number">-1</span>)	<span class="comment">//100 分频，生成 100Hz 信号</span></span><br><span class="line">cnt3 &lt;= cnt3 + <span class="number">1</span>; </span><br><span class="line"><span class="keyword">else</span> begin</span><br><span class="line">cnt3 &lt;= <span class="number">0</span>;</span><br><span class="line">clk_3 &lt;= ~clk_3; end</span><br><span class="line"></span><br><span class="line">assign clk_100Hz=clk_3;</span><br><span class="line"></span><br><span class="line">always @(posedge clk_3)</span><br><span class="line"><span class="keyword">if</span> ( cnt4 &lt; <span class="number">100</span>/<span class="number">2</span><span class="number">-1</span>)	<span class="comment">//100 分频，生成 1Hz 标准信号</span></span><br><span class="line">cnt4&lt;= cnt4 + <span class="number">1</span>; </span><br><span class="line"><span class="keyword">else</span> begin </span><br><span class="line">cnt4&lt;= <span class="number">0</span>;</span><br><span class="line">clk_1Hz&lt;= ~clk_1Hz; end</span><br><span class="line"></span><br><span class="line">endmodule</span><br></pre></td></tr></table></figure>
+<h2 id="2）按键控制计数输出器"><a href="#2）按键控制计数输出器" class="headerlink" title="2）按键控制计数输出器"></a>2）按键控制计数输出器</h2><p>通过状态机对不同的按键赋予不同的功能</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ctrol</span></span><br><span class="line"><span class="keyword">module</span> ctrol(change,turn,count1,count2,counta,countb,pause,LD_min,LD_hour,mode); </span><br><span class="line"><span class="keyword">input</span> change,mode,turn;</span><br><span class="line"><span class="keyword">output</span> count1,count2,counta,countb,pause,LD_min,LD_hour; </span><br><span class="line"></span><br><span class="line"><span class="keyword">reg</span> [<span class="number">1</span>:<span class="number">0</span>] m;</span><br><span class="line"><span class="keyword">reg</span> fm=<span class="number">0</span>,count1=<span class="number">0</span>,count2=<span class="number">0</span>,counta=<span class="number">0</span>,countb=<span class="number">0</span>,pause=<span class="number">0</span>,LD_min=<span class="number">0</span>,LD_hour=<span class="number">0</span>; </span><br><span class="line"><span class="keyword">wire</span> mode,turn,change;</span><br><span class="line"></span><br><span class="line"><span class="keyword">always</span> @(<span class="keyword">posedge</span> mode) <span class="keyword">begin</span> <span class="comment">//mode 信号控制系统在三种功能间转换</span></span><br><span class="line"><span class="keyword">if</span>(m==<span class="number">4</span>) </span><br><span class="line">	m&lt;=<span class="number">0</span>; </span><br><span class="line"><span class="keyword">else</span> </span><br><span class="line">	m&lt;=m+<span class="number">1</span>; <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">always</span> @(<span class="keyword">posedge</span> turn) <span class="keyword">begin</span><span class="comment">//接按键0~1（上升沿），在手动校时功能时，选择是调整小时，还是分钟； </span></span><br><span class="line">	fm&lt;=~fm; <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">always</span> @ (m <span class="keyword">or</span> fm <span class="keyword">or</span> change) <span class="keyword">begin</span><span class="comment">//状态机</span></span><br><span class="line"><span class="keyword">case</span>(m)</span><br><span class="line"><span class="number">3</span>: <span class="keyword">begin</span> <span class="comment">//3：跑表功能； </span></span><br><span class="line">	<span class="keyword">if</span>(fm)</span><br><span class="line">		pause=<span class="number">1</span>; </span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		pause=<span class="number">0</span>; <span class="keyword">end</span></span><br><span class="line"><span class="number">2</span>:	<span class="keyword">begin</span> <span class="comment">//2：调节时间功能； </span></span><br><span class="line">	<span class="keyword">if</span>(fm) <span class="keyword">begin</span>	</span><br><span class="line">		count1&lt;=change; </span><br><span class="line">		&#123;LD_min,LD_hour&#125;&lt;=<span class="number">2</span>; <span class="keyword">end</span><span class="comment">//指示当前调整的是分钟</span></span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">begin</span> </span><br><span class="line">		counta&lt;=change; </span><br><span class="line">		&#123;LD_min,LD_hour&#125;&lt;=<span class="number">1</span>; <span class="keyword">end</span><span class="comment">//指示当前调整的是小时</span></span><br><span class="line">	&#123;count2,countb&#125;&lt;=<span class="number">0</span>; <span class="keyword">end</span></span><br><span class="line"><span class="number">1</span>: <span class="keyword">begin</span><span class="comment">//1：调节闹钟功能</span></span><br><span class="line">	<span class="keyword">if</span>(fm) <span class="keyword">begin</span></span><br><span class="line">		count2&lt;=change; </span><br><span class="line">		&#123;LD_min,LD_hour&#125;&lt;=<span class="number">2</span>; <span class="keyword">end</span><span class="comment">//指示当前调整的是分</span></span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">begin</span></span><br><span class="line">		countb&lt;=change; </span><br><span class="line">		&#123;LD_min,LD_hour&#125;&lt;=<span class="number">1</span>; <span class="keyword">end</span><span class="comment">//指示当前调整的是小时</span></span><br><span class="line">	&#123;count1,counta&#125;&lt;=<span class="number">0</span>; <span class="keyword">end</span></span><br><span class="line"><span class="number">0</span>: <span class="keyword">begin</span> </span><br><span class="line">	&#123;count1,count2,counta,countb,LD_min,LD_hour&#125;&lt;=<span class="number">0</span>; <span class="keyword">end</span> <span class="comment">//0：计时功能，在按一下就在这个计时状态</span></span><br><span class="line"><span class="keyword">endcase</span> <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">endmodule</span></span><br></pre></td></tr></table></figure>
+<h2 id="3）长按快速调时器"><a href="#3）长按快速调时器" class="headerlink" title="3）长按快速调时器"></a>3）长按快速调时器</h2><p>通过对于按键时间的扫描，满足3秒钟就不用一按一松的按键方法进行调时，还要一直按下，就可以一秒一秒的跳转</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// faster</span></span><br><span class="line"><span class="keyword">module</span> faster(clk,num1,num2,num3,num4,count1,count2,counta,countb); </span><br><span class="line"></span><br><span class="line"><span class="keyword">input</span> clk;</span><br><span class="line"><span class="keyword">input</span> count1,count2,counta,countb; </span><br><span class="line"><span class="keyword">output</span> num1,num2,num3,num4;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">reg</span>[<span class="number">2</span>:<span class="number">0</span>] loop1=<span class="number">0</span>,loop2=<span class="number">0</span>,loop3=<span class="number">0</span>,loop4=<span class="number">0</span>; </span><br><span class="line"><span class="keyword">reg</span> num1,num2,num3,num4;</span><br><span class="line"><span class="keyword">wire</span> count1,count2,counta,countb;</span><br><span class="line"></span><br><span class="line"><span class="keyword">always</span> @(<span class="keyword">negedge</span> clk)<span class="comment">//如果长时间按下“change”键，则生成“num*”信号用于连续快速加 1 </span></span><br><span class="line">	<span class="keyword">if</span>(count2) <span class="keyword">begin</span><span class="comment">//按长时间count2时，通过进位调节时间</span></span><br><span class="line">		<span class="keyword">if</span>(loop1==<span class="number">3</span>) <span class="keyword">begin</span> </span><br><span class="line">			loop1&lt;=<span class="number">0</span>; </span><br><span class="line">			num1&lt;=<span class="number">1</span>; <span class="keyword">end</span> </span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">begin</span> </span><br><span class="line">			loop1&lt;=loop1+<span class="number">1</span>; </span><br><span class="line">			num1&lt;=<span class="number">0</span>; <span class="keyword">end</span> <span class="keyword">end</span></span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">begin</span> </span><br><span class="line">	loop1&lt;=<span class="number">0</span>; </span><br><span class="line">	num1&lt;=<span class="number">0</span>; <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">always</span> @(<span class="keyword">negedge</span> clk) </span><br><span class="line">	<span class="keyword">if</span>(countb) <span class="keyword">begin</span></span><br><span class="line">		<span class="keyword">if</span>(loop2==<span class="number">3</span>) <span class="keyword">begin</span> </span><br><span class="line">			loop2&lt;=<span class="number">0</span>; </span><br><span class="line">			num2&lt;=<span class="number">1</span>; <span class="keyword">end</span> </span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">begin</span> </span><br><span class="line">			loop2&lt;=loop2+<span class="number">1</span>; </span><br><span class="line">			num2&lt;=<span class="number">0</span>; <span class="keyword">end</span> <span class="keyword">end</span></span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">begin</span> </span><br><span class="line">		loop2&lt;=<span class="number">0</span>; </span><br><span class="line">		num2&lt;=<span class="number">0</span>; <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">always</span> @(<span class="keyword">negedge</span> clk) </span><br><span class="line">	<span class="keyword">if</span>(count1) <span class="keyword">begin</span></span><br><span class="line">		<span class="keyword">if</span>(loop3==<span class="number">3</span>) <span class="keyword">begin</span> </span><br><span class="line">			loop3&lt;=<span class="number">0</span>; </span><br><span class="line">			num3&lt;=<span class="number">1</span>; <span class="keyword">end</span> </span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">begin</span> </span><br><span class="line">			loop3&lt;=loop3+<span class="number">1</span>; </span><br><span class="line">			num3&lt;=<span class="number">0</span>; <span class="keyword">end</span> <span class="keyword">end</span></span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">begin</span> </span><br><span class="line">		loop3&lt;=<span class="number">0</span>; </span><br><span class="line">		num3&lt;=<span class="number">0</span>; <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">always</span> @(<span class="keyword">negedge</span> clk) </span><br><span class="line">	<span class="keyword">if</span>(counta) <span class="keyword">begin</span></span><br><span class="line">		<span class="keyword">if</span>(loop4==<span class="number">3</span>) <span class="keyword">begin</span> </span><br><span class="line">			loop4&lt;=<span class="number">0</span>; </span><br><span class="line">			num4&lt;=<span class="number">1</span>; <span class="keyword">end</span> </span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">begin</span> </span><br><span class="line">			loop4&lt;=loop4+<span class="number">1</span>; </span><br><span class="line">			num4&lt;=<span class="number">0</span>; <span class="keyword">end</span> <span class="keyword">end</span></span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">begin</span> </span><br><span class="line">		loop4&lt;=<span class="number">0</span>; </span><br><span class="line">		num4&lt;=<span class="number">0</span>; <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">endmodule</span></span><br></pre></td></tr></table></figure>
+<h2 id="4）计时器"><a href="#4）计时器" class="headerlink" title="4）计时器"></a>4）计时器</h2><p>就是用构建时分秒三种不同的计时器来一起构成时钟进位计时器，但是要注意的是与按键信号的配合使用</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//jishi</span></span><br><span class="line"><span class="keyword">module</span> jishi(clk,clk_1Hz,turn,mode,count1,counta,sec1,min1,hour1,num3,num4); </span><br><span class="line"><span class="comment">//turn：接按键，在手动校时功能时，选择是调整小时，还是分钟；若长时间按住该键，还可使秒信号清零，用于精确调时</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">input</span> clk,clk_1Hz,turn,num3,num4;</span><br><span class="line"><span class="keyword">input</span> mode;</span><br><span class="line"><span class="keyword">input</span> count1,counta;<span class="comment">//分校正改变，时校正改变 </span></span><br><span class="line"><span class="keyword">output</span> [<span class="number">7</span>:<span class="number">0</span>] sec1,min1;</span><br><span class="line"><span class="keyword">output</span> [<span class="number">7</span>:<span class="number">0</span>] hour1;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">reg</span> [<span class="number">7</span>:<span class="number">0</span>] sec1=<span class="number">0</span>,min1=<span class="number">0</span>;</span><br><span class="line"><span class="keyword">reg</span> [<span class="number">7</span>:<span class="number">0</span>] hour1=<span class="number">0</span>;</span><br><span class="line"><span class="keyword">reg</span> [<span class="number">1</span>:<span class="number">0</span>] m;</span><br><span class="line"><span class="keyword">reg</span> minclk,hclk;</span><br><span class="line"><span class="keyword">wire</span> count1,counta; </span><br><span class="line"><span class="keyword">wire</span> clk_1Hz,ct1,cta,turn,num3,num4;</span><br><span class="line"><span class="comment">//mode 信号控制系统在三种功能间转换</span></span><br><span class="line"><span class="keyword">always</span> @(<span class="keyword">posedge</span> mode) <span class="keyword">begin</span></span><br><span class="line"><span class="keyword">if</span>(m==<span class="number">4</span>) </span><br><span class="line">	m&lt;=<span class="number">0</span>; </span><br><span class="line"><span class="keyword">else</span> </span><br><span class="line">	m&lt;=m+<span class="number">1</span>; <span class="keyword">end</span></span><br><span class="line"><span class="comment">//秒钟计时模块</span></span><br><span class="line"><span class="keyword">always</span> @(<span class="keyword">posedge</span> clk_1Hz)</span><br><span class="line"><span class="keyword">if</span>((sec1==<span class="number">8'h59</span>)|turn&amp;(!m))<span class="keyword">begin</span></span><br><span class="line"><span class="comment">//若长时间按住该键，还可使秒信号清零，用于精确调时。当秒达到59时，无论如何都清零；</span></span><br><span class="line"><span class="comment">//当秒没达到59时，按键没按：turn=0，无论如何，都不会清零</span></span><br><span class="line">	sec1&lt;=<span class="number">0</span>;<span class="comment">//按住“turn”按键一段时间，turn=1，当m=0时，秒信号可清零，该功能用于手动精确调时</span></span><br><span class="line">	<span class="keyword">if</span>(!(turn&amp;(!m)))<span class="comment">//满足达到59秒，按键没按下，并且m！=0，产生进位</span></span><br><span class="line">		minclk&lt;=<span class="number">1</span>; <span class="keyword">end</span></span><br><span class="line"><span class="keyword">else</span> <span class="keyword">begin</span> </span><br><span class="line">	<span class="keyword">if</span>(sec1[<span class="number">3</span>:<span class="number">0</span>]==<span class="number">4'b1001</span>) <span class="keyword">begin</span> </span><br><span class="line">		sec1[<span class="number">3</span>:<span class="number">0</span>]&lt;=<span class="number">4'b0000</span>;</span><br><span class="line">		sec1[<span class="number">7</span>:<span class="number">4</span>]&lt;=sec1[<span class="number">7</span>:<span class="number">4</span>]+<span class="number">1</span>; <span class="keyword">end</span> </span><br><span class="line">	<span class="keyword">else</span> </span><br><span class="line">		sec1[<span class="number">3</span>:<span class="number">0</span>]&lt;=sec1[<span class="number">3</span>:<span class="number">0</span>]+<span class="number">1</span>;</span><br><span class="line">		minclk&lt;=<span class="number">0</span>; <span class="keyword">end</span><span class="comment">//个位满足，十位加1；个位不满足，个位加1，且不进位</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">assign</span> m_clk=minclk||count1;<span class="comment">//m_clk 产生进位或校正改变，调秒进位：用右边</span></span><br><span class="line"><span class="keyword">assign</span> ct1=(num3&amp;clk)|(!num3&amp;m_clk); <span class="comment">//ct1 用于计时、校时中的分钟计数，调分钟：用左边</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//分钟计时模块</span></span><br><span class="line"><span class="keyword">always</span> @(<span class="keyword">posedge</span> ct1)<span class="keyword">begin</span></span><br><span class="line"><span class="keyword">if</span>(min1==<span class="number">8'h59</span>) <span class="keyword">begin</span> </span><br><span class="line">	min1&lt;=<span class="number">0</span>; </span><br><span class="line">	hclk&lt;=<span class="number">1</span>; <span class="keyword">end</span> </span><br><span class="line"><span class="keyword">else</span> <span class="keyword">begin</span></span><br><span class="line">	<span class="keyword">if</span>(min1[<span class="number">3</span>:<span class="number">0</span>]==<span class="number">9</span>) <span class="keyword">begin</span> </span><br><span class="line">		min1[<span class="number">3</span>:<span class="number">0</span>]&lt;=<span class="number">0</span>; </span><br><span class="line">		min1[<span class="number">7</span>:<span class="number">4</span>]&lt;=min1[<span class="number">7</span>:<span class="number">4</span>]+<span class="number">1</span>; <span class="keyword">end</span> </span><br><span class="line">	<span class="keyword">else</span> </span><br><span class="line">		min1[<span class="number">3</span>:<span class="number">0</span>]&lt;=min1[<span class="number">3</span>:<span class="number">0</span>]+<span class="number">1</span>;</span><br><span class="line">		hclk&lt;=<span class="number">0</span>; <span class="keyword">end</span> <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">assign</span> h_clk=hclk||counta;<span class="comment">//h_clk 产生进位或校正改变，调分进位：用右边</span></span><br><span class="line"><span class="keyword">assign</span> cta=(num4&amp;clk)|(!num4&amp;h_clk); <span class="comment">//cta 用于计时、校时中的小时计数，调小时钟：用左边</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//小时计时模块</span></span><br><span class="line"><span class="keyword">always</span> @(<span class="keyword">posedge</span> cta)</span><br><span class="line"><span class="keyword">if</span>(hour1==<span class="number">8'h23</span>) </span><br><span class="line">	hour1&lt;=<span class="number">0</span>; </span><br><span class="line"><span class="keyword">else</span>	</span><br><span class="line">	<span class="keyword">if</span>(hour1[<span class="number">3</span>:<span class="number">0</span>]==<span class="number">9</span>) <span class="keyword">begin</span>	 </span><br><span class="line">		hour1[<span class="number">7</span>:<span class="number">4</span>]&lt;=hour1[<span class="number">7</span>:<span class="number">4</span>]+<span class="number">1</span>; </span><br><span class="line">		hour1[<span class="number">3</span>:<span class="number">0</span>]&lt;=<span class="number">0</span>; <span class="keyword">end</span> </span><br><span class="line">	<span class="keyword">else</span> </span><br><span class="line">		hour1[<span class="number">3</span>:<span class="number">0</span>]&lt;=hour1[<span class="number">3</span>:<span class="number">0</span>]+<span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">endmodule</span></span><br></pre></td></tr></table></figure>
+<h2 id="5）闹钟器"><a href="#5）闹钟器" class="headerlink" title="5）闹钟器"></a>5）闹钟器</h2><p>当时钟计时的时间与闹铃的时间相同蜂鸣器就会响，但是要注意与按键的配合，可以用条件编程，来进行有条件性的执行闹钟器的子模块</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Alarm</span></span><br><span class="line"><span class="keyword">module</span> Alarm(clk,amin,ahour,num1,num2,count2,countb,LD_alert); </span><br><span class="line"></span><br><span class="line"><span class="keyword">input</span> clk,num1,num2,count2,countb;</span><br><span class="line"><span class="keyword">output</span> [<span class="number">7</span>:<span class="number">0</span>] amin;</span><br><span class="line"><span class="keyword">output</span> [<span class="number">7</span>:<span class="number">0</span>] ahour; </span><br><span class="line"><span class="keyword">output</span> LD_alert; </span><br><span class="line"></span><br><span class="line"><span class="keyword">reg</span> [<span class="number">7</span>:<span class="number">0</span>] amin=<span class="number">0</span>;</span><br><span class="line"><span class="keyword">reg</span> [<span class="number">7</span>:<span class="number">0</span>] ahour=<span class="number">0</span>;</span><br><span class="line"><span class="keyword">wire</span> LD_alert;</span><br><span class="line"><span class="keyword">assign</span> ct2=(num1&amp;clk)|(!num1&amp;count2);<span class="comment">//ct2 用于定时状态下调整分钟信号</span></span><br><span class="line"><span class="keyword">assign</span> LD_alert=(ahour|amin)?<span class="number">1</span>:<span class="number">0</span>;<span class="comment">//指示是否进行了闹铃定时，如果ahour和amin不为零，就直接指明为闹钟定时</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">always</span> @(<span class="keyword">posedge</span> ct2) </span><br><span class="line">	<span class="keyword">if</span>(amin==<span class="number">8'h59</span>) </span><br><span class="line">		amin&lt;=<span class="number">0</span>;</span><br><span class="line">	<span class="keyword">else</span>	<span class="keyword">if</span>(amin[<span class="number">3</span>:<span class="number">0</span>]==<span class="number">9</span>) <span class="keyword">begin</span> </span><br><span class="line">				amin[<span class="number">3</span>:<span class="number">0</span>]&lt;=<span class="number">0</span>; </span><br><span class="line">				amin[<span class="number">7</span>:<span class="number">4</span>]&lt;=amin[<span class="number">7</span>:<span class="number">4</span>]+<span class="number">1</span>; <span class="keyword">end</span> </span><br><span class="line">			<span class="keyword">else</span> </span><br><span class="line">				amin[<span class="number">3</span>:<span class="number">0</span>]&lt;=amin[<span class="number">3</span>:<span class="number">0</span>]+<span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">assign</span> ctb=(num2&amp;clk)|(!num2&amp;countb); <span class="comment">//ctb 用于定时状态调节小时信号</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">always</span> @(<span class="keyword">posedge</span> ctb)</span><br><span class="line">	<span class="keyword">if</span>(ahour==<span class="number">8'h23</span>) </span><br><span class="line">		ahour&lt;=<span class="number">0</span>; </span><br><span class="line">	<span class="keyword">else</span>	<span class="keyword">if</span>(ahour[<span class="number">3</span>:<span class="number">0</span>]==<span class="number">9</span>) <span class="keyword">begin</span> </span><br><span class="line">				ahour[<span class="number">3</span>:<span class="number">0</span>]&lt;=<span class="number">0</span>; </span><br><span class="line">				ahour[<span class="number">7</span>:<span class="number">4</span>]&lt;=ahour[<span class="number">7</span>:<span class="number">4</span>]+<span class="number">1</span>; <span class="keyword">end</span> </span><br><span class="line">			<span class="keyword">else</span> </span><br><span class="line">				ahour[<span class="number">3</span>:<span class="number">0</span>]&lt;=ahour[<span class="number">3</span>:<span class="number">0</span>]+<span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">endmodule</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">module</span> ring(clk,clk_1k,min1,sec1,amin,hour1,ahour,change,alert); </span><br><span class="line"><span class="keyword">input</span> [<span class="number">7</span>:<span class="number">0</span>] min1,sec1,amin;</span><br><span class="line"><span class="keyword">input</span> [<span class="number">7</span>:<span class="number">0</span>] hour1,ahour; </span><br><span class="line"><span class="keyword">input</span> change,clk,clk_1k; </span><br><span class="line"><span class="keyword">output</span> alert;</span><br><span class="line"></span><br><span class="line"><span class="keyword">reg</span> alert1=<span class="number">0</span>,alert2=<span class="number">0</span>; </span><br><span class="line"><span class="keyword">reg</span> [<span class="number">1</span>:<span class="number">0</span>] sound;</span><br><span class="line"><span class="keyword">reg</span> ear; </span><br><span class="line"><span class="keyword">wire</span> alert;</span><br><span class="line"><span class="keyword">wire</span> [<span class="number">7</span>:<span class="number">0</span>] min1,sec1,amin;</span><br><span class="line"><span class="keyword">wire</span> [<span class="number">7</span>:<span class="number">0</span>] hour1,ahour; </span><br><span class="line"><span class="keyword">wire</span> change;</span><br><span class="line"><span class="keyword">wire</span> clk_1k,clk;</span><br><span class="line"></span><br><span class="line"><span class="keyword">always</span> @ (<span class="keyword">posedge</span> clk)<span class="comment">//定点报时</span></span><br><span class="line">	<span class="keyword">if</span>((min1==amin)&amp;&amp;(hour1==ahour)&amp;&amp;(amin|ahour)&amp;&amp;(!change)) </span><br><span class="line">		<span class="keyword">if</span>(sec1&lt;<span class="number">30</span>)<span class="comment">//响铃30秒</span></span><br><span class="line">			alert1&lt;=<span class="number">1</span>;</span><br><span class="line">		<span class="keyword">else</span> </span><br><span class="line">			alert1&lt;=<span class="number">0</span>;</span><br><span class="line">	<span class="keyword">else</span> </span><br><span class="line">		alert1&lt;=<span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">always</span> @ (<span class="keyword">posedge</span> clk) <span class="keyword">begin</span></span><br><span class="line">	<span class="keyword">if</span>(sound==<span class="number">3</span>) <span class="keyword">begin</span> </span><br><span class="line">		sound&lt;=<span class="number">0</span>; </span><br><span class="line">		ear&lt;=<span class="number">1</span>; <span class="keyword">end</span><span class="comment">//ear 信号用于产生或屏蔽声音</span></span><br><span class="line">	<span class="keyword">else</span>	<span class="keyword">begin</span> </span><br><span class="line">		sound&lt;=sound+<span class="number">1</span>; </span><br><span class="line">		ear&lt;=<span class="number">0</span>; <span class="keyword">end</span></span><br><span class="line">	<span class="keyword">if</span>((min1==<span class="number">8'h59</span>)&amp;&amp;(sec1&gt;<span class="number">8'h54</span>)||(!(min1|sec1))) <span class="comment">//整点报时：59:55（短音）+4~00:00+4（长音）</span></span><br><span class="line">		<span class="keyword">if</span>(sec1&gt;<span class="number">8'h54</span>) </span><br><span class="line">			alert2&lt;=ear&amp;clk_1k; <span class="comment">//产生短音：1个sound</span></span><br><span class="line">		<span class="keyword">else</span> </span><br><span class="line">			alert2&lt;=!ear&amp;clk_1k; <span class="comment">//产生长音：4个sound</span></span><br><span class="line">	<span class="keyword">else</span> alert2 &lt;= <span class="number">0</span>; <span class="keyword">end</span> <span class="comment">//停止发声</span></span><br><span class="line"></span><br><span class="line"><span class="comment">///assign alert=((alert1)?clk_100Hz&amp;clk:0)|alert2;//产生闹铃音或整点报时音</span></span><br><span class="line"><span class="keyword">assign</span> alert=((alert1)?clk_1k:<span class="number">0</span>)|alert2; <span class="comment">//产生闹铃音或整点报时音</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">endmodule</span></span><br></pre></td></tr></table></figure>
+<h2 id="6）秒表器"><a href="#6）秒表器" class="headerlink" title="6）秒表器"></a>6）秒表器</h2><p>当暂停键按下的时候，就会暂停，在按下，又会开始，清零键可以将计时值清零</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// paobiao</span></span><br><span class="line"><span class="comment">/*信号定义：</span></span><br><span class="line"><span class="comment">clk_100Hz： clk_100Hz 为时钟信号；</span></span><br><span class="line"><span class="comment">clr： 为异步复位信号； pause： 为暂停信号；</span></span><br><span class="line"><span class="comment">MSH，MSL： 百分秒的高位和低位；</span></span><br><span class="line"><span class="comment">SH，SL： 秒信号的高位和低位； MH，ML： 分钟信号的高位和低位。 */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">module</span> paobiao(clk_100Hz,clr,pause,MSH,MSL,SH,SL,MH,ML); </span><br><span class="line"></span><br><span class="line"><span class="keyword">input</span> clk_100Hz,clr;</span><br><span class="line"><span class="keyword">input</span> pause;</span><br><span class="line"><span class="keyword">output</span> <span class="keyword">reg</span>[<span class="number">3</span>:<span class="number">0</span>] MSH,MSL,SH,SL,MH,ML; </span><br><span class="line"></span><br><span class="line"><span class="keyword">reg</span> cn1,cn2;<span class="comment">//cn1 为百分秒向秒的进位，cn2 为秒向分的进位</span></span><br><span class="line">				<span class="comment">//百分秒计数进程，每计满 100，cn1 产生一个进位</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">always</span> @(<span class="keyword">posedge</span> clk_100Hz <span class="keyword">or</span> <span class="keyword">posedge</span> clr) <span class="keyword">begin</span></span><br><span class="line">	<span class="keyword">if</span>(clr) <span class="keyword">begin</span><span class="comment">//异步复位</span></span><br><span class="line">		&#123;MSH,MSL&#125;&lt;=<span class="number">8'h00</span>; </span><br><span class="line">		cn1&lt;=<span class="number">0</span>; <span class="keyword">end</span></span><br><span class="line">	<span class="keyword">else</span>	<span class="keyword">if</span>(!pause) <span class="keyword">begin</span><span class="comment">//PAUSE 为 0 时正常计数，为 1 时暂停计数</span></span><br><span class="line">				<span class="keyword">if</span>(MSL==<span class="number">9</span>) <span class="keyword">begin</span> </span><br><span class="line">					MSL&lt;=<span class="number">0</span>; </span><br><span class="line">					<span class="keyword">if</span>(MSH==<span class="number">9</span>) <span class="keyword">begin</span> </span><br><span class="line">						MSH&lt;=<span class="number">0</span>; </span><br><span class="line">						cn1&lt;=<span class="number">1</span>; <span class="keyword">end</span></span><br><span class="line">					<span class="keyword">else</span> </span><br><span class="line">						MSH&lt;=MSH+<span class="number">1</span>;</span><br><span class="line">				<span class="keyword">end</span></span><br><span class="line">				<span class="keyword">else</span> <span class="keyword">begin</span> </span><br><span class="line">					MSL&lt;=MSL+<span class="number">1</span>; </span><br><span class="line">					cn1&lt;=<span class="number">0</span>; <span class="keyword">end</span> <span class="keyword">end</span> <span class="keyword">end</span></span><br><span class="line"><span class="comment">//秒计数进程，每计满 60，cn2 产生一个进位</span></span><br><span class="line"><span class="keyword">always</span> @(<span class="keyword">posedge</span> cn1 <span class="keyword">or</span> <span class="keyword">posedge</span> clr) <span class="keyword">begin</span></span><br><span class="line">	<span class="keyword">if</span>(clr) <span class="keyword">begin</span>	<span class="comment">//异步复位</span></span><br><span class="line">		&#123;SH,SL&#125;&lt;=<span class="number">8'h00</span>; </span><br><span class="line">		cn2&lt;=<span class="number">0</span>; <span class="keyword">end</span></span><br><span class="line">	<span class="keyword">else</span>	<span class="keyword">if</span>(SL==<span class="number">9</span>) <span class="keyword">begin</span><span class="comment">//低位是否为 9 </span></span><br><span class="line">				SL&lt;=<span class="number">0</span>;</span><br><span class="line">				<span class="keyword">if</span>(SH==<span class="number">5</span>) <span class="keyword">begin</span> </span><br><span class="line">					SH&lt;=<span class="number">0</span>; </span><br><span class="line">					cn2&lt;=<span class="number">1</span>; <span class="keyword">end</span></span><br><span class="line">				<span class="keyword">else</span></span><br><span class="line">					SH&lt;=SH+<span class="number">1</span>;</span><br><span class="line">				<span class="keyword">end</span> </span><br><span class="line">			<span class="keyword">else</span> <span class="keyword">begin</span> </span><br><span class="line">				SL&lt;=SL+<span class="number">1</span>;</span><br><span class="line">				cn2&lt;=<span class="number">0</span>; <span class="keyword">end</span> <span class="keyword">end</span></span><br><span class="line"><span class="comment">//分钟计数进程，每计满 60，系统自动清零</span></span><br><span class="line"><span class="keyword">always</span> @(<span class="keyword">posedge</span> cn2 <span class="keyword">or</span> <span class="keyword">posedge</span> clr) <span class="keyword">begin</span></span><br><span class="line">	<span class="keyword">if</span>(clr) <span class="keyword">begin</span> </span><br><span class="line">		&#123;MH,ML&#125;&lt;=<span class="number">8'h00</span>; <span class="keyword">end</span><span class="comment">//异步复位</span></span><br><span class="line">	<span class="keyword">else</span>  <span class="keyword">if</span>(ML==<span class="number">9</span>) <span class="keyword">begin</span> </span><br><span class="line">				ML&lt;=<span class="number">0</span>; </span><br><span class="line">				<span class="keyword">if</span>(MH==<span class="number">5</span>) </span><br><span class="line">					MH&lt;=<span class="number">0</span>;</span><br><span class="line">				<span class="keyword">else</span> MH&lt;=MH+<span class="number">1</span>; <span class="keyword">end</span></span><br><span class="line">			<span class="keyword">else</span> ML&lt;=ML+<span class="number">1</span>; <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">endmodule</span></span><br></pre></td></tr></table></figure>
+<h2 id="7）显示控制译码器"><a href="#7）显示控制译码器" class="headerlink" title="7）显示控制译码器"></a>7）显示控制译码器</h2><p>对于闹钟调时、计时器、秒表器的显示需要在不同的模式下进行有选择的显示，这也需要用到状态机，对模式切换按键的次数进行判断并显示</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//show</span></span><br><span class="line"><span class="keyword">module</span> show(min1,sec1,amin,hour1,ahour,MSH,MSL,SH,SL,MH,ML,min,sec,hour,mode); </span><br><span class="line"></span><br><span class="line"><span class="keyword">input</span> [<span class="number">7</span>:<span class="number">0</span>] sec1,min1,hour1;</span><br><span class="line"><span class="keyword">input</span> [<span class="number">7</span>:<span class="number">0</span>] amin,ahour; </span><br><span class="line"><span class="keyword">input</span>[<span class="number">3</span>:<span class="number">0</span>] MSH,MSL,SH,SL,MH,ML;</span><br><span class="line"><span class="keyword">input</span> mode;</span><br><span class="line"><span class="keyword">output</span> [<span class="number">7</span>:<span class="number">0</span>] min,sec;</span><br><span class="line"><span class="keyword">output</span> [<span class="number">7</span>:<span class="number">0</span>] hour;</span><br><span class="line"></span><br><span class="line"><span class="keyword">reg</span> [<span class="number">7</span>:<span class="number">0</span>] min,sec;</span><br><span class="line"><span class="keyword">reg</span> [<span class="number">7</span>:<span class="number">0</span>] hour;</span><br><span class="line"><span class="keyword">reg</span> [<span class="number">1</span>:<span class="number">0</span>] m;</span><br><span class="line"></span><br><span class="line"><span class="keyword">always</span> @(<span class="keyword">posedge</span> mode) <span class="comment">//mode 信号控制系统在三种功能间转换</span></span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line"><span class="keyword">if</span>(m==<span class="number">4</span>) m&lt;=<span class="number">0</span>; </span><br><span class="line"><span class="keyword">else</span> </span><br><span class="line">m&lt;=m+<span class="number">1</span>;</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">always</span> @(min1 <span class="keyword">or</span> sec1 <span class="keyword">or</span> amin <span class="keyword">or</span> hour1 <span class="keyword">or</span> ahour <span class="keyword">or</span> m)</span><br><span class="line"><span class="keyword">begin</span>	</span><br><span class="line"><span class="keyword">case</span>(m)	</span><br><span class="line"><span class="number">0</span>:	<span class="keyword">begin</span>	hour&lt;=hour1;	min&lt;=min1;	sec&lt;=sec1; <span class="keyword">end</span><span class="comment">//jishi</span></span><br><span class="line"><span class="number">1</span>:	<span class="keyword">begin</span>	hour&lt;=ahour;	min&lt;=amin;	sec&lt;=<span class="number">8'hzz</span>; <span class="keyword">end</span><span class="comment">//Alarm</span></span><br><span class="line"><span class="number">2</span>:	<span class="keyword">begin</span>	hour&lt;=hour1;	min&lt;=min1;	sec&lt;=<span class="number">8'hzz</span>; <span class="keyword">end</span><span class="comment">//jishi2</span></span><br><span class="line"><span class="number">3</span>:	<span class="keyword">begin</span> hour&lt;=&#123;MH,ML&#125;; min&lt;=&#123;SH,SL&#125;; sec&lt;=&#123;MSH,MSL&#125;; <span class="keyword">end</span><span class="comment">//paobiao</span></span><br><span class="line"><span class="keyword">endcase</span></span><br><span class="line"><span class="keyword">end</span> </span><br><span class="line"><span class="keyword">endmodule</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="4、实验现象"><a href="#4、实验现象" class="headerlink" title="4、实验现象"></a>4、实验现象</h1><h2 id="1）实验视频链接"><a href="#1）实验视频链接" class="headerlink" title="1）实验视频链接"></a>1）实验<a href="https://www.bilibili.com/video/BV1vK411n73W" target="_blank" rel="noopener">视频链接</a></h2><h2 id="2）图片"><a href="#2）图片" class="headerlink" title="2）图片"></a>2）图片</h2><h3 id="计时功能"><a href="#计时功能" class="headerlink" title="计时功能"></a>计时功能</h3><p><img src="/images/%E8%A1%A84.jpg" alt="image"></p>
+<h3 id="调时功能"><a href="#调时功能" class="headerlink" title="调时功能"></a>调时功能</h3><p><img src="/images/%E8%A1%A85.jpg" alt="image"></p>
+<h3 id="调闹钟功能"><a href="#调闹钟功能" class="headerlink" title="调闹钟功能"></a>调闹钟功能</h3><p><img src="/images/%E8%A1%A86.jpg" alt="image"></p>
+<h3 id="秒表功能"><a href="#秒表功能" class="headerlink" title="秒表功能"></a>秒表功能</h3><p><img src="/images/%E8%A1%A87.jpg" alt="image"></p>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>感谢支持！！！</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="罗乐乐 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="罗乐乐 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fa fa-wechat"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/FPGA%E5%8D%95%E7%89%87%E6%9C%BA/" rel="tag"># FPGA单片机</a>
+              <a href="/tags/%E6%A8%A1%E5%9D%97%E5%8C%96/" rel="tag"># 模块化</a>
+              <a href="/tags/%E5%8E%9F%E7%90%86%E5%9B%BE/" rel="tag"># 原理图</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/06/23/%E5%AD%A6%E6%A0%A1%E6%B4%BB%E5%8A%A8%E6%89%80%E8%8E%B7%E5%BE%97%E7%9A%84%E8%8D%A3%E8%AA%89/" rel="prev" title="活动荣誉证书">
+      <i class="fa fa-chevron-left"></i> 活动荣誉证书
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/06/24/%E7%AE%97%E6%B3%95%E7%9A%84MATLAB%E8%BD%AF%E4%BB%B6%E4%BB%BF%E7%9C%9F%E5%92%8CDSP%E7%A7%BB%E6%A4%8D/" rel="next" title="滤波器算法的MATLAB软件仿真和DSP移植">
+      滤波器算法的MATLAB软件仿真和DSP移植 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1、项目背景介绍"><span class="nav-number">1.</span> <span class="nav-text">1、项目背景介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#原理图（顶层文件，相当于main函数，将所有资源整合）"><span class="nav-number">2.</span> <span class="nav-text">原理图（顶层文件，相当于main函数，将所有资源整合）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">2.1.</span> <span class="nav-text"></span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2、代码的基本思路图"><span class="nav-number">3.</span> <span class="nav-text">2、代码的基本思路图</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#-1"><span class="nav-number">3.1.</span> <span class="nav-text"></span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#具体器件代码的实现"><span class="nav-number">4.</span> <span class="nav-text">具体器件代码的实现</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1）消抖器（用Quartus-II自带的元器件构造）"><span class="nav-number">4.1.</span> <span class="nav-text">1）消抖器（用Quartus II自带的元器件构造）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#-2"><span class="nav-number">4.1.1.</span> <span class="nav-text"></span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2）分频器（使用级别分级法）"><span class="nav-number">4.2.</span> <span class="nav-text">2）分频器（使用级别分级法）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2）按键控制计数输出器"><span class="nav-number">4.3.</span> <span class="nav-text">2）按键控制计数输出器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3）长按快速调时器"><span class="nav-number">4.4.</span> <span class="nav-text">3）长按快速调时器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4）计时器"><span class="nav-number">4.5.</span> <span class="nav-text">4）计时器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5）闹钟器"><span class="nav-number">4.6.</span> <span class="nav-text">5）闹钟器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6）秒表器"><span class="nav-number">4.7.</span> <span class="nav-text">6）秒表器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7）显示控制译码器"><span class="nav-number">4.8.</span> <span class="nav-text">7）显示控制译码器</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4、实验现象"><span class="nav-number">5.</span> <span class="nav-text">4、实验现象</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1）实验视频链接"><span class="nav-number">5.1.</span> <span class="nav-text">1）实验视频链接</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2）图片"><span class="nav-number">5.2.</span> <span class="nav-text">2）图片</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#计时功能"><span class="nav-number">5.2.1.</span> <span class="nav-text">计时功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#调时功能"><span class="nav-number">5.2.2.</span> <span class="nav-text">调时功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#调闹钟功能"><span class="nav-number">5.2.3.</span> <span class="nav-text">调闹钟功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#秒表功能"><span class="nav-number">5.2.4.</span> <span class="nav-text">秒表功能</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="罗乐乐"
+      src="/images/xusong.jpeg">
+  <p class="site-author-name" itemprop="name">罗乐乐</p>
+  <div class="site-description" itemprop="description">不念、不想、不枉、此生</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yinluolll" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yinluolll" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/qq_45035280" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_45035280" rel="noopener" target="_blank"><i class="fa fa-fw fa-CSDN"></i>CSDN</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.cctry.com/" title="https:&#x2F;&#x2F;www.cctry.com" rel="noopener" target="_blank">VC驿站</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.bilibili.com/" title="https:&#x2F;&#x2F;www.bilibili.com" rel="noopener" target="_blank">B站</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.baidu.com/" title="http:&#x2F;&#x2F;www.baidu.com" rel="noopener" target="_blank">百度</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.csdn.net/" title="https:&#x2F;&#x2F;www.csdn.net" rel="noopener" target="_blank">CSDN博客</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">罗乐乐</span>
+</div>
+
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>-->
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/three-waves.min.js"></script>
+    <script defer src="/lib/three/canvas_lines.min.js"></script>
+    <script defer src="/lib/three/canvas_sphere.min.js"></script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

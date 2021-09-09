@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.post_navigation">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yinluolll.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="1. 项目背景介绍这是我的一个毕业设计作品，刚刚接手这个毕业设计的时候，自己还是有些迷茫的，因为自己手慢，接了一个相对复杂的毕业设计，但是当我看到设计要求的时候，我瞬间又有了信心，可能是这么多天的努力吧，我在疫情期间没事儿就捣鼓各种单片机，尤其对主流的STM32的板子产生了浓厚的兴趣，自己也大致上也懂了这款单片机的一些功能和一些开源代码，然后我立马知道要实现这个毕业设计的功能需要动用哪些单片机的资">
+<meta property="og:type" content="article">
+<meta property="og:title" content="便携式人体生命特征测试仪">
+<meta property="og:url" content="https://yinluolll.github.io/2020/06/22/%E4%BE%BF%E6%90%BA%E5%BC%8F%E4%BA%BA%E4%BD%93%E7%94%9F%E5%91%BD%E7%89%B9%E5%BE%81%E6%B5%8B%E8%AF%95%E4%BB%AA%E6%AF%95%E4%B8%9A%E8%AE%BE%E8%AE%A1%E4%BD%9C%E5%93%81/index.html">
+<meta property="og:site_name" content="个人博客">
+<meta property="og:description" content="1. 项目背景介绍这是我的一个毕业设计作品，刚刚接手这个毕业设计的时候，自己还是有些迷茫的，因为自己手慢，接了一个相对复杂的毕业设计，但是当我看到设计要求的时候，我瞬间又有了信心，可能是这么多天的努力吧，我在疫情期间没事儿就捣鼓各种单片机，尤其对主流的STM32的板子产生了浓厚的兴趣，自己也大致上也懂了这款单片机的一些功能和一些开源代码，然后我立马知道要实现这个毕业设计的功能需要动用哪些单片机的资">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://yinluolll.github.io/images/%E6%B8%A9%E5%BA%A6.jpg">
+<meta property="og:image" content="https://yinluolll.github.io/images/%E6%B8%A9%E5%BA%A62.jpg">
+<meta property="og:image" content="https://yinluolll.github.io/images/%E6%B8%A9%E5%BA%A65.jpg">
+<meta property="og:image" content="https://yinluolll.github.io/images/%E6%B8%A9%E5%BA%A63.jpg">
+<meta property="og:image" content="https://yinluolll.github.io/images/%E6%B8%A9%E5%BA%A64.jpg">
+<meta property="og:image" content="https://yinluolll.github.io/images/%E6%B8%A9%E5%BA%A66.jpg">
+<meta property="article:published_time" content="2020-06-22T12:46:43.000Z">
+<meta property="article:modified_time" content="2020-06-23T16:59:02.929Z">
+<meta property="article:author" content="罗乐乐">
+<meta property="article:tag" content="硬件开发">
+<meta property="article:tag" content="stm32">
+<meta property="article:tag" content="c语言">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yinluolll.github.io/images/%E6%B8%A9%E5%BA%A6.jpg">
+
+<link rel="canonical" href="https://yinluolll.github.io/2020/06/22/%E4%BE%BF%E6%90%BA%E5%BC%8F%E4%BA%BA%E4%BD%93%E7%94%9F%E5%91%BD%E7%89%B9%E5%BE%81%E6%B5%8B%E8%AF%95%E4%BB%AA%E6%AF%95%E4%B8%9A%E8%AE%BE%E8%AE%A1%E4%BD%9C%E5%93%81/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>便携式人体生命特征测试仪 | 个人博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">个人博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">学习笔记</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://yinluolll.github.io/2020/06/22/%E4%BE%BF%E6%90%BA%E5%BC%8F%E4%BA%BA%E4%BD%93%E7%94%9F%E5%91%BD%E7%89%B9%E5%BE%81%E6%B5%8B%E8%AF%95%E4%BB%AA%E6%AF%95%E4%B8%9A%E8%AE%BE%E8%AE%A1%E4%BD%9C%E5%93%81/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/xusong.jpeg">
+      <meta itemprop="name" content="罗乐乐">
+      <meta itemprop="description" content="不念、不想、不枉、此生">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          便携式人体生命特征测试仪
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-06-22 20:46:43" itemprop="dateCreated datePublished" datetime="2020-06-22T20:46:43+08:00">2020-06-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-06-24 00:59:02" itemprop="dateModified" datetime="2020-06-24T00:59:02+08:00">2020-06-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%BA%95%E7%AB%AF%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">底端开发</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="1-项目背景介绍"><a href="#1-项目背景介绍" class="headerlink" title="1. 项目背景介绍"></a>1. 项目背景介绍</h1><p>这是我的一个毕业设计作品，刚刚接手这个毕业设计的时候，自己还是有些迷茫的，因为自己手慢，接了一个相对复杂的毕业设计，但是当我看到设计要求的时候，我瞬间又有了信心，可能是这么多天的努力吧，我在疫情期间没事儿就捣鼓各种单片机，尤其对主流的STM32的板子产生了浓厚的兴趣，自己也大致上也懂了这款单片机的一些功能和一些开源代码，然后我立马知道要实现这个毕业设计的功能需要动用哪些单片机的资源。所以我觉得自己很幸运，自己找到了自己喜欢做的事情，也从中获得了无限的乐趣。</p>
+<a id="more"></a>
+<h1 id="项目算法框图设计"><a href="#项目算法框图设计" class="headerlink" title="项目算法框图设计"></a>项目算法框图设计</h1><h2 id=""><a href="#" class="headerlink" title=""></a><img src="/images/%E6%B8%A9%E5%BA%A6.jpg" alt="image"></h2><h1 id="2-代码实现及现象描述"><a href="#2-代码实现及现象描述" class="headerlink" title="2. 代码实现及现象描述"></a>2. 代码实现及现象描述</h1><h2 id="1）温度传感器-ds18b20"><a href="#1）温度传感器-ds18b20" class="headerlink" title="1）温度传感器 ds18b20"></a>1）温度传感器 ds18b20</h2><h3 id="基本代码思想"><a href="#基本代码思想" class="headerlink" title="基本代码思想"></a>基本代码思想</h3><p>由于温度传感器只有三个管脚，两个接电源，剩下的一个通过单总线，使用单总线的时序通信，来输入指令获得温度的数字量</p>
+<h3 id="代码讲解"><a href="#代码讲解" class="headerlink" title="代码讲解"></a>代码讲解</h3><h4 id="模块初始化（外设）"><a href="#模块初始化（外设）" class="headerlink" title="模块初始化（外设）"></a>模块初始化（外设）</h4><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">void <span class="constructor">DS18B20_Configuration(<span class="params">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line"> GPIO_InitTypeDef GPIO_InitStructure;</span><br><span class="line"> </span><br><span class="line"> <span class="constructor">RCC_APB2PeriphClockCmd(DS_RCC_PORT, ENABLE)</span>;</span><br><span class="line"></span><br><span class="line"> GPIO_InitStructure.GPIO_Pin = DS_DQIO;</span><br><span class="line"> GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_OD; <span class="comment">//开漏输出</span></span><br><span class="line"> GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz; <span class="comment">//2M时钟速度</span></span><br><span class="line"> <span class="constructor">GPIO_Init(DS_PORT, &amp;GPIO_InitStructure)</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//unsigned char：如整数型那样，只不过如果对应ASCII表表示字符，其他时候与整数类型无异，只是比其它的数据类型要小</span></span><br><span class="line">void <span class="constructor">DS18B20Init(<span class="params">unsigned</span> <span class="params">char</span> Precision,<span class="params">unsigned</span> <span class="params">char</span> AlarmTH,<span class="params">unsigned</span> <span class="params">char</span> AlarmTL)</span></span><br><span class="line">&#123;</span><br><span class="line"> <span class="constructor">DisableINT()</span>;</span><br><span class="line"> <span class="constructor">ResetDS18B20()</span>;</span><br><span class="line"> <span class="constructor">DS18B20WriteByte(SkipROM)</span>;<span class="comment">//通过特定的指令来进行初始化，具体参考帮助文档或者相应店铺的淘宝资料</span></span><br><span class="line"> <span class="constructor">DS18B20WriteByte(WriteScratchpad)</span>;</span><br><span class="line"> <span class="constructor">DS18B20WriteByte(AlarmTL)</span>;</span><br><span class="line"> <span class="constructor">DS18B20WriteByte(AlarmTH)</span>;</span><br><span class="line"> <span class="constructor">DS18B20WriteByte(Precision)</span>;</span><br><span class="line"></span><br><span class="line"> <span class="constructor">ResetDS18B20()</span>;</span><br><span class="line"> <span class="constructor">DS18B20WriteByte(SkipROM)</span>; </span><br><span class="line"> <span class="constructor">DS18B20WriteByte(CopyScratchpad)</span>;<span class="comment">//将临时的值存储到EEPROM</span></span><br><span class="line"> <span class="constructor">EnableINT()</span>;</span><br><span class="line"></span><br><span class="line"> <span class="keyword">while</span>(!<span class="constructor">GetDQ()</span>);  <span class="comment">//等待复制完成 ///////////</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void ds18b20<span class="constructor">_init(<span class="params">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line"> <span class="constructor">DS18B20_Configuration()</span>;<span class="comment">//IO口的配置</span></span><br><span class="line"> <span class="constructor">DS18B20Init(DS_PRECISION, DS_AlarmTH, DS_AlarmTL)</span>;</span><br><span class="line"> <span class="constructor">DS18B20StartConvert()</span>;<span class="comment">//启动温度转化，相当于模数转换</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="数字量转换模拟量（通过软件计算实现数模转换）"><a href="#数字量转换模拟量（通过软件计算实现数模转换）" class="headerlink" title="数字量转换模拟量（通过软件计算实现数模转换）"></a>数字量转换模拟量（通过软件计算实现数模转换）</h4><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">float</span> ds18b20<span class="constructor">_read(<span class="params">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">	unsigned <span class="built_in">char</span> DL, DH;</span><br><span class="line">	unsigned short TemperatureData;</span><br><span class="line">	<span class="built_in">float</span> Temperature;</span><br><span class="line"></span><br><span class="line">	<span class="constructor">DisableINT()</span>;</span><br><span class="line">	<span class="constructor">DS18B20StartConvert()</span>;</span><br><span class="line">	<span class="constructor">ResetDS18B20()</span>;</span><br><span class="line">	<span class="constructor">DS18B20WriteByte(SkipROM)</span>; </span><br><span class="line">	<span class="constructor">DS18B20WriteByte(ReadScratchpad)</span>;</span><br><span class="line">	DL = <span class="constructor">DS18B20ReadByte()</span>;</span><br><span class="line">	DH = <span class="constructor">DS18B20ReadByte()</span>; </span><br><span class="line">	<span class="constructor">EnableINT()</span>;</span><br><span class="line"></span><br><span class="line">	TemperatureData = DH;</span><br><span class="line">	TemperatureData &lt;&lt;= <span class="number">8</span>;</span><br><span class="line">	TemperatureData <span class="pattern-match">|= <span class="constructor">DL</span>;</span></span><br><span class="line"><span class="pattern-match"></span></span><br><span class="line"><span class="pattern-match">	<span class="constructor">Temperature</span> = (<span class="built_in">float</span>)((<span class="built_in">float</span>)<span class="constructor">TemperatureData</span> <span class="operator">*</span> 0.0625);</span></span><br><span class="line"><span class="pattern-match"></span></span><br><span class="line"><span class="pattern-match">	return  <span class="constructor">Temperature</span>;</span></span><br><span class="line"><span class="pattern-match">&#125;</span></span><br></pre></td></tr></table></figure>
+<h4 id="OLED显示（以后不再重复写这一模块代码）"><a href="#OLED显示（以后不再重复写这一模块代码）" class="headerlink" title="OLED显示（以后不再重复写这一模块代码）"></a>OLED显示（以后不再重复写这一模块代码）</h4><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">void</span> OLED_ShowCHinese(u8 x,u8 y,u8 no)<span class="comment">//字模遍历，至于如何取字模，可在上网搜索即可</span></span><br><span class="line">&#123;      			    </span><br><span class="line">	u8 t,adder=<span class="number">0</span>;</span><br><span class="line">	OLED_Set_Pos(x,y);	</span><br><span class="line">    <span class="keyword">for</span>(t=<span class="number">0</span>;t&lt;<span class="number">16</span>;t++)</span><br><span class="line">		&#123;</span><br><span class="line">				OLED_WR_Byte(Hzk[<span class="number">2</span>*no][t],OLED_DATA);</span><br><span class="line">				adder+=<span class="number">1</span>;</span><br><span class="line">     &#125;	</span><br><span class="line">		OLED_Set_Pos(x,y+<span class="number">1</span>);	</span><br><span class="line">    <span class="keyword">for</span>(t=<span class="number">0</span>;t&lt;<span class="number">16</span>;t++)</span><br><span class="line">			&#123;	</span><br><span class="line">				OLED_WR_Byte(Hzk[<span class="number">2</span>*no+<span class="number">1</span>][t],OLED_DATA);</span><br><span class="line">				adder+=<span class="number">1</span>;</span><br><span class="line">      &#125;					</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//显示数字代码同理，使用ASCII字模数组</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//参数：温度的正数部分、温度的小数部分、脉搏心率</span></span><br><span class="line"><span class="built_in">void</span> OLED_Human_Life(<span class="built_in">int</span> Step,<span class="built_in">float</span> Temp,<span class="built_in">int</span> Pulse)</span><br><span class="line">&#123;</span><br><span class="line">		<span class="built_in">int</span> tempInt,tempDec;</span><br><span class="line">		tempInt = (<span class="built_in">int</span>)Temp;</span><br><span class="line">		tempDec = (Temp-tempInt)*<span class="number">10</span>;</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">		OLED_ShowCHinese(<span class="number">0</span>,<span class="number">0</span>,<span class="number">15</span>); <span class="comment">//步</span></span><br><span class="line">		OLED_ShowCHinese(<span class="number">18</span>,<span class="number">0</span>,<span class="number">16</span>);<span class="comment">//数</span></span><br><span class="line">		OLED_ShowCHinese(<span class="number">36</span>,<span class="number">0</span>,<span class="number">9</span>);	<span class="comment">//：</span></span><br><span class="line">		OLED_ShowNum(<span class="number">54</span>,<span class="number">0</span>,Step,<span class="number">6</span>,<span class="number">16</span>);<span class="comment">//54+6*8=102</span></span><br><span class="line">		OLED_ShowCHinese(<span class="number">104</span>,<span class="number">0</span>,<span class="number">0</span>);<span class="comment">//人</span></span><br><span class="line">		</span><br><span class="line">		OLED_ShowCHinese(<span class="number">0</span>,<span class="number">3</span>,<span class="number">7</span>); 	<span class="comment">//温</span></span><br><span class="line">		OLED_ShowCHinese(<span class="number">18</span>,<span class="number">3</span>,<span class="number">8</span>); <span class="comment">//度</span></span><br><span class="line">		OLED_ShowCHinese(<span class="number">36</span>,<span class="number">3</span>,<span class="number">9</span>); <span class="comment">//：</span></span><br><span class="line">		OLED_ShowNum(<span class="number">52</span>,<span class="number">3</span>,tempInt,<span class="number">2</span>,<span class="number">16</span>);</span><br><span class="line">		OLED_ShowChar(<span class="number">68</span>,<span class="number">3</span>,<span class="number">46</span>,<span class="number">16</span>);<span class="comment">//显示ASCII字符 .</span></span><br><span class="line">		OLED_ShowNum(<span class="number">76</span>,<span class="number">3</span>,tempDec,<span class="number">1</span>,<span class="number">16</span>);</span><br><span class="line">		OLED_ShowCHinese(<span class="number">84</span>,<span class="number">3</span>,<span class="number">10</span>);<span class="comment">//温度单位</span></span><br><span class="line">		</span><br><span class="line">		OLED_ShowCHinese(<span class="number">0</span>,<span class="number">6</span>,<span class="number">11</span>); <span class="comment">//脉</span></span><br><span class="line">		OLED_ShowCHinese(<span class="number">18</span>,<span class="number">6</span>,<span class="number">12</span>);<span class="comment">//搏</span></span><br><span class="line">		OLED_ShowCHinese(<span class="number">36</span>,<span class="number">6</span>,<span class="number">9</span>); <span class="comment">//：</span></span><br><span class="line">		OLED_ShowNum(<span class="number">52</span>,<span class="number">6</span>,Pulse,<span class="number">3</span>,<span class="number">16</span>);</span><br><span class="line">		OLED_ShowCHinese(<span class="number">76</span>,<span class="number">6</span>,<span class="number">13</span>);<span class="comment">//脉搏单位</span></span><br><span class="line">		OLED_ShowChar(<span class="number">94</span>,<span class="number">6</span>,<span class="number">47</span>,<span class="number">16</span>);<span class="comment">//显示ASCII字符</span></span><br><span class="line">		OLED_ShowCHinese(<span class="number">104</span>,<span class="number">6</span>,<span class="number">14</span>);<span class="comment">//脉搏单位</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">OLED_Human_Life(Get_Step_Value(),Get_T1_Value(),Get_BPM_Average_Value());<span class="comment">//显示模块</span></span><br></pre></td></tr></table></figure>
+<h4 id="MP3模块放音（以后不再重复写这一模块代码）"><a href="#MP3模块放音（以后不再重复写这一模块代码）" class="headerlink" title="MP3模块放音（以后不再重复写这一模块代码）"></a>MP3模块放音（以后不再重复写这一模块代码）</h4><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//串口初始化</span></span><br><span class="line"><span class="built_in">void</span> MP3_UART1_Init(<span class="built_in">void</span>)<span class="comment">//CON3~1：100</span></span><br><span class="line">&#123;</span><br><span class="line">	GPIO_InitTypeDef GPIO_InitStructure;</span><br><span class="line">	USART_InitTypeDef USART_InitStructure;</span><br><span class="line">	 </span><br><span class="line">	RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1|RCC_APB2Periph_GPIOA, ENABLE);	<span class="comment">//使能USART1，GPIOA时钟</span></span><br><span class="line">  </span><br><span class="line">	<span class="comment">//USART1_TX   GPIOA.9</span></span><br><span class="line">  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9; <span class="comment">//PA.9</span></span><br><span class="line">  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;</span><br><span class="line">  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;	<span class="comment">//复用推挽输出</span></span><br><span class="line">  GPIO_Init(GPIOA, &amp;GPIO_InitStructure);<span class="comment">//初始化GPIOA.9</span></span><br><span class="line">   </span><br><span class="line">  <span class="comment">//USART1_RX	  GPIOA.10初始化</span></span><br><span class="line">  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10;<span class="comment">//PA10</span></span><br><span class="line">  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;<span class="comment">//浮空输入</span></span><br><span class="line">  GPIO_Init(GPIOA, &amp;GPIO_InitStructure);<span class="comment">//初始化GPIOA.10  </span></span><br><span class="line">  </span><br><span class="line">  <span class="comment">//USART 初始化设置</span></span><br><span class="line">	USART_InitStructure.USART_BaudRate = <span class="number">9600</span>;<span class="comment">//串口波特率</span></span><br><span class="line">	USART_InitStructure.USART_WordLength = USART_WordLength_8b;<span class="comment">//字长为8位数据格式</span></span><br><span class="line">	USART_InitStructure.USART_StopBits = USART_StopBits_1;<span class="comment">//一个停止位</span></span><br><span class="line">	USART_InitStructure.USART_Parity = USART_Parity_No;<span class="comment">//无奇偶校验位</span></span><br><span class="line">	USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;<span class="comment">//无硬件数据流控制</span></span><br><span class="line">	USART_InitStructure.USART_Mode = USART_Mode_Tx;	<span class="comment">//发送模式</span></span><br><span class="line"></span><br><span class="line">  USART_Init(USART1, &amp;USART_InitStructure); <span class="comment">//初始化串口1</span></span><br><span class="line">  USART_Cmd(USART1, ENABLE);                    <span class="comment">//使能串口1 </span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//发送指令，采用半双工模式，因为下位机没有返回发送值</span></span><br><span class="line"><span class="comment">//不同的指令会有选择不同路径的曲目播放，具体请参见MP3模块的帮助文档</span></span><br><span class="line">u8 UART_TX_Play1[<span class="number">15</span>]=&#123;<span class="number">0xAA</span>, <span class="number">0x08</span>, <span class="number">0x0B</span>, <span class="number">0x02</span>, <span class="number">0x2F</span>, <span class="number">0x30</span>, <span class="number">0x30</span>, <span class="number">0x30</span>, <span class="number">0x30</span>, <span class="number">0x31</span>, <span class="number">0x2A</span>, <span class="number">0x4D</span>, <span class="number">0x50</span>, <span class="number">0x33</span>, <span class="number">0xD9</span>&#125;;</span><br><span class="line"><span class="built_in">void</span> P1(<span class="built_in">void</span>)</span><br><span class="line">&#123;</span><br><span class="line">		<span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;<span class="number">15</span>;i++)</span><br><span class="line">		&#123;</span><br><span class="line">			USART_SendData(USART1, UART_TX_Play1[i]);</span><br><span class="line">			<span class="keyword">while</span>(USART_GetFlagStatus(USART1,USART_FLAG_TC)!=SET);</span><br><span class="line">		&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="现象描述（作品图像在实验现象总板块里）"><a href="#现象描述（作品图像在实验现象总板块里）" class="headerlink" title="现象描述（作品图像在实验现象总板块里）"></a>现象描述（作品图像在实验现象总板块里）</h3><h5 id="1-在OLED显示温度栏会随着外界的温度变化而变化"><a href="#1-在OLED显示温度栏会随着外界的温度变化而变化" class="headerlink" title="1 在OLED显示温度栏会随着外界的温度变化而变化"></a>1 在OLED显示温度栏会随着外界的温度变化而变化</h5><h5 id="2-每次变化都会伴随着语音播报的出现（可设置一个语音播报控制开关）"><a href="#2-每次变化都会伴随着语音播报的出现（可设置一个语音播报控制开关）" class="headerlink" title="2 每次变化都会伴随着语音播报的出现（可设置一个语音播报控制开关）"></a>2 每次变化都会伴随着语音播报的出现（可设置一个语音播报控制开关）</h5><h2 id="2）红外人体感应传感器-Hc-Sr501hc"><a href="#2）红外人体感应传感器-Hc-Sr501hc" class="headerlink" title="2）红外人体感应传感器 Hc_Sr501hc"></a>2）红外人体感应传感器 Hc_Sr501hc</h2><h3 id="基本代码思想-1"><a href="#基本代码思想-1" class="headerlink" title="基本代码思想"></a>基本代码思想</h3><p>由于温度传感器只有三个管脚，两个接电源，剩下的一个简单的输出高低电平来判断人是否开始动了，高电平人开始动了，低电平人没动，中途变化需要一定的缓冲时间</p>
+<h3 id="代码讲解-1"><a href="#代码讲解-1" class="headerlink" title="代码讲解"></a>代码讲解</h3><h4 id="模块初始化（外设）-1"><a href="#模块初始化（外设）-1" class="headerlink" title="模块初始化（外设）"></a>模块初始化（外设）</h4><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">void <span class="constructor">Hc_Sr501hc_Init(<span class="params">void</span>)</span><span class="comment">//每一字母组IO口值默认值只能有一个</span></span><br><span class="line">&#123;</span><br><span class="line">	GPIO_InitTypeDef GPIO_InitStructure;</span><br><span class="line">	</span><br><span class="line">	<span class="constructor">RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, ENABLE)</span>;</span><br><span class="line">	</span><br><span class="line">	GPIO_InitStructure.GPIO_Pin  = GPIO_Pin_0;</span><br><span class="line">	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPD; <span class="comment">//PA0设置成输入，默认下拉，需要电源的电平，而不是模块的电平	  </span></span><br><span class="line">	<span class="constructor">GPIO_Init(GPIOC, &amp;GPIO_InitStructure)</span>;<span class="comment">//初始化GPIOA.12</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="判断代码"><a href="#判断代码" class="headerlink" title="判断代码"></a>判断代码</h4><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">void</span> Human_Stop_Or_Move_Show_And_Play(<span class="built_in">void</span>)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">if</span>(GPIO_ReadInputDataBit(GPIOC,GPIO_Pin_0)==<span class="number">1</span>) </span><br><span class="line">	&#123;</span><br><span class="line">		OLED_ShowCHinese(<span class="number">102</span>,<span class="number">3</span>,<span class="number">20</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">if</span>(GPIO_ReadInputDataBit(GPIOC,GPIO_Pin_0)==<span class="number">0</span>) </span><br><span class="line">	&#123;</span><br><span class="line">		OLED_ShowCHinese(<span class="number">102</span>,<span class="number">3</span>,<span class="number">19</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="现象描述（作品图像在实验现象总板块里）-1"><a href="#现象描述（作品图像在实验现象总板块里）-1" class="headerlink" title="现象描述（作品图像在实验现象总板块里）"></a>现象描述（作品图像在实验现象总板块里）</h3><h5 id="1-在OLED显示红外感应栏会随着人的动或停变化而变化"><a href="#1-在OLED显示红外感应栏会随着人的动或停变化而变化" class="headerlink" title="1 在OLED显示红外感应栏会随着人的动或停变化而变化"></a>1 在OLED显示红外感应栏会随着人的动或停变化而变化</h5><h5 id="2-每次变化都会伴随着语音播报的出现（可设置一个语音播报控制开关）-1"><a href="#2-每次变化都会伴随着语音播报的出现（可设置一个语音播报控制开关）-1" class="headerlink" title="2 每次变化都会伴随着语音播报的出现（可设置一个语音播报控制开关）"></a>2 每次变化都会伴随着语音播报的出现（可设置一个语音播报控制开关）</h5><h2 id="3）震动开关"><a href="#3）震动开关" class="headerlink" title="3）震动开关"></a>3）震动开关</h2><h3 id="基本代码思想-2"><a href="#基本代码思想-2" class="headerlink" title="基本代码思想"></a>基本代码思想</h3><p>类似于平常开关，只不过一个是主动触发，一个震动触发</p>
+<h3 id="代码讲解-2"><a href="#代码讲解-2" class="headerlink" title="代码讲解"></a>代码讲解</h3><h4 id="模块初始化（外设）-2"><a href="#模块初始化（外设）-2" class="headerlink" title="模块初始化（外设）"></a>模块初始化（外设）</h4><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">void <span class="constructor">Vibrating_Sensor_Init(<span class="params">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">	EXTI_InitTypeDef EXTI_InitStructure;</span><br><span class="line"> 	NVIC_InitTypeDef NVIC_InitStructure;</span><br><span class="line">	GPIO_InitTypeDef GPIO_InitStructure;</span><br><span class="line">	<span class="comment">//1、IO口</span></span><br><span class="line">	<span class="constructor">RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA|RCC_APB2Periph_AFIO, ENABLE)</span>;</span><br><span class="line">	</span><br><span class="line">	GPIO_InitStructure.GPIO_Pin  = GPIO_Pin_2;</span><br><span class="line">	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPD; <span class="comment">//PA2设置成输入，默认下拉	  </span></span><br><span class="line">	<span class="constructor">GPIO_Init(GPIOA, &amp;GPIO_InitStructure)</span>;<span class="comment">//初始化GPIOA.2</span></span><br><span class="line">	</span><br><span class="line">	<span class="comment">//2、复用为外部中断通道</span></span><br><span class="line">	<span class="constructor">GPIO_EXTILineConfig(GPIO_PortSourceGPIOA,GPIO_PinSource2)</span>;</span><br><span class="line">	</span><br><span class="line">  EXTI_InitStructure.EXTI_Line=EXTI_Line2;<span class="comment">//中断线2管2开头的GPIO口</span></span><br><span class="line">	EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;</span><br><span class="line">  EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Rising;</span><br><span class="line">	EXTI_InitStructure.EXTI_LineCmd = ENABLE;<span class="comment">//开启外部中断源</span></span><br><span class="line">  <span class="constructor">EXTI_Init(&amp;EXTI_InitStructure)</span>;		<span class="comment">//根据EXTI_InitStruct中指定的参数初始化外设EXTI寄存器</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">//3</span></span><br><span class="line">  NVIC_InitStructure.NVIC_IRQChannel = EXTI2_IRQn;			<span class="comment">//使能按键WK_UP所在的外部中断通道</span></span><br><span class="line">  NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = <span class="number">0</span>;<span class="comment">//抢占优先级0， </span></span><br><span class="line">  NVIC_InitStructure.NVIC_IRQChannelSubPriority = <span class="number">1</span>;				<span class="comment">//子优先级0</span></span><br><span class="line">  NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;						<span class="comment">//使能外部中断通道</span></span><br><span class="line">  <span class="constructor">NVIC_Init(&amp;NVIC_InitStructure)</span>; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="计步器（中断服务函数）"><a href="#计步器（中断服务函数）" class="headerlink" title="计步器（中断服务函数）"></a>计步器（中断服务函数）</h4><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">void <span class="constructor">EXTI2_IRQHandler(<span class="params">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">	delay<span class="constructor">_ms(1000)</span>;<span class="comment">//通过改变延时时间调节软件计算灵敏度</span></span><br><span class="line">	<span class="keyword">if</span>(<span class="constructor">EXTI_GetITStatus(EXTI_Line2)</span>!=RESET)<span class="comment">//判断某个线上的中断是否发生</span></span><br><span class="line">	&#123;			 </span><br><span class="line">			<span class="constructor">EXTI_ClearITPendingBit(EXTI_Line2)</span>; <span class="comment">//清除LINE0上的中断标志位</span></span><br><span class="line">			Step++;</span><br><span class="line">	&#125;	  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="现象描述（作品图像在实验现象总板块里）-2"><a href="#现象描述（作品图像在实验现象总板块里）-2" class="headerlink" title="现象描述（作品图像在实验现象总板块里）"></a>现象描述（作品图像在实验现象总板块里）</h3><h5 id="1-在OLED显示步数计算栏会随着人的震动的变化而步数增加"><a href="#1-在OLED显示步数计算栏会随着人的震动的变化而步数增加" class="headerlink" title="1 在OLED显示步数计算栏会随着人的震动的变化而步数增加"></a>1 在OLED显示步数计算栏会随着人的震动的变化而步数增加</h5><h5 id="2-每次步数位数的改变都会有一次语音播报"><a href="#2-每次步数位数的改变都会有一次语音播报" class="headerlink" title="2 每次步数位数的改变都会有一次语音播报"></a>2 每次步数位数的改变都会有一次语音播报</h5><h2 id="4）脉搏传感器"><a href="#4）脉搏传感器" class="headerlink" title="4）脉搏传感器"></a>4）脉搏传感器</h2><h3 id="基本代码思想-3"><a href="#基本代码思想-3" class="headerlink" title="基本代码思想"></a>基本代码思想</h3><p>传感器传输模拟量的波形，所以我们不仅需要通过模数转换来将其变成数字量，而且要对数字量的波峰和波谷进行判断，以此来计算心率。<br>而计算心率还有一个时间变量，可以通过定时器来计算时间，因此我们可以在定时器中断函数来进行数字量的计算。<br> <strong>注：定时器不能放任何的要执行很长时间的代码，否则计算（扫描时间延迟）不准确；因为外界的干扰，有很多事干扰值，因此可以通过计算平均值来将这种干扰最小化（优化算法）</strong></p>
+<h3 id="代码讲解-3"><a href="#代码讲解-3" class="headerlink" title="代码讲解"></a>代码讲解</h3><h4 id="模块初始化（外设）-3"><a href="#模块初始化（外设）-3" class="headerlink" title="模块初始化（外设）"></a>模块初始化（外设）</h4><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line">void <span class="constructor">Pulse_Sensor_Init(<span class="params">void</span>)</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">//1、GPIO口的初始化</span></span><br><span class="line">		GPIO_InitTypeDef  GPIO_InitStructure;</span><br><span class="line">		TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;</span><br><span class="line">		NVIC_InitTypeDef NVIC_InitStructure;</span><br><span class="line">		ADC_InitTypeDef ADC_InitStructure;</span><br><span class="line">		</span><br><span class="line">		<span class="constructor">RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOD|RCC_APB2Periph_GPIOA, ENABLE)</span>;	 <span class="comment">//使能PD端口时钟</span></span><br><span class="line">		</span><br><span class="line">		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_2;				 <span class="comment">//LED D2--&gt;PD2端口配置</span></span><br><span class="line">		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP; 		 <span class="comment">//推挽输出</span></span><br><span class="line">		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;		 <span class="comment">//IO口速度为50MHz</span></span><br><span class="line">		<span class="constructor">GPIO_Init(GPIOD, &amp;GPIO_InitStructure)</span>;					 <span class="comment">//根据设定参数初始化GPIOD.2</span></span><br><span class="line">		</span><br><span class="line">		<span class="comment">//PA0 作为模拟通道输入引脚                         </span></span><br><span class="line">		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0;</span><br><span class="line">		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AIN;		<span class="comment">//模拟输入引脚</span></span><br><span class="line">		<span class="constructor">GPIO_Init(GPIOA, &amp;GPIO_InitStructure)</span>;	</span><br><span class="line"></span><br><span class="line">		<span class="comment">//2、定时器的初始化</span></span><br><span class="line"></span><br><span class="line">		<span class="constructor">RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3, ENABLE)</span>; <span class="comment">//时钟使能</span></span><br><span class="line">		</span><br><span class="line">		TIM_TimeBaseStructure.TIM_Period = <span class="number">7</span>; <span class="comment">//设置在下一个更新事件装入活动的自动重装载寄存器周期的值	</span></span><br><span class="line">		TIM_TimeBaseStructure.TIM_Prescaler =<span class="number">1999</span>; <span class="comment">//设置用来作为TIMx时钟频率除数的预分频值</span></span><br><span class="line">		TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1; <span class="comment">//设置时钟分割:TDTS = Tck_tim</span></span><br><span class="line">		TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;  <span class="comment">//TIM向上计数模式,边沿对齐模式</span></span><br><span class="line">		<span class="constructor">TIM_TimeBaseInit(TIM3, &amp;TIM_TimeBaseStructure)</span>; <span class="comment">//根据指定的参数初始化TIMx的时间基数单位</span></span><br><span class="line"></span><br><span class="line">		<span class="comment">//中断优先级NVIC设置</span></span><br><span class="line">		NVIC_InitStructure.NVIC_IRQChannel = TIM3_IRQn;  <span class="comment">//TIM3中断</span></span><br><span class="line">		NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = <span class="number">0</span>;  <span class="comment">//先占优先级1级</span></span><br><span class="line">		NVIC_InitStructure.NVIC_IRQChannelSubPriority = <span class="number">0</span>;  <span class="comment">//从优先级0级</span></span><br><span class="line">		NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE; <span class="comment">//IRQ通道被使能</span></span><br><span class="line">		<span class="constructor">NVIC_Init(&amp;NVIC_InitStructure)</span>;  <span class="comment">//初始化NVIC寄存器</span></span><br><span class="line"></span><br><span class="line">		<span class="comment">//3、ADC初始化 </span></span><br><span class="line"></span><br><span class="line">		<span class="constructor">RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1, ENABLE )</span>;	  <span class="comment">//使能ADC1通道时钟</span></span><br><span class="line">	 </span><br><span class="line">		<span class="constructor">RCC_ADCCLKConfig(RCC_PCLK2_Div2)</span>;   <span class="comment">//设置ADC分频因子6 8M/2=4M,ADC最大时间不能超过14M</span></span><br><span class="line"></span><br><span class="line">		<span class="constructor">ADC_DeInit(ADC1)</span>;  <span class="comment">//复位ADC1,将外设 ADC1 的全部寄存器重设为缺省值</span></span><br><span class="line"></span><br><span class="line">		ADC_InitStructure.ADC_Mode = ADC_Mode_Independent;	<span class="comment">//ADC工作模式:ADC1和ADC2工作在独立模式</span></span><br><span class="line">		ADC_InitStructure.ADC_ScanConvMode = DISABLE;	<span class="comment">//模数转换工作在单通道模式</span></span><br><span class="line">		ADC_InitStructure.ADC_ContinuousConvMode = DISABLE;	<span class="comment">//模数转换工作在单次转换模式</span></span><br><span class="line">		ADC_InitStructure.ADC_ExternalTrigConv = ADC_ExternalTrigConv_None;	<span class="comment">//转换由软件而不是外部触发启动</span></span><br><span class="line">		ADC_InitStructure.ADC_DataAlign = ADC_DataAlign_Right;	<span class="comment">//ADC数据右对齐</span></span><br><span class="line">		ADC_InitStructure.ADC_NbrOfChannel = <span class="number">1</span>;	<span class="comment">//顺序进行规则转换的ADC通道的数目</span></span><br><span class="line">		<span class="constructor">ADC_Init(ADC1, &amp;ADC_InitStructure)</span>;	<span class="comment">//根据ADC_InitStruct中指定的参数初始化外设ADCx的寄存器   </span></span><br><span class="line"></span><br><span class="line">		</span><br><span class="line">		<span class="constructor">ADC_Cmd(ADC1, ENABLE)</span>;	<span class="comment">//使能指定的ADC1</span></span><br><span class="line">		</span><br><span class="line">		<span class="constructor">ADC_ResetCalibration(ADC1)</span>;	<span class="comment">//使能复位校准  </span></span><br><span class="line">		 </span><br><span class="line">		<span class="keyword">while</span>(<span class="constructor">ADC_GetResetCalibrationStatus(ADC1)</span>);	<span class="comment">//等待复位校准结束</span></span><br><span class="line">		</span><br><span class="line">		<span class="constructor">ADC_StartCalibration(ADC1)</span>;	 <span class="comment">//开启AD校准</span></span><br><span class="line">	 </span><br><span class="line">		<span class="keyword">while</span>(<span class="constructor">ADC_GetCalibrationStatus(ADC1)</span>);	 <span class="comment">//等待校准结束</span></span><br><span class="line">	 </span><br><span class="line">	<span class="comment">//	ADC_SoftwareStartConvCmd(ADC1, ENABLE);		//使能指定的ADC1的软件转换启动功能</span></span><br><span class="line">		</span><br><span class="line">		<span class="constructor">TIM_ITConfig(TIM3,TIM_IT_Update,ENABLE )</span>; <span class="comment">//使能指定的TIM3中断,允许更新中断</span></span><br><span class="line">		<span class="constructor">TIM_Cmd(TIM3, ENABLE)</span>;  <span class="comment">//使能TIMx</span></span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="对外界数字量的处理（定时器中断服务函数）"><a href="#对外界数字量的处理（定时器中断服务函数）" class="headerlink" title="对外界数字量的处理（定时器中断服务函数）"></a>对外界数字量的处理（定时器中断服务函数）</h4><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//定时器3中断服务程序,只能是温度测量专用，否则会计算错误心率，因为其他代码执行需要花费时间</span></span><br><span class="line"><span class="built_in">void</span> TIM3_IRQHandler(<span class="built_in">void</span>)   <span class="comment">//TIM3中断，</span></span><br><span class="line">&#123;</span><br><span class="line">	unsigned <span class="built_in">int</span> runningTotal;</span><br><span class="line">	unsigned <span class="built_in">int</span> i;</span><br><span class="line">	<span class="keyword">if</span> (TIM_GetITStatus(TIM3, TIM_IT_Update) != RESET)  <span class="comment">//检查TIM3更新中断发生与否</span></span><br><span class="line">	&#123;</span><br><span class="line">			TIM_ClearITPendingBit(TIM3, TIM_IT_Update);  <span class="comment">//清除TIMx更新中断标志，为了迎接下一个中断</span></span><br><span class="line">			</span><br><span class="line"><span class="comment">//对于离散波形处理	</span></span><br><span class="line">			Signal=Get_Adc(ADC_Channel_0)&gt;&gt;<span class="number">2</span>;					 <span class="comment">// read the Pulse Senso,被12位精度分出的份数</span></span><br><span class="line">			sampleCounter += <span class="number">2</span>;                         <span class="comment">// keep track of the time in mS with this variable，每2ms采集一次计数加2相当于每1ms采集一次加1</span></span><br><span class="line">			Num = sampleCounter - lastBeatTime;       <span class="comment">// monitor the time since the last beat to avoid noise</span></span><br><span class="line">			ADC_Cmd(ADC1, ENABLE);	<span class="comment">//使能指定的ADC1</span></span><br><span class="line">		</span><br><span class="line">			<span class="comment">//波谷和波峰：都在特定的范围取值，为了消除噪音</span></span><br><span class="line">			<span class="keyword">if</span>(Signal &lt; thresh &amp;&amp; Num &gt; ( (IBI/<span class="number">5</span>)*<span class="number">3</span> ) )&#123;       <span class="comment">// avoid dichrotic noise by waiting 3/5 of last IBI</span></span><br><span class="line">				<span class="keyword">if</span> (Signal &lt; T)&#123;                        <span class="comment">// T is the trough</span></span><br><span class="line">				T = Signal;                         <span class="comment">// keep track of lowest point in pulse wave </span></span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">if</span>(Signal &gt; thresh &amp;&amp; Signal &gt; P)&#123;          <span class="comment">// thresh condition helps avoid noise</span></span><br><span class="line">				P = Signal;                             <span class="comment">// P is the peak</span></span><br><span class="line">			&#125;                                        <span class="comment">// keep track of highest point in pulse wave</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">//  NOW IT'S TIME TO LOOK FOR THE HEART BEAT</span></span><br><span class="line">  <span class="comment">// signal surges up in value every time there is a pulse</span></span><br><span class="line">  <span class="keyword">if</span> (Num &gt; <span class="number">250</span>)&#123;                                   <span class="comment">// avoid high frequency noise</span></span><br><span class="line">    <span class="keyword">if</span> ( (Signal &gt; thresh) &amp;&amp; (Pulse == <span class="literal">false</span>) &amp;&amp; (Num &gt; (IBI/<span class="number">5</span>)*<span class="number">3</span>) )&#123;<span class="comment">//当满足这些条件的时候就认为是高电平       </span></span><br><span class="line">      Pulse = <span class="literal">true</span>;                               <span class="comment">// set the Pulse flag when we think there is a pulse</span></span><br><span class="line">      GPIO_ResetBits(GPIOD,GPIO_Pin_2);               <span class="comment">//达到波峰时turn on pin 13 LED</span></span><br><span class="line">      IBI = sampleCounter - lastBeatTime;         <span class="comment">// measure time between beats in mS</span></span><br><span class="line">      lastBeatTime = sampleCounter;               <span class="comment">// keep track of time for next pulse</span></span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span>(secondBeat)&#123;                        <span class="comment">// if this is the second beat, if secondBeat == TRUE</span></span><br><span class="line">        secondBeat = <span class="literal">false</span>;                  <span class="comment">// clear secondBeat flag</span></span><br><span class="line">        <span class="keyword">for</span>(i=<span class="number">0</span>; i&lt;=<span class="number">9</span>; i++)&#123;             <span class="comment">// seed the running total to get a realisitic BPM at startup，将第二次的作为IBM的参数，采集九次</span></span><br><span class="line">          rate[i] = IBI;                      </span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span>(firstBeat)&#123;                        <span class="comment">// if it's the first time we found a beat, if firstBeat == TRUE</span></span><br><span class="line">        firstBeat = <span class="literal">false</span>;                   <span class="comment">// clear firstBeat flag</span></span><br><span class="line">        secondBeat = <span class="literal">true</span>;                   <span class="comment">// set the second beat flag</span></span><br><span class="line">        <span class="keyword">return</span>;                              <span class="comment">// IBI value is unreliable so discard it，第一次心跳的参数将它丢弃掉</span></span><br><span class="line">      &#125;   </span><br><span class="line"></span><br><span class="line">      <span class="comment">// keep a running total of the last 10 IBI values</span></span><br><span class="line">      runningTotal = <span class="number">0</span>;                  <span class="comment">// clear the runningTotal variable    </span></span><br><span class="line"></span><br><span class="line">      <span class="keyword">for</span>(i=<span class="number">0</span>; i&lt;=<span class="number">8</span>; i++)&#123;                <span class="comment">// shift data in the rate array</span></span><br><span class="line">        rate[i] = rate[i+<span class="number">1</span>];                  <span class="comment">// and drop the oldest IBI value，收集8个参数并相加 </span></span><br><span class="line">        runningTotal += rate[i];              <span class="comment">// add up the 9 oldest IBI values</span></span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      rate[<span class="number">9</span>] = IBI;                          <span class="comment">// add the latest IBI to the rate array，最后一个参数将现今的值来补充</span></span><br><span class="line">      runningTotal += rate[<span class="number">9</span>];                <span class="comment">// add the latest IBI to runningTotal</span></span><br><span class="line">      runningTotal /= <span class="number">10</span>;                     <span class="comment">// average the last 10 IBI values </span></span><br><span class="line">      BPM = <span class="number">60000</span>/runningTotal;               <span class="comment">// how many beats can fit into a minute? that's BPM!</span></span><br><span class="line">      QS = <span class="literal">true</span>;                              <span class="comment">// set Quantified Self flag </span></span><br><span class="line">      <span class="comment">// QS FLAG IS NOT CLEARED INSIDE THIS ISR</span></span><br><span class="line">    &#125;                       </span><br><span class="line">  &#125;<span class="comment">//60 000/4ms(2次)=15 000，60*(1000/4s)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//x轴偏低，就重新调整波峰波谷到x轴上</span></span><br><span class="line">  <span class="keyword">if</span> (Signal &lt; thresh &amp;&amp; Pulse == <span class="literal">true</span>)&#123;   <span class="comment">// when the values are going down, the beat is over</span></span><br><span class="line">    GPIO_SetBits(GPIOD,GPIO_Pin_2);				<span class="comment">//PD.2 输出高            // 在达到波谷时turn off pin 13 LED</span></span><br><span class="line">    Pulse = <span class="literal">false</span>;                         <span class="comment">// reset the Pulse flag so we can do it again</span></span><br><span class="line">    amp = P - T;                           <span class="comment">// get amplitude of the pulse wave</span></span><br><span class="line">    thresh = amp/<span class="number">2</span> + T;                    <span class="comment">// set thresh at 50% of the amplitude</span></span><br><span class="line">    P = thresh;                            <span class="comment">// reset these for next time,thresh相当于波形的x轴</span></span><br><span class="line">    T = thresh;</span><br><span class="line">  &#125;</span><br><span class="line"><span class="comment">//长时间测不到心跳，就恢复默认值</span></span><br><span class="line">  <span class="keyword">if</span> (Num &gt; <span class="number">2500</span>)&#123;                           <span class="comment">// if 2.5 seconds go by without a beat</span></span><br><span class="line">    thresh = <span class="number">512</span>;                          <span class="comment">// set thresh default</span></span><br><span class="line">    P = <span class="number">512</span>;                               <span class="comment">// set P default</span></span><br><span class="line">    T = <span class="number">512</span>;                               <span class="comment">// set T default</span></span><br><span class="line">    lastBeatTime = sampleCounter;          <span class="comment">// bring the lastBeatTime up to date        </span></span><br><span class="line">    firstBeat = <span class="literal">true</span>;                      <span class="comment">// set these to avoid noise</span></span><br><span class="line">    secondBeat = <span class="literal">false</span>;                    <span class="comment">// when we get the heartbeat back</span></span><br><span class="line">  &#125;</span><br><span class="line">			</span><br><span class="line">	&#125;		</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="优化算法（平均值法，你也可以选择其他关于离散函数的处理方法）"><a href="#优化算法（平均值法，你也可以选择其他关于离散函数的处理方法）" class="headerlink" title="优化算法（平均值法，你也可以选择其他关于离散函数的处理方法）"></a>优化算法（平均值法，你也可以选择其他关于离散函数的处理方法）</h4><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">int</span> Get_BPM_Average_Value(<span class="built_in">void</span>)<span class="comment">//只能计算粗略的平均值</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">int</span> SumBPM,i;</span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;<span class="number">50</span>;i++)</span><br><span class="line">	&#123;</span><br><span class="line">		delay_ms(<span class="number">10</span>);</span><br><span class="line">		SumBPM+=BPM;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> SumBPM/<span class="number">50</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="现象描述（作品图像在实验现象总板块里）-3"><a href="#现象描述（作品图像在实验现象总板块里）-3" class="headerlink" title="现象描述（作品图像在实验现象总板块里）"></a>现象描述（作品图像在实验现象总板块里）</h3><h5 id="1-在OLED显示步数计算栏会随着人的心跳的变化而变化"><a href="#1-在OLED显示步数计算栏会随着人的心跳的变化而变化" class="headerlink" title="1 在OLED显示步数计算栏会随着人的心跳的变化而变化"></a>1 在OLED显示步数计算栏会随着人的心跳的变化而变化</h5><h5 id="2-心跳的异常（过高或过低）会进行警告播报"><a href="#2-心跳的异常（过高或过低）会进行警告播报" class="headerlink" title="2 心跳的异常（过高或过低）会进行警告播报"></a>2 心跳的异常（过高或过低）会进行警告播报</h5><h4 id="最后提醒一下对中断优先级的设定（根据事情的紧急程度）"><a href="#最后提醒一下对中断优先级的设定（根据事情的紧急程度）" class="headerlink" title="最后提醒一下对中断优先级的设定（根据事情的紧急程度）"></a>最后提醒一下对中断优先级的设定（根据事情的紧急程度）</h4><figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">NVIC_PriorityGroupConfig</span>(NVIC_PriorityGroup_2); <span class="comment">//设置NVIC中断分组2:2位抢占优先级，2位响应优先级</span></span><br></pre></td></tr></table></figure>
+<h1 id="2-实验现象"><a href="#2-实验现象" class="headerlink" title="2. 实验现象"></a>2. 实验现象</h1><h2 id="1）视频链接"><a href="#1）视频链接" class="headerlink" title="1）视频链接"></a>1）<a href="https://www.bilibili.com/video/BV1Hi4y1G7CH" target="_blank" rel="noopener">视频链接</a></h2><h2 id="2）实验图片"><a href="#2）实验图片" class="headerlink" title="2）实验图片"></a>2）实验图片</h2><h3 id="OLED显示"><a href="#OLED显示" class="headerlink" title="OLED显示"></a>OLED显示</h3><h4 id="-1"><a href="#-1" class="headerlink" title=""></a><img src="/images/%E6%B8%A9%E5%BA%A62.jpg" alt="image"></h4><h3 id="温度传感器"><a href="#温度传感器" class="headerlink" title="温度传感器"></a>温度传感器</h3><h4 id="-2"><a href="#-2" class="headerlink" title=""></a><img src="/images/%E6%B8%A9%E5%BA%A65.jpg" alt="image"></h4><h3 id="心率传感器"><a href="#心率传感器" class="headerlink" title="心率传感器"></a>心率传感器</h3><h4 id="-3"><a href="#-3" class="headerlink" title=""></a><img src="/images/%E6%B8%A9%E5%BA%A63.jpg" alt="image"></h4><h3 id="震动开关"><a href="#震动开关" class="headerlink" title="震动开关"></a>震动开关</h3><h4 id="-4"><a href="#-4" class="headerlink" title=""></a><img src="/images/%E6%B8%A9%E5%BA%A64.jpg" alt="image"></h4><h3 id="电源模块和红外感应器"><a href="#电源模块和红外感应器" class="headerlink" title="电源模块和红外感应器"></a>电源模块和红外感应器</h3><h4 id="-5"><a href="#-5" class="headerlink" title=""></a><img src="/images/%E6%B8%A9%E5%BA%A66.jpg" alt="image"></h4>
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>感谢支持！！！</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="罗乐乐 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="罗乐乐 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fa fa-wechat"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%A1%AC%E4%BB%B6%E5%BC%80%E5%8F%91/" rel="tag"># 硬件开发</a>
+              <a href="/tags/stm32/" rel="tag"># stm32</a>
+              <a href="/tags/c%E8%AF%AD%E8%A8%80/" rel="tag"># c语言</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2020/06/23/%E5%AF%BB%E8%BF%B9%E5%B0%8F%E8%BD%A6%E3%80%81%E9%81%A5%E6%8E%A7%E5%B0%8F%E8%BD%A6%E3%80%81%E8%87%AA%E5%8A%A8%E5%88%B9%E8%BD%A6%EF%BC%88PID%E7%AE%97%E6%B3%95%EF%BC%89/" rel="next" title="寻迹小车、遥控小车、自动刹车（PID算法）">
+      寻迹小车、遥控小车、自动刹车（PID算法） <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-项目背景介绍"><span class="nav-number">1.</span> <span class="nav-text">1. 项目背景介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#项目算法框图设计"><span class="nav-number">2.</span> <span class="nav-text">项目算法框图设计</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">2.1.</span> <span class="nav-text"></span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-代码实现及现象描述"><span class="nav-number">3.</span> <span class="nav-text">2. 代码实现及现象描述</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1）温度传感器-ds18b20"><span class="nav-number">3.1.</span> <span class="nav-text">1）温度传感器 ds18b20</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本代码思想"><span class="nav-number">3.1.1.</span> <span class="nav-text">基本代码思想</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码讲解"><span class="nav-number">3.1.2.</span> <span class="nav-text">代码讲解</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#模块初始化（外设）"><span class="nav-number">3.1.2.1.</span> <span class="nav-text">模块初始化（外设）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数字量转换模拟量（通过软件计算实现数模转换）"><span class="nav-number">3.1.2.2.</span> <span class="nav-text">数字量转换模拟量（通过软件计算实现数模转换）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#OLED显示（以后不再重复写这一模块代码）"><span class="nav-number">3.1.2.3.</span> <span class="nav-text">OLED显示（以后不再重复写这一模块代码）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MP3模块放音（以后不再重复写这一模块代码）"><span class="nav-number">3.1.2.4.</span> <span class="nav-text">MP3模块放音（以后不再重复写这一模块代码）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#现象描述（作品图像在实验现象总板块里）"><span class="nav-number">3.1.3.</span> <span class="nav-text">现象描述（作品图像在实验现象总板块里）</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-在OLED显示温度栏会随着外界的温度变化而变化"><span class="nav-number">3.1.3.0.1.</span> <span class="nav-text">1 在OLED显示温度栏会随着外界的温度变化而变化</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-每次变化都会伴随着语音播报的出现（可设置一个语音播报控制开关）"><span class="nav-number">3.1.3.0.2.</span> <span class="nav-text">2 每次变化都会伴随着语音播报的出现（可设置一个语音播报控制开关）</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2）红外人体感应传感器-Hc-Sr501hc"><span class="nav-number">3.2.</span> <span class="nav-text">2）红外人体感应传感器 Hc_Sr501hc</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本代码思想-1"><span class="nav-number">3.2.1.</span> <span class="nav-text">基本代码思想</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码讲解-1"><span class="nav-number">3.2.2.</span> <span class="nav-text">代码讲解</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#模块初始化（外设）-1"><span class="nav-number">3.2.2.1.</span> <span class="nav-text">模块初始化（外设）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#判断代码"><span class="nav-number">3.2.2.2.</span> <span class="nav-text">判断代码</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#现象描述（作品图像在实验现象总板块里）-1"><span class="nav-number">3.2.3.</span> <span class="nav-text">现象描述（作品图像在实验现象总板块里）</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-在OLED显示红外感应栏会随着人的动或停变化而变化"><span class="nav-number">3.2.3.0.1.</span> <span class="nav-text">1 在OLED显示红外感应栏会随着人的动或停变化而变化</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-每次变化都会伴随着语音播报的出现（可设置一个语音播报控制开关）-1"><span class="nav-number">3.2.3.0.2.</span> <span class="nav-text">2 每次变化都会伴随着语音播报的出现（可设置一个语音播报控制开关）</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3）震动开关"><span class="nav-number">3.3.</span> <span class="nav-text">3）震动开关</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本代码思想-2"><span class="nav-number">3.3.1.</span> <span class="nav-text">基本代码思想</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码讲解-2"><span class="nav-number">3.3.2.</span> <span class="nav-text">代码讲解</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#模块初始化（外设）-2"><span class="nav-number">3.3.2.1.</span> <span class="nav-text">模块初始化（外设）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#计步器（中断服务函数）"><span class="nav-number">3.3.2.2.</span> <span class="nav-text">计步器（中断服务函数）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#现象描述（作品图像在实验现象总板块里）-2"><span class="nav-number">3.3.3.</span> <span class="nav-text">现象描述（作品图像在实验现象总板块里）</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-在OLED显示步数计算栏会随着人的震动的变化而步数增加"><span class="nav-number">3.3.3.0.1.</span> <span class="nav-text">1 在OLED显示步数计算栏会随着人的震动的变化而步数增加</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-每次步数位数的改变都会有一次语音播报"><span class="nav-number">3.3.3.0.2.</span> <span class="nav-text">2 每次步数位数的改变都会有一次语音播报</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4）脉搏传感器"><span class="nav-number">3.4.</span> <span class="nav-text">4）脉搏传感器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本代码思想-3"><span class="nav-number">3.4.1.</span> <span class="nav-text">基本代码思想</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码讲解-3"><span class="nav-number">3.4.2.</span> <span class="nav-text">代码讲解</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#模块初始化（外设）-3"><span class="nav-number">3.4.2.1.</span> <span class="nav-text">模块初始化（外设）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#对外界数字量的处理（定时器中断服务函数）"><span class="nav-number">3.4.2.2.</span> <span class="nav-text">对外界数字量的处理（定时器中断服务函数）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#优化算法（平均值法，你也可以选择其他关于离散函数的处理方法）"><span class="nav-number">3.4.2.3.</span> <span class="nav-text">优化算法（平均值法，你也可以选择其他关于离散函数的处理方法）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#现象描述（作品图像在实验现象总板块里）-3"><span class="nav-number">3.4.3.</span> <span class="nav-text">现象描述（作品图像在实验现象总板块里）</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-在OLED显示步数计算栏会随着人的心跳的变化而变化"><span class="nav-number">3.4.3.0.1.</span> <span class="nav-text">1 在OLED显示步数计算栏会随着人的心跳的变化而变化</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-心跳的异常（过高或过低）会进行警告播报"><span class="nav-number">3.4.3.0.2.</span> <span class="nav-text">2 心跳的异常（过高或过低）会进行警告播报</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#最后提醒一下对中断优先级的设定（根据事情的紧急程度）"><span class="nav-number">3.4.3.1.</span> <span class="nav-text">最后提醒一下对中断优先级的设定（根据事情的紧急程度）</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-实验现象"><span class="nav-number">4.</span> <span class="nav-text">2. 实验现象</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1）视频链接"><span class="nav-number">4.1.</span> <span class="nav-text">1）视频链接</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2）实验图片"><span class="nav-number">4.2.</span> <span class="nav-text">2）实验图片</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#OLED显示"><span class="nav-number">4.2.1.</span> <span class="nav-text">OLED显示</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#-1"><span class="nav-number">4.2.1.1.</span> <span class="nav-text"></span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#温度传感器"><span class="nav-number">4.2.2.</span> <span class="nav-text">温度传感器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#-2"><span class="nav-number">4.2.2.1.</span> <span class="nav-text"></span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#心率传感器"><span class="nav-number">4.2.3.</span> <span class="nav-text">心率传感器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#-3"><span class="nav-number">4.2.3.1.</span> <span class="nav-text"></span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#震动开关"><span class="nav-number">4.2.4.</span> <span class="nav-text">震动开关</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#-4"><span class="nav-number">4.2.4.1.</span> <span class="nav-text"></span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#电源模块和红外感应器"><span class="nav-number">4.2.5.</span> <span class="nav-text">电源模块和红外感应器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#-5"><span class="nav-number">4.2.5.1.</span> <span class="nav-text"></span></a></li></ol></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="罗乐乐"
+      src="/images/xusong.jpeg">
+  <p class="site-author-name" itemprop="name">罗乐乐</p>
+  <div class="site-description" itemprop="description">不念、不想、不枉、此生</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yinluolll" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yinluolll" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/qq_45035280" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_45035280" rel="noopener" target="_blank"><i class="fa fa-fw fa-CSDN"></i>CSDN</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.cctry.com/" title="https:&#x2F;&#x2F;www.cctry.com" rel="noopener" target="_blank">VC驿站</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.bilibili.com/" title="https:&#x2F;&#x2F;www.bilibili.com" rel="noopener" target="_blank">B站</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.baidu.com/" title="http:&#x2F;&#x2F;www.baidu.com" rel="noopener" target="_blank">百度</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.csdn.net/" title="https:&#x2F;&#x2F;www.csdn.net" rel="noopener" target="_blank">CSDN博客</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">罗乐乐</span>
+</div>
+
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>-->
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/three-waves.min.js"></script>
+    <script defer src="/lib/three/canvas_lines.min.js"></script>
+    <script defer src="/lib/three/canvas_sphere.min.js"></script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
